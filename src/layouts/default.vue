@@ -23,4 +23,8 @@ html {
 .card-art {
   @apply border-8 rounded-lg border-black m-2 shadow-md;
 }
+
+a {
+  @apply text-white;
+}
 </style>
