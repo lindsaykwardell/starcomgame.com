@@ -10,14 +10,11 @@ import "../assets/index.css";
 </template>
 
 <style lang="pcss">
-@import url('https://fonts.googleapis.com/css2?family=Megrim&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Megrim&family=Raleway&display=swap');
+
 
 html {
-  @apply bg-gray-800 text-white;
-}
-
-.text-megrim {
-  font-family: 'Megrim', serif;
+  @apply bg-gray-800 text-white font-raleway;
 }
 
 .card-art {
