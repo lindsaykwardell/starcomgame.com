@@ -1,0 +1,314 @@
+---
+title: Example Playthrough
+---
+
+<h1 class="font-megrim text-6xl text-center pt-4 font-bold hover:underline">
+  <a href="/">Star Commander</a>
+</h1>
+
+<img src="@/assets/starcom-logo.png" class="my-12" alt="Star Commander" />
+
+<h2 class="font-megrim text-4xl text-center py-6">Example Playthrough</h2>
+
+<Prose class="lg:prose-lg text-justify text-white w-11/12">
+
+Star Commander is a card game of exploration, colonization, commerce, and conflict. The goal in a game of Star Commander is to control known space, defeating your opponents and their would-be interstellar empires.
+
+The game is comprised of 270 cards, broken up into different piles and decks.
+
+- 3 Domain decks (Industry, Politics, and Science) of 30 cards each
+- 1 Planets deck of 25 cards
+- 147 ships and stations
+- 4 Starting Planets
+- 4 Scouts
+
+It also uses colored cubes and money counters to represent planetary developments and credits, respectively.
+
+<div class="text-sm">
+
+_Note: All card art displayed in these photographs is temporary, and used for prototyping purposes only. All rights belong to their original creators._
+
+</div>
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0978.jpg"
+  alt="All of the cards to play Star Commander are set up and ready to play."
+/>
+
+<h3 class="font-megrim text-white">Setup</h3>
+
+To start, the Planets deck is shuffled, and a grid of planets is placed face down on the table. Two corners of the grid are removed, and replaced with starting systems. A Scout is placed at each starting system, as well as a development counter for the player initially controlling it.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0978.jpg"
+  alt="A grid of nine planets, with a scout at each starting planet."
+/>
+
+<h3 class="font-megrim text-white">Taking a Turn</h3>
+
+Players take turns gaining credits (1 credit for each development), then moving their ships and performing actions. Some of the actions you can take include:
+
+- Moving a ship to another system
+- Discovering a new planet
+- Colonizing new worlds
+- Building new ships
+- Invading enemy systems
+
+When a ship you control enters a system that hasn't yet been explored, you "discover" it by flipping the Planet card face up. Some systems have abilities that trigger when they are discovered (such as drawing cards from the Domain decks), while others (like this Trade World) provide other resources at the start of your turn.
+
+Discovering a new system does not give you control over it, however. To control a system, you must build a development on it. The first development costs 1 credit, with each subsequent development consting an additional credit (a second development costs 2, a third costs 3, etc). System cards have a number in the top right corner, which represents the maximum number of developments in a given system.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0980.jpg"
+  alt="A scout has discovered a Trade World, and the player built two developments on it."
+/>
+
+<h3 class="font-megrim text-white">Domains</h3>
+
+Each system also has a Domain. There are three Domains - Industry, Politics, and Science. These three domains have different focuses, and play out with different strategies:
+
+<h4 class="font-megrim text-white">Industry</h4>
+
+- Primary resource: Credits
+- Early strategy: Rush
+- Late strategy: Big Ships
+
+Industry cards are focused on building up a strong, stable economy. Industry cards often provide additional credits, with the goal of bringing the largest ships to bear against your opponents. Other cards support your large ships, either by providing additional ways to deal damage, or repairing your ships so that your investments aren't destroyed so easily by the enemy.
+
+<h4 class="font-megrim text-white">Politics</h4>
+
+- Primary resources: Developments
+- Early strategy: Strong Defenses
+- Late strategy: Lots of Ships
+
+Politics cards are all about controlling your opponent's actions, preventing them from gaining an advantage over you. Early on, politics cards are great at playing a defensive roll, while you build up your board presence with Defense Stations, Orbital Hangars, and fighter ships. Once the opponent has lost the initiative, technologies allow for your fleets of small ships to advance, overwhelming your opponents with sheer numbers. Cards like Sabotage, Intercept Orders, and others manipulate the ships and cards your opponents have, ensuring you are always in control of the situation.
+
+<h4 class="font-megrim text-white">Science</h4>
+
+- Primary resource: Cards
+- Early strategy: Find Technologies
+- Late strategy: Better Ships
+
+Science cards expand the possibilities of your ships and stations, outpacing what your opponents can do. While your opponents are jumping from one system to the next, your ships are going straight for their homeworld! If an enemy fleet is approaching, you can play Interdiction to prevent it from moving any closer for a turn. Later in the game, your advantage comes from the number of technologies you possess, enabling faster, more powerful ships that can withstand any number of enemies.
+
+At the start of each turn, the active player rolls the Domain Die. If the value on the die matches a system's Domain that they control, they draw a card. (For the purposes of the prototype, 1-2 is Industry, 3-4 is Politics, and 5-6 is Science)
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0981.jpg"
+  alt="The Domain Die came up a six (Science), which means that the player does not draw a card this turn."
+/>
+
+There are three kinds of cards that can be drawn from the Domain decks:
+
+<h4 class="font-megrim text-white">Station</h4>
+
+Station cards are structures built in systems. Unlike ships, they cannot move between systems. They typically provide some benefit, such as additional credits per turn. One station, the Defense Station, is always available to build and does not have to be drawn (more on generic ships and stations later). You may only have a number of stations up to the number of developments in a system.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0984.jpg"
+  alt="The yellow player has constructed a Refinery in their starting system."
+/>
+
+<h4 class="font-megrim text-white">Command</h4>
+
+Command cards are one-time use effects. Commands are played from your hand for free (no credit cost), and the action is performed. Some actions are beneficial to yourself or your ships and stations, while others harm your opponent.
+
+<h4 class="font-megrim text-white">Technology</h4>
+
+Technology cards provide a permanent beneficial effect to you or your ships. Some technologies increase the number of credits you earn each turn, while others (such as the Enhanced Jump Drive) allow ships to jump more than once system each turn.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0983.jpg"
+  alt="The red player has drawn both Intercept Orders and Enhanced Jump Drive."
+/>
+
+<h3 class="font-megrim text-white">Building Ships</h3>
+
+Obviously, a lone Scout is not enough to conquer the galaxy! As part of your turn, ships can be built in your home system (or another Capital System). Each ship has a cost associated with it, which must be paid in credits.
+
+- Patrol Ships cost 5 credits
+- Corvettes and Fridates cost 8 credits
+- Destroyers and Cruisers cost 13 credits
+- Battleships and Carriers cost 21 credits
+
+When a ship is initially built, it is placed in your home system (or a Capital System you control). It cannot move until your following turn, so plan ahead! On each following turn, ships can move one system per turn, following the diagonal lines on your system grid.
+
+In the early game, you will typically build smaller ships, like the Patrol Ship. But later in the game, you can choose to build larger ships, or more smaller ships. It's up to you to make the correct decision for your empire!
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0982.jpg"
+  alt="The yellow player built a Patrol Ship. What are they up to?"
+/>
+
+<h3 class="font-megrim text-white">Combat</h3>
+
+One of the key aspects of Star Commander is combat. When trying to control known space, conflict can and will happen between empires. Combat occurs when ships or stations from two or more players are in the same system at the same time.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0985.jpg"
+  alt="The yellow player has launched an attack! A Patrol Ship and Corvette are attacking a Scout and Missile Platform."
+/>
+
+<h4 class="font-megrim text-white">Playing Commands</h4>
+
+Commands can be played during combat to enhance your own ships (or harm your opponents'). Whenever a command is played, the other player has a chance to respond, either with an ability or another Command card. For example, if the yellow player players Maximum Firepower to increase the attack of their ships, the red player can play Intercept Orders in response, and prevent it from having any effect.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0986.jpg"
+  alt="Intercept Orders prevents Maximum Firepower from having any effect."
+/>
+
+<h4 class="font-megrim text-white">Assigning Damage</h4>
+
+Each ship or station with an attack value greater than 0 assigns its damage to a target. Then, with damage assigned, players may take actions (such as commands). For example, if a ship is going to be destroyed, its controller could choose to use Ram in response, sacrificing the ship for maximum effect.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0987.jpg"
+  alt="A number of commands and damage have been applied to the yellow and red ships. The red player is using Ram to sacrifice their scout in order to deal extra damage."
+/>
+
+Once damage has been assigned, and all responses have been resolved, damage is applied and any destroyed ships are removed from play. All commands are discarded after their effect takes place.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0988.jpg"
+  alt="Once damage is applied, the destroyed ships are removed, and the commands are discarded."
+/>
+
+<h3 class="font-megrim text-white">Conquering a System</h3>
+
+When no enemy ships remain in a system, and you have ships (not fighters) equal to or greater than the number of developments in that system, you take control of it (referred to as conquering a system). When you conquer a system, remove all of the other player's development counters, and place one of your own. Conquering a system resets its development level to 1.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0994.jpg"
+  alt="The red player has conquered the Asteroid Field system with two Patrol Ships!"
+/>
+
+<h3 class="font-megrim text-white">Fighters</h3>
+
+Fighters are a special kind of ship. Smaller than Patrol Ships or Scouts, fighters rely on hangars to station and refuel. Also, fighters are unable to jump between systems themselves. The simplest (but most expensive) way to move fighters around is with a Carrier.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0991.jpg"
+  alt="The yellow player has constructed a Carrier!"
+/>
+
+Fighters also cannot be built unless you control an Orbital Hangar (unlocked via technology) or a Carrier. Unlike other ships, fighters are built in the same location as the ship or station that is used to construct them.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0993.jpg"
+  alt="The Carrier is now supporting a handful of Strike Fighters."
+/>
+
+Fighters are fairly cheap and weak, but with the proper technology and support they can become much more powerful. Also, while small, they can become powerful in numbers!
+
+<h3 class="font-megrim text-white">Into the Action</h3>
+
+The game we've been following has progressed well for the red player. While the yellow palyer had some initial successes (and found two Trade Worlds, providing a massive credit boost in the early game), the Science and Politics domains have been very useful for the red player to hold them back. A surprise attack (using the Enhanced Jump Drives) allowed them to seize a Trade World from the yellow player, which in turn funded the construction of defensive stations in their Research World.
+
+The yellow player, seeing an opportunity to attack, has moved their Carrier (with five fighters) into the central system. Unfortunately for them, it's an Empty System, which means there aren't any planetary bodies upon which to build developments.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0996.jpg"
+  alt="The game so far. The yellow and red players each control four systems. The red player has some defenses, but their fleet is spread out right now."
+/>
+
+It is the red player's turn. They gain 13 credits (9 for developments, 2 for the Trade World's ability, and 2 for the Refinery in their home system), and draw a card. It's a Sabotage, which allows them to destroy a single ship in a system. After building a couple more Defense Stations, they decide to go on the offensive (fortune favors the bold!), and move their Frigate into the central system to face off against the Carrier.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0997.jpg"
+  alt="The red player's Frigate has moved into the central system to face down the Carrier and it's attack wing of fighters."
+/>
+
+Surprise! The Sabotage works as expected, destroying the Carrier and preventing any further deployment of Strike Fighters. The Frigate now only has to deal with the fighters, which are unable to retreat since they cannot jump themselves.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0998.jpg"
+  alt="The red player has played Sabotage on the Carrier."
+/>
+
+However, the fighters have the Frigate severely outnumbered. While the Frigate can destroy any of them in one hit, it can only target a single ship at a time. Meanwhile, each fighter deals 1 damage, which is going to eventually overwhelm the poor Frigate.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_0999.jpg"
+  alt="The frigate is outnumbered against the remaining four fighters, and has taken some damage."
+/>
+
+It's now the yellow player's turn. They draw a card off the Domain die, a Science card... Miniaturization! Now they are capable of moving their fighters like any other ship. Does that change their gameplan? At the moment, it seems unwise to retreat (after all, they still control the central system, and the Frigate is going to be overwhelmed in the end).
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_1001.jpg"
+  alt="The Miniaturization technology allows fighters you control to jump."
+/>
+
+After combat, another Fighter has been destroyed, but the Frigate is on its last legs. The red player decides now is the time to play Repair Crews, which removes all damage from the wounded Frigate. Now it's ready to defeat the remaining three fighters!
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_1002.jpg"
+  alt="Repair Crews, played at the right time, can turn defeat into victory."
+/>
+
+The red player continues the assault on their turn, and destroys another fighter while taking minimal damage. The yellow player, seeing the writing on the wall, decides to retreat the remaining two fighters into another system they control.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_1002.jpg"
+  alt="The two surviving fighters retreat to fight another day, joining the other forces in the Asteroid Field system."
+/>
+
+<h3 class="font-megrim text-white">Aftermath</h3>
+
+The above actions are just a taste of what the two players did during their turns. The red player extended their control of the Trade World, ensuring that it wouldn't be immediately taken back. Meanwhile, the yellow player has solidified their control of the Asteroid Field, preventing the red player from reinforcing the Trade World and (hopefully) allowing them to take it back shortly.
+
+<img
+  class="shadow border-black border-4 rounded"
+  src="@/assets/playthrough_1005.jpg"
+  alt="Each player still controls four systems. Ships and stations have been moved and repositioned in order to strengthen each player's defenses and forward their goals."
+/>
+
+<h3 class="font-megrim text-white">Conclusion</h3>
+
+This has been just a taste of how Star Commander works as a game. Through the course of drawing cards, gaining credits, building new ships and stations, and conquering your opponent's systems, you will be able to wear down your opponents and take over known space. When your opponent loses control of their home system (and controls no Capital Systems), they lose. When no opponents remain, you win!
+
+I hope you enjoyed this example playthrough of Star Commander. The game is still in active development, and any cards referenced above may change or be altogether removed before the official public reveal. If you are interested in trying the game out for yourself, feel free to download and print the prototype cards and game rules. Until next time!
+
+</Prose>
+
+<div class="flex flex-col md:flex-row justify-around gap-12 mt-12 text-center">
+<a
+  href="https://drive.google.com/file/d/1KLPobTj1qqrxwzRxa_q0H43E_LpUAs0w/view?usp=sharing"
+  target="__blank"
+  class="block rounded-lg bg-gradient-to-b from-blue-900 hover:from-blue-800 via-gray-900 hover:via-gray-800 to-black hover:to-gray-900 px-6 py-3 shadow hover:shadow-md"
+>
+  Download the Game
+</a>
+
+<a
+  href="https://drive.google.com/file/d/1oKRGjWVPndRRNhPTaO5NQGw2jqrdE01G/view?usp=sharing"
+  target="__blank"
+  class="block rounded-lg bg-gradient-to-b from-blue-900 hover:from-blue-800 via-gray-900 hover:via-gray-800 to-black hover:to-gray-900 px-6 py-3 shadow hover:shadow-md"
+>
+  Download the Rules (0.9.1)
+</a>
+</div>
+
+<img src="@/assets/starcom-logo.png" class="my-12" alt="Star Commander" />
