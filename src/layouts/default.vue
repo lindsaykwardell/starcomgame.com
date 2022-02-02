@@ -16,10 +16,6 @@ html {
   @apply bg-gray-800 text-white font-raleway;
 }
 
-.card-art {
-  @apply border-8 rounded-lg border-black m-2 shadow-md;
-}
-
 a {
   @apply text-white;
 }
