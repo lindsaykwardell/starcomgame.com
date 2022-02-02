@@ -6,8 +6,8 @@
     "build": "iles build",
     "preview": "iles preview --open --port 5050",
     "typecheck": "vue-tsc --noEmit",
-    "rules:dev": "vuepress dev",
-    "rules:build": "vuepress build"
+    "rules:dev": "vuepress dev rules",
+    "rules:build": "vuepress build rules"
   },
   "engines": {
     "node": "^14.18 || >= 16.0.0"

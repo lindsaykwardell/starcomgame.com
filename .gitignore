@@ -28,5 +28,5 @@ dist-ssr
 
 .iles-ssg-temp/
 
-.vuepress/.cache
-.vuepress/.temp
+rules/.vuepress/.cache
+rules/.vuepress/.temp
