@@ -27,3 +27,6 @@ dist-ssr
 *.sw?
 
 .iles-ssg-temp/
+
+.vuepress/.cache
+.vuepress/.temp

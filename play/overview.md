@@ -1,0 +1,30 @@
+# How to Play
+
+## Starting the Game
+
+- Shuffle the domain decks and the system deck. 
+- Place system cards face down on the board (3x3, 4x4, or 5x5 grid is recommended). Place a Homeworld System in the starting system for each player, with a development token on it for that player.
+- Each player is given 3 credits.
+- Put a Scout into play in each player’s starting system under their control.
+- Choose who goes first, by some random method.
+
+## Game Phases
+
+- Ready Phase (skip on first turn)
+  - [Gain credits](/play/ready.html#gain-credits)
+  - [Roll Domain Die](/play/ready.html#roll-domain-die)
+  - [Perform Start of Turn actions](/play/ready.html#perform-start-of-turn-actions)
+- Command Phase
+  - [Move Ships](/play/command.html#move-ships)
+  - [Explore](/play/command.html#explore)
+  - [Build ships/stations](/play/command.html#build-ships-stations)
+  - [Repair/Scrap](/play/command.html#repair-scrap)
+  - [Trade](/play/command.html#trade)
+  - [Develop](/play/command.html#develop)
+- Combat Phase
+  - [Initiate Combat](/play/combat.html#initiate-combat)
+  - [Assign Damage](/play/combat.html#assign-damage)
+  - [Retreat](/play/combat.html#retreat)
+- End Phase
+  - [Conquest](/play/end.html#conquest)
+  - [Cleanup](/play/end.html#cleanup)
