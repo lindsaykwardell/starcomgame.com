@@ -63,7 +63,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     navbar: [
       {
         text: "Rulebook",
-        link: "/guide/welcome.htm",
+        link: "/guide/welcome.html",
       },
       {
         text: "Official Site",
