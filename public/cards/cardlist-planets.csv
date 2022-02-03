@@ -1,0 +1,15 @@
+Name,Domain,Card Types,,MaxDev,,Rules,,Card #,Count
+Research World,Science,System,,4,,"At the start of your turn, draw a card.",,42,2
+Gambling World,Politics,System,,4,,"At the start of your turn, place a development on a valid system you control.",,43,2
+Trade World,Industry,System,,4,,"At the start of your turn, gain 2 credits.",,44,2
+Military Base,Industry,System,,3,,"When you first develop this system, build two Defense Stations.",,45,3
+Alien System,Science,System,,3,,"When you first develop this system, draw two cards.",,46,3
+New Colony,Politics,System,,3,,"When you first develop this system, place another development on it.",,47,3
+Asteroid Field,Industry,System,,2,,Only small ships can enter this system.,,48,1
+Pulsar System,Politics,System,,2,,Ships in this system cannot be targeted by Commands.,,49,1
+Black Hole,Science,System,,2,,Ships that enter this system cannot attack until next turn.,,50,1
+Silis Major,Politics,Capital System,,5,,Pay 4 credits: Develop a system you control,,51,1
+Forsei,Industry,Capital System,,5,,Pay 4 credits: Repair all damage on target ship or station.,,52,1
+Drummond,Science,Capital System,,5,,Pay 4 credits: Target ship can jump to any system.,,53,1
+Empty System,,System,,,,Developments cannot be built in this system.,,54,4
+Homeworld,,Starting System,,6,,You may build ships in this system.,,55,4

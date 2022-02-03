@@ -2,8 +2,10 @@
   "name": "starcomgame.com",
   "version": "0.9.1",
   "scripts": {
+    "postinstall": "elm-tooling install",
     "dev": "iles dev --open",
     "build": "iles build",
+    "prebuild": "elm-tooling install",
     "preview": "iles preview --open --port 5050",
     "typecheck": "vue-tsc --noEmit",
     "rules:dev": "vuepress dev rules",
@@ -13,18 +15,22 @@
     "node": "^14.18 || >= 16.0.0"
   },
   "devDependencies": {
+    "@originjs/vite-plugin-content": "^1.0.1",
     "@tailwindcss/typography": "^0.5.0",
     "@vuepress/bundler-vite": "^2.0.0-beta.27",
     "@vuepress/plugin-search": "^2.0.0-beta.27",
     "autoprefixer": "^10.4.1",
+    "elm-tooling": "^1.7.0",
     "iles": "^0.7.5",
     "postcss": "^8.4.5",
     "tailwindcss": "^3.0.8",
     "typescript": "^4.5",
+    "vite-plugin-elm": "^2.5.1",
     "vue-tsc": "^0.29",
     "vuepress": "^2.0.0-beta.27"
   },
   "dependencies": {
-    "@vueuse/core": "^7.5.5"
+    "@vueuse/core": "^7.5.5",
+    "elm-vue-bridge": "^1.2.3"
   }
 }

@@ -1,0 +1,44 @@
+Name,Domain,Card Types,Cost,Attack,Shield,Rules,Flavor,Card #,Count
+Refinery,Industry,Station,2,0,3,"At the start of your turn, gain 2 credits.",,1,4
+Trade Envoy,Industry,Command,,,,Gain credits equal to target system's development level.,,2,4
+Repair Crews,Industry,Command,,,,Repair all damage on target ship or station.,,3,3
+Barrage,Industry,Command,,,,Choose a ship or station you control. It deals damage equal to its attack to each ship or station an opponent controls in that system.,,4,4
+Ram,Industry,Command,,,,Destroy target ship you control. It deals damage equal to its hull to target ship or station.,,5,3
+Mass Production,Industry,Command,,,,Build 3 Patrol Ships in a system you control.,,6,2
+Maximum Firepower,Industry,Command,,,,"Target ship or station gets +2 attack until end of turn, and can divide its damage between an additional target this combat.",,7,3
+Trade Routes,Industry,Technology,,,,"At the start of your turn, gain 1 credit for each station you control.",,8,2
+Railgun Turrets,Industry,Technology,,,,Pay X: Target ship or station you control gets +X attack until end of turn.,,9,3
+Targeting Systems,Industry,Technology,,,,"When assigning combat damage, you may divide damage your ships and stations deal between any number of targets.",,10,2
+Missile Platform,Politics,Station,6,3,12,Other stations you control in this system get +1 attack.,,11,4
+Orbital Habitat,Politics,Station,4,0,6,You may build an additional two developments in this system.,,12,3
+Undersized Shipyard,Politics,Station,3,0,8,You may build fighters and small ships in this system.,,13,2
+Spy Network,Politics,Command,,,,Target player reveals their hand. Take a card from their hand and put it in yours.,,14,4
+Intercept Orders,Politics,Command,,,,Target command has no effect.,,15,2
+Sabotage,Politics,Command,,,,Destroy target ship or station,,16,4
+Bribery,Politics,Command,,,,Gain control of target ship.,,17,3
+Filibuster,Politics,Command,,,,Take another turn after this one.,,18,2
+Advanced Weapons,Politics,Technology,,,,Ships and stations you control have +1 attack.,,19,3
+Fighter Bays,Politics,Technology,,,,"Stations and fighters you control have +2 hit points. 
+
+You may build Orbital Hangars.",,20,3
+Jump Nexus,Science,Station,4,0,5,Ships you control may jump to this system from any other system.,,21,4
+Explore the Unknown,Science,Command,,,,Draw two cards from any one deck.,,22,3
+Jump Stabilization,Science,Command,,,,Ships you control in target system may jump to any system this turn.,,23,2
+Interdiction,Science,Command,,,,Ships in target system cannot jump until your next ready phase.,,24,3
+Raise Shields,Science,Command,,,,Ships and stations you control get +2 shield until end of turn.,,25,3
+Evasion,Science,Command,,,,Prevent all damage that would be dealt to target ship this turn.,,26,3
+Experimental Shields,Science,Technology,,,,Discard a card: Prevent all damage to target ship or station.,,27,2
+Enhanced Jump Drive,Science,Technology,,,,Ships you control can jump an additional time each turn.,,28,4
+Advanced Shields,Science,Technology,,,,Ships and stations you control have +1 shield.,,29,4
+Thrill of Discovery,Science,Technology,,,,"Each turn, roll the domain die an additional time.",,30,2
+Scout,Neutral,Ship - Small,,0,2,,,31,4
+Strike Fighter,Neutral,Ship - Fighter,2,1,2,,,32,20
+Patrol Ship,Neutral,Ship - Small,5,2,5,,,33,17
+Corvette,Neutral,Ship - Small,8,3,8, ,,34,17
+Frigate,Neutral,Ship - Small,8,2,12,,,35,17
+Destroyer,Neutral,Ship - Medium,13,4,15,,,36,12
+Cruiser,Neutral,Ship - Medium,13,3,18,,,37,12
+Battleship,Neutral,Ship - Large,21,5,25,,,38,8
+Carrier,Neutral,Ship - Large,21,2,28,"You may build fighters in this system. When this ship jumps, all fighters in this system may also jump to that system.",,39,8
+Defense Station,Neutral,Station,4,1,7,,,40,26
+Orbital Hangar,Neutral,Station,6,0,7,You may build fighters in this system.,,41,10

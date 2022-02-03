@@ -4,6 +4,7 @@
 
 declare module 'vue' {
   export interface GlobalComponents {
+    CardSearch: typeof import('./src/components/CardSearch.vue')['default']
     FrameworkLink: typeof import('./src/components/FrameworkLink.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
