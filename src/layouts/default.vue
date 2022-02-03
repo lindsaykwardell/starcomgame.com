@@ -4,11 +4,11 @@ import "../assets/index.css";
 
 <template>
   <header
-    class="flex items-center gap-8 pt-4 pb-16 justify-center"
+    class="flex flex-col md:flex-row items-center gap-8 pt-4 pb-16 justify-center"
   >
     <img src="@/assets/starcom-logo.png" alt="" />
     <a
-      class="font-megrim text-6xl text-center font-bold hover:underline"
+      class="font-megrim text-5xl md:text-6xl text-center font-bold hover:underline"
       href="/"
       >Star Commander</a
     >
@@ -16,7 +16,7 @@ import "../assets/index.css";
   <main class="flex flex-col items-center">
     <slot />
   </main>
-  <footer class="w-full md:w-[450px] m-auto">
+  <footer class="w-5/6 md:w-[450px] m-auto">
     <div
       class="flex flex-col md:flex-row justify-around gap-12 mt-12 text-center"
     >

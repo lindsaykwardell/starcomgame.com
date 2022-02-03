@@ -426,7 +426,7 @@ displaySelectedCard card =
         , div [ class "flex-grow order-1 flex flex-col" ]
             [ div [ class "relative border-b-2 mb-2 border-gray-500" ]
                 [ h3 [ class "text-3xl italic py-6" ] [ text card.name ]
-                , div [ class "absolute top-1 right-1 flex flex-col" ]
+                , div [ class "md:absolute top-1 right-1 flex flex-row md:flex-col justify-around" ]
                     (case card.cardType of
                         System maxDev ->
                             [ div [] [ text <| "Max Development: " ++ String.fromInt maxDev ] ]
