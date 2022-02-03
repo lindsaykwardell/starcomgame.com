@@ -348,40 +348,54 @@ view model =
                             ]
 
             Nothing ->
-                div [ class "flex flex-wrap justify-around gap-4 p-2 w-full md:w-5/6 lg:w-2/3 m-auto" ]
-                    (model.cardList
-                        |> List.filter
-                            (\card ->
-                                let
-                                    searchTerm =
-                                        String.toLower model.searchTerm
+                text ""
+        , div
+            [ class <|
+                "flex flex-wrap justify-around gap-4 p-2 w-full md:w-5/6 lg:w-2/3 m-auto"
+                    ++ (if model.selectedCard /= Nothing then
+                            " hidden"
 
-                                    name =
-                                        String.toLower card.name
-
-                                    rules =
-                                        String.toLower card.rules
-                                in
-                                String.contains searchTerm name || String.contains searchTerm rules
-                            )
-                        |> List.sortBy .id
-                        |> List.map displayCard
-                    )
+                        else
+                            ""
+                       )
+            ]
+            (model.cardList
+                |> List.sortBy .id
+                |> List.map (displayCard model.searchTerm)
+            )
         ]
 
 
-displayCard : Card -> Html Msg
-displayCard card =
-    button [ onClick <| SelectCard card.id ]
+displayCard : String -> Card -> Html Msg
+displayCard searchTerm card =
+    let
+        term =
+            String.toLower searchTerm
+
+        name =
+            String.toLower card.name
+
+        rules =
+            String.toLower card.rules
+    in
+    button
+        [ class
+            (if String.contains term name || String.contains term rules then
+                ""
+
+             else
+                " hidden"
+            )
+        , onClick <| SelectCard card.id
+        ]
         [ img
-            [ class
-                (case card.cardType of
+            [ class <|
+                case card.cardType of
                     System _ ->
                         "hover:border hover:border-white rounded-lg w-60"
 
                     _ ->
                         "hover:border hover:border-white rounded-lg h-60"
-                )
             , src <| "/cards/" ++ String.fromInt card.id ++ ".webp"
             , attribute "loading" "lazy"
             , alt card.name
