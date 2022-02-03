@@ -172,13 +172,13 @@ decodeMainCsv =
                                             (Decode.field "Cost"
                                                 (Decode.blank Decode.int
                                                     |> Decode.andThen
-                                                        (\maybeCost ->
-                                                            case maybeCost of
-                                                                Just cost ->
-                                                                    Decode.succeed cost
-
+                                                        (\cost ->
+                                                            case cost of
                                                                 Nothing ->
                                                                     Decode.succeed 0
+
+                                                                Just c ->
+                                                                    Decode.succeed c
                                                         )
                                                 )
                                             )
@@ -396,7 +396,7 @@ displayCard searchTerm card =
 
                     _ ->
                         "hover:border hover:border-white rounded-lg h-60"
-            , src <| "/cards/" ++ String.fromInt card.id ++ ".webp"
+            , src <| "/cards/" ++ String.fromInt card.id ++ "-thumb.webp"
             , attribute "loading" "lazy"
             , alt card.name
             , title card.name
