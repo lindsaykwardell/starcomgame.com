@@ -1,4 +1,4 @@
-module CardSearch exposing (main)
+port module CardSearch exposing (main)
 
 import Browser
 import Csv.Decode as Decode exposing (Decoder)
@@ -102,9 +102,18 @@ type alias Stats =
     }
 
 
-init : () -> ( Model, Cmd Msg )
-init () =
-    ( { cardList = [], searchTerm = "", selectedCard = Nothing }
+type alias Flags =
+    { searchTerm : String
+    , selectedCard : String
+    }
+
+
+init : Flags -> ( Model, Cmd Msg )
+init flags =
+    ( { cardList = []
+      , searchTerm = flags.searchTerm
+      , selectedCard = flags.selectedCard |> String.toInt
+      }
     , Cmd.batch [ fetchMainCsv, fetchPlanetCsv ]
     )
 
@@ -315,13 +324,13 @@ update msg model =
             ( model, Cmd.none )
 
         UpdateSearchTerm searchTerm ->
-            ( { model | searchTerm = searchTerm }, Cmd.none )
+            ( { model | searchTerm = searchTerm }, setSearchTerm searchTerm )
 
         SelectCard cardId ->
-            ( { model | selectedCard = Just cardId }, Cmd.none )
+            ( { model | selectedCard = Just cardId }, setSelectedCard <| Just cardId )
 
         ReturnToCardList ->
-            ( { model | selectedCard = Nothing }, Cmd.none )
+            ( { model | selectedCard = Nothing }, setSelectedCard <| Nothing )
 
 
 view : Model -> Html Msg
@@ -484,7 +493,7 @@ displaySelectedCard card =
         ]
 
 
-main : Program () Model Msg
+main : Program Flags Model Msg
 main =
     Browser.element
         { init = init
@@ -492,3 +501,9 @@ main =
         , view = view
         , subscriptions = \_ -> Sub.none
         }
+
+
+port setSearchTerm : String -> Cmd msg
+
+
+port setSelectedCard : Maybe Int -> Cmd msg
