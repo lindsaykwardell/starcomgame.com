@@ -16,33 +16,35 @@ const SEARCH_TERM = "searchTerm";
 const SELECTED_CARD = "selectedCard";
 
 // Current parameters
-const params = new URLSearchParams(window.location.search);
+const params = (typeof window !== 'undefined') ? new URLSearchParams(window.location.search) : null;
 
-const searchTerm = params.get(SEARCH_TERM) || "";
-const selectedCard = params.get(SELECTED_CARD) || "";
+const searchTerm = params?.get(SEARCH_TERM) || "";
+const selectedCard = params?.get(SELECTED_CARD) || "";
 
 // Setters
 function setSearchTerm(term: string) {
   console.log("setSearchTerm", term);
-  params.set(SEARCH_TERM, term);
+  params?.set(SEARCH_TERM, term);
   updateURL();
 }
 
 function setSelectedCard(card: string | null) {
   if (card) {
-    params.set(SELECTED_CARD, card);
+    params?.set(SELECTED_CARD, card);
   } else {
-    params.delete(SELECTED_CARD);
+    params?.delete(SELECTED_CARD);
   }
-  updateURL()
+  updateURL();
 }
 
 function updateURL() {
-  window.history.replaceState(
-    {},
-    "",
-    `${window.location.pathname}?${params.toString()}`
-  );
+  if (typeof window !== 'undefined') {
+    window.history.replaceState(
+      {},
+      "",
+      `${window.location.pathname}?${params?.toString()}`
+    );
+  }
 }
 </script>
 
