@@ -382,7 +382,7 @@ displayCard card =
                     _ ->
                         "hover:border hover:border-white rounded-lg h-60"
                 )
-            , src <| "/cards/" ++ String.fromInt card.id ++ ".png"
+            , src <| "/cards/" ++ String.fromInt card.id ++ ".webp"
             , attribute "loading" "lazy"
             , alt card.name
             , title card.name
@@ -404,7 +404,7 @@ displaySelectedCard card =
                         _ ->
                             "rounded-lg m-auto h-96"
                     )
-                , src <| "/cards/" ++ String.fromInt card.id ++ ".png"
+                , src <| "/cards/" ++ String.fromInt card.id ++ ".webp"
                 , alt ""
                 ]
                 []
