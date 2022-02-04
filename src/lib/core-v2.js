@@ -925,9 +925,9 @@ export const CARD_LIST = [
     deck: SYSTEM,
     count: 4,
     developmentLevel: 0,
-    maxDevelopmentLevel: 5,
+    maxDevelopmentLevel: 0,
     explored: false,
-    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    contextMenu: [],
   },
   {
     id: 55,
