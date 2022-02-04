@@ -53,7 +53,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="pcss" scoped>
 .damage-die {
   @apply rounded-lg;
   /* padding: 5px; */

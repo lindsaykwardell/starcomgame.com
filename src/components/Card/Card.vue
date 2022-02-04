@@ -68,7 +68,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="pcss" scoped>
 .assigned-damage {
   @apply transform;
   --transform-rotate: 10deg;

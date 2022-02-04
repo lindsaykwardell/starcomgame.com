@@ -76,7 +76,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="pcss" scoped>
 .list-group-item {
   display: inline-flex;
   flex-direction: column;

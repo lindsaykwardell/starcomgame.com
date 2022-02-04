@@ -23,7 +23,7 @@
     <DropZone
       class="dropzone bottom"
       x:cardClass="player1.length > 5 ? 'xs' : 'sm'"
-      :cardClass="combat ? player1.length > 5 ? 'sm' : '' : 'xs'"
+      :cardClass="combat ? (player1.length > 5 ? 'sm' : '') : 'xs'"
       :list.sync="player1"
       :group="`player1-${group}`"
       :loc="system.card.loc"
@@ -122,7 +122,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style lang="pcss" scoped>
 .system {
   @apply flex flex-col justify-center items-center relative my-2;
   /* margin-top: 30px; */
