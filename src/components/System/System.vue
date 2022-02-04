@@ -18,7 +18,12 @@
       />
       <div v-if="system.card.developmentLevel > 0" class="development-die">
         <font-awesome size="2x" :icon="['fa', firstDie]" :class="dieColor" />
-        <font-awesome v-if="system.card.developmentLevel > 6" size="2x" :icon="['fa', secondDie]" :class="dieColor" />
+        <font-awesome
+          v-if="system.card.developmentLevel > 6"
+          size="2x"
+          :icon="['fa', secondDie]"
+          :class="dieColor"
+        />
       </div>
     </div>
     <DropZone

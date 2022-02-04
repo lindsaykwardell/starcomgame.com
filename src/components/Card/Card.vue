@@ -76,7 +76,7 @@ export default {
 }
 
 .card {
-  @apply rounded-[7px];
+  @apply rounded-[7px] hover:border;
   width: 125px;
   height: 175px;
 

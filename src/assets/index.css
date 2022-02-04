@@ -16,10 +16,22 @@ a {
   @apply text-red-400;
 }
 
+.bg-domain-industry {
+  @apply bg-red-400;
+}
+
 .domain-politics {
   @apply text-yellow-500;
 }
 
+.bg-domain-politics {
+  @apply bg-yellow-500;
+}
+
 .domain-science {
   @apply text-green-400;
+}
+
+.bg-domain-science {
+  @apply bg-green-400;
 }

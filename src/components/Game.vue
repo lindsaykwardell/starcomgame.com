@@ -2,22 +2,42 @@
   <div class="flex">
     <div class="bar">
       <div class="bar-content flex flex-col">
+        <div class="bg-gradient-to-b from-blue-900 via-gray-900 to-black pb-4">
+          <div class="flex justify-center gap-3 pt-2 pb-4 items-center">
+            <img src="/favicon.png" class="w-8 h-8" />
+            <h1 class="font-megrim text-2xl">Star Commander</h1>
+          </div>
+          <div class="flex justify-around items-center">
+            <a
+              href="https://starcomgame.com"
+              class="underline hover:text-gray-300"
+              target="_blank"
+              >Homepage</a
+            >
+            <a
+              href="https://rules.starcomgame.com"
+              class="underline hover:text-gray-300"
+              target="_blank"
+              >Official Rules</a
+            >
+          </div>
+        </div>
         <div class="flex-grow">
           <div class="flex">
             <button
-              class="p-1 bg-blue-400 hover:bg-blue-600 duration-200 flex-1"
-              @click="draw(activePlayer, decks.politics)"
-            >
-              Politics ({{ decks.politics.remaining }}/30)
-            </button>
-            <button
-              class="p-1 bg-red-400 hover:bg-red-600 duration-200 flex-1"
+              class="p-1 bg-red-500 hover:bg-red-600 duration-200 flex-1"
               @click="draw(activePlayer, decks.industry)"
             >
               Industry ({{ decks.industry.remaining }}/30)
             </button>
             <button
-              class="p-1 bg-green-400 hover:bg-green-600 duration-200 flex-1"
+              class="p-1 bg-yellow-600 hover:bg-yellow-700 duration-200 flex-1"
+              @click="draw(activePlayer, decks.politics)"
+            >
+              Politics ({{ decks.politics.remaining }}/30)
+            </button>
+            <button
+              class="p-1 bg-green-600 hover:bg-green-700 duration-200 flex-1"
               @click="draw(activePlayer, decks.science)"
             >
               Science ({{ decks.science.remaining }}/30)
@@ -41,7 +61,7 @@
               class="inline lg"
             />
           </Dialog> -->
-          <Card :card="discard[0]" class="m-auto" />
+          <!-- <Card :card="discard[0]" class="m-auto" /> -->
           <!-- <Dialog :show="showStack" @toggle="toggleStack">
             <template v-slot:button
               ><h4 class="text-white">
@@ -84,8 +104,26 @@
     </div>
     <div class="flex-grow bg-black h-screen">
       <div v-if="shouldBoardDisplay" class="board relative overflow-y-scroll">
+        <div class="fixed top-1 bg-blue-300/25 p-1 rounded-lg flex gap-1">
+          <Card
+            v-for="card in player2Technology"
+            :key="card.id"
+            :card="card"
+            class="xs"
+          />
+        </div>
+        <div
+          class="fixed bottom-[250px] bg-red-300/25 p-1 rounded-lg flex gap-1"
+        >
+          <Card
+            v-for="card in player1Technology"
+            :key="card.id"
+            :card="card"
+            class="xs"
+          />
+        </div>
         <template v-if="!showCombat">
-          <div class="flex justify-around mt-6">
+          <div class="flex justify-around mt-6 relative">
             <System
               :system.sync="systems[0]"
               group="board"
@@ -216,12 +254,6 @@
             Credits: {{ players.player2.credits }}<br />
             Developments: {{ getPlayerDevelopmentCount("player2") }}
           </div>
-          <button
-            class="p-2 bg-gray-700 hover:bg-gray-800 text-white ml-5 rounded-full duration-200 w-48"
-            @click="showTechnology = !showTechnology"
-          >
-            Show {{ showTechnology ? "Hand" : "Technology" }}
-          </button>
         </div>
         <button class="d20 text-black" @click="drawCardFromDie">
           <font-awesome size="4x" :icon="['fa', 'dice-d20']" :class="dieRoll" />
@@ -229,7 +261,7 @@
       </div>
       <div class="hand" v-if="shouldBoardDisplay">
         <DropZone
-          :list.sync="currentHandDisplay"
+          :list.sync="hand"
           group="hand"
           :loc="showTechnology ? 'tech' : 'hand'"
         />
@@ -376,9 +408,6 @@ export default {
     shouldBoardDisplay() {
       return this.showBoard && !this.showDiscard && !this.showStack;
     },
-    currentHandDisplay() {
-      return this.showTechnology ? this.technology : this.hand;
-    },
     activePlayerDevelopmentCount() {
       return this.systems
         .filter((system) => system.card.controlledBy === this.activePlayer)
@@ -394,6 +423,12 @@ export default {
     },
     technology() {
       return this.players[this.activePlayer].technology;
+    },
+    player1Technology() {
+      return this.players.player1.technology;
+    },
+    player2Technology() {
+      return this.players.player2.technology;
     },
     nonActivePlayer() {
       return this.activePlayer === "player1" ? "player2" : "player1";
@@ -1090,14 +1125,15 @@ export default {
 };
 </script>
 
-<style lang="pcss" scoped>
+<style lang="pcss">
 .board {
   padding: 1rem;
-  background: linear-gradient(
+  /* background: linear-gradient(
     rgb(41, 40, 40),
     rgb(24, 18, 36),
     rgb(18, 18, 59)
-  );
+  ); */
+  background: url("/board.jpg");
   height: calc(100vh - 245px);
   overflow: scroll;
 }
