@@ -782,6 +782,7 @@ export const CARD_LIST = [
     count: 2,
     developmentLevel: 0,
     maxDevelopmentLevel: 4,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -793,6 +794,7 @@ export const CARD_LIST = [
     count: 2,
     developmentLevel: 0,
     maxDevelopmentLevel: 4,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -804,6 +806,7 @@ export const CARD_LIST = [
     count: 2,
     developmentLevel: 0,
     maxDevelopmentLevel: 4,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -815,6 +818,7 @@ export const CARD_LIST = [
     count: 3,
     developmentLevel: 0,
     maxDevelopmentLevel: 3,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -826,6 +830,7 @@ export const CARD_LIST = [
     count: 3,
     developmentLevel: 0,
     maxDevelopmentLevel: 3,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -837,6 +842,7 @@ export const CARD_LIST = [
     count: 3,
     developmentLevel: 0,
     maxDevelopmentLevel: 3,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -848,6 +854,7 @@ export const CARD_LIST = [
     count: 1,
     developmentLevel: 0,
     maxDevelopmentLevel: 2,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -859,6 +866,7 @@ export const CARD_LIST = [
     count: 1,
     developmentLevel: 0,
     maxDevelopmentLevel: 2,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -870,6 +878,7 @@ export const CARD_LIST = [
     count: 1,
     developmentLevel: 0,
     maxDevelopmentLevel: 2,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -881,6 +890,7 @@ export const CARD_LIST = [
     count: 1,
     developmentLevel: 0,
     maxDevelopmentLevel: 5,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -892,6 +902,7 @@ export const CARD_LIST = [
     count: 1,
     developmentLevel: 0,
     maxDevelopmentLevel: 5,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -903,6 +914,7 @@ export const CARD_LIST = [
     count: 1,
     developmentLevel: 0,
     maxDevelopmentLevel: 5,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -914,6 +926,7 @@ export const CARD_LIST = [
     count: 4,
     developmentLevel: 0,
     maxDevelopmentLevel: 5,
+    explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
@@ -925,6 +938,7 @@ export const CARD_LIST = [
     // count: 1,
     developmentLevel: 1,
     maxDevelopmentLevel: 6,
+    explored: true,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
     buildShipContextMenu: generateBuildShipContextMenu,
   },

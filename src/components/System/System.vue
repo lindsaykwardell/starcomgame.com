@@ -13,8 +13,8 @@
     <div class="relative">
       <Card
         :class="combat ? 'horizontal-lg' : 'horizontal'"
-        x:card="system.card.explored ? system.card : undefined"
-        :card="system.card"
+        :card="system.card.explored ? system.card : undefined"
+        x:card="system.card"
       />
       <div v-if="system.card.developmentLevel > 0" class="development-die">
         <font-awesome size="2x" :icon="['fa', dice]" :class="dieColor" />
