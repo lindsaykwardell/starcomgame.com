@@ -46,28 +46,3 @@ import "../assets/index.css";
     </a>
   </footer>
 </template>
-
-<style lang="pcss">
-@import url('https://fonts.googleapis.com/css2?family=Megrim&family=Raleway&display=swap');
-
-
-html {
-  @apply bg-gray-800 text-white font-raleway;
-}
-
-a {
-  @apply text-white;
-}
-
-.domain-industry {
-  @apply text-red-400;
-}
-
-.domain-politics {
-  @apply text-yellow-500;
-}
-
-.domain-science {
-  @apply text-green-400;
-}
-</style>

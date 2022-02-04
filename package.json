@@ -9,7 +9,8 @@
     "preview": "iles preview --open --port 5050",
     "typecheck": "vue-tsc --noEmit",
     "rules:dev": "vuepress dev rules",
-    "rules:build": "vuepress build rules"
+    "rules:build": "vuepress build rules",
+    "game:dev": "vite"
   },
   "engines": {
     "node": "^14.18 || >= 16.0.0"
@@ -17,20 +18,31 @@
   "devDependencies": {
     "@originjs/vite-plugin-content": "^1.0.1",
     "@tailwindcss/typography": "^0.5.0",
+    "@vitejs/plugin-vue": "^2.0.1",
     "@vuepress/bundler-vite": "^2.0.0-beta.27",
     "@vuepress/plugin-search": "^2.0.0-beta.27",
     "autoprefixer": "^10.4.1",
     "elm-tooling": "^1.7.0",
     "iles": "^0.7.5",
     "postcss": "^8.4.5",
+    "postcss-nested": "^5.0.6",
     "tailwindcss": "^3.0.8",
     "typescript": "^4.5",
+    "vite": "^2.7.13",
     "vite-plugin-elm": "^2.5.1",
     "vue-tsc": "^0.29",
     "vuepress": "^2.0.0-beta.27"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-brands-svg-icons": "^5.13.0",
+    "@fortawesome/free-regular-svg-icons": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/vue-fontawesome": "^3.0.0-5",
     "@vueuse/core": "^7.5.5",
-    "elm-vue-bridge": "^1.2.3"
+    "elm-vue-bridge": "^1.2.3",
+    "tiny-emitter": "^2.1.0",
+    "vue": "^3.2.27",
+    "vuedraggable": "^4.1.0"
   }
 }
