@@ -13,7 +13,7 @@
 
 <script>
 import EventBus from "@/util/EventBus";
-import { DAMAGEABLE } from "@/lib/core-v1";
+import { DAMAGEABLE } from "@/lib/core-v2";
 
 export default {
   props: {

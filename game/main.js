@@ -26,4 +26,37 @@ library.add(
   faDiceD20
 );
 
-createApp(App).component("font-awesome", FontAwesomeIcon).mount("#app");
+const app = createApp(App)
+  .component("font-awesome", FontAwesomeIcon)
+  .mount("#app");
+
+class ClickOutside extends HTMLElement {
+  onClickOutside = new CustomEvent("clickoutside");
+  clickOutside(e) {
+    console.log("outside");
+    this.dispatchEvent(this.onClickOutside);
+  }
+
+  clickInside(e) {
+    e.stopPropagation();
+  }
+
+  constructor() {
+    super();
+
+    this.clickOutside = this.clickOutside.bind(this);
+    this.clickInside = this.clickInside.bind(this);
+  }
+
+  connectedCallback() {
+    document.addEventListener("click", this.clickOutside);
+    this.addEventListener("click", this.clickInside);
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener("click", this.clickOutside);
+    this.removeEventListener("click", this.clickInside);
+  }
+}
+
+customElements.define("click-outside", ClickOutside);

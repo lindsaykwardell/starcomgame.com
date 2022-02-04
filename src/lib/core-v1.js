@@ -284,7 +284,7 @@ export const CARD_LIST = [
   },
   {
     id: 4,
-    img: "Alien_World",
+    img: "Alien_System",
     type: SYSTEM,
     domain: SCIENCE,
     deck: SYSTEM,
@@ -856,7 +856,7 @@ export const CARD_LIST = [
   },
   {
     id: 40,
-    img: "Military_Outpost",
+    img: "Military_Base",
     type: SYSTEM,
     domain: POLITICS,
     deck: SYSTEM,
@@ -951,7 +951,7 @@ export const CARD_LIST = [
   },
   {
     id: 47,
-    img: "Production_World",
+    img: "Gambling_World",
     type: SYSTEM,
     domain: INDUSTRY,
     deck: SYSTEM,

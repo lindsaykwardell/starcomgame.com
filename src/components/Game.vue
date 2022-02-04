@@ -8,19 +8,19 @@
               class="p-1 bg-blue-400 hover:bg-blue-600 duration-200 flex-1"
               @click="draw(activePlayer, decks.politics)"
             >
-              Politics ({{ decks.politics.remaining }}/40)
+              Politics ({{ decks.politics.remaining }}/30)
             </button>
             <button
               class="p-1 bg-red-400 hover:bg-red-600 duration-200 flex-1"
               @click="draw(activePlayer, decks.industry)"
             >
-              Industry ({{ decks.industry.remaining }}/40)
+              Industry ({{ decks.industry.remaining }}/30)
             </button>
             <button
               class="p-1 bg-green-400 hover:bg-green-600 duration-200 flex-1"
               @click="draw(activePlayer, decks.science)"
             >
-              Science ({{ decks.science.remaining }}/40)
+              Science ({{ decks.science.remaining }}/30)
             </button>
           </div>
 
@@ -193,16 +193,16 @@
         </button>
         <div class="active-player-stats flex">
           <div
-            class="flex-1 mr-3 bg-red-400 p-1 rounded-lg duration-200"
+            class="flex-1 mr-3 bg-red-400 p-1 rounded-lg duration-200 whitespace-nowrap"
             :class="
               activePlayer === 'player1' ? 'bg-red-400 shadow-lg' : 'bg-red-900'
             "
           >
             Credits: {{ players.player1.credits }}<br />
-            Total Devlopments: {{ getPlayerDevelopmentCount("player1") }}
+            Developments: {{ getPlayerDevelopmentCount("player1") }}
           </div>
           <div
-            class="flex-1 bg-blue-400 p-1 rounded-lg duration-200"
+            class="flex-1 bg-blue-400 p-1 rounded-lg duration-200 whitespace-nowrap"
             :class="
               activePlayer === 'player2'
                 ? 'bg-blue-400 shadow-lg'
@@ -210,7 +210,7 @@
             "
           >
             Credits: {{ players.player2.credits }}<br />
-            Total Devlopments: {{ getPlayerDevelopmentCount("player2") }}
+            Developments: {{ getPlayerDevelopmentCount("player2") }}
           </div>
           <button
             class="p-2 bg-gray-700 hover:bg-gray-800 text-white ml-5 rounded-full duration-200 w-48"
@@ -219,7 +219,7 @@
             Show {{ showTechnology ? "Hand" : "Technology" }}
           </button>
         </div>
-        <div class="d20">
+        <div class="d20 text-black">
           <font-awesome size="4x" :icon="['fa', 'dice-d20']" :class="dieRoll" />
         </div>
       </div>
@@ -227,9 +227,9 @@
         <DropZone :list.sync="currentHandDisplay" group="hand" />
       </div>
     </div>
-    <div
+    <click-outside
       v-if="showContextMenu && contextCard"
-      xv-clickout="onClickout"
+      @clickoutside="onClickout"
       class="context-menu"
       :style="contextCoordinates"
     >
@@ -251,7 +251,7 @@
           {{ option.label }}
         </button>
       </div>
-    </div>
+    </click-outside>
   </div>
 </template>
 <script>
@@ -280,7 +280,7 @@ import {
   DAMAGEABLE,
   generateResolveContextMenu,
   generateCombatContextMenu,
-} from "@/lib/core-v1";
+} from "@/lib/core-v2";
 import Deck from "@/models/Deck";
 
 import EventBus from "@/util/EventBus";
@@ -302,13 +302,13 @@ export default {
       showContextMenu: false,
       players: {
         player1: {
-          credits: 0,
+          credits: 3,
           technology: [],
           hand: [],
           technology: [],
         },
         player2: {
-          credits: 0,
+          credits: 3,
           technology: [],
           hand: [],
           technology: [],
@@ -362,19 +362,30 @@ export default {
       return this.activePlayer === "player1" ? "player2" : "player1";
     },
     dieRoll() {
-      console.log(this.dieValue);
-
-      if (this.dieValue <= 5) {
-        return "industry";
-      } else if (this.dieValue > 5 && this.dieValue <= 10) {
-        return "politics";
-      } else if (this.dieValue > 10 && this.dieValue <= 15) {
-        return "science";
-      } else if (this.dieValue > 15 && this.dieValue <= 18) {
-        return "tax";
-      } else {
-        return "pirates";
+      switch (this.dieValue) {
+        case 1:
+        case 2:
+          return "industry";
+        case 3:
+        case 4:
+          return "politics";
+        case 5:
+        case 6:
+          return "science";
+        default:
+          return "";
       }
+      // if (this.dieValue <= 5) {
+      //   return "industry";
+      // } else if (this.dieValue > 5 && this.dieValue <= 10) {
+      //   return "politics";
+      // } else if (this.dieValue > 10 && this.dieValue <= 15) {
+      //   return "science";
+      // } else if (this.dieValue > 15 && this.dieValue <= 18) {
+      //   return "tax";
+      // } else {
+      //   return "pirates";
+      // }
     },
     currentContextMenu() {
       if (this.contextLoc === "stack" && this.contextCard.stepContextMenu) {
@@ -417,7 +428,7 @@ export default {
   },
   methods: {
     rollDie() {
-      this.dieValue = Math.floor(Math.random() * 21);
+      this.dieValue = Math.floor(Math.random() * 6) + 1;
     },
     playerControlsDomain(player, domain) {
       for (const system of this.systems) {
@@ -896,7 +907,7 @@ export default {
     this.systems = systems;
     this.showBoard = true;
 
-    this.players.player1.credits++;
+    // this.players.player1.credits++;
 
     EventBus.$on("card:hover", (card) => {
       if (!this.showDiscard) this.hoveredCard = card;
