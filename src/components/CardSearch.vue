@@ -16,14 +16,16 @@ const SEARCH_TERM = "searchTerm";
 const SELECTED_CARD = "selectedCard";
 
 // Current parameters
-const params = (typeof window !== 'undefined') ? new URLSearchParams(window.location.search) : null;
+const params =
+  typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search)
+    : null;
 
 const searchTerm = params?.get(SEARCH_TERM) || "";
 const selectedCard = params?.get(SELECTED_CARD);
 
 // Setters
 function setSearchTerm(term: string) {
-  console.log("setSearchTerm", term);
   params?.set(SEARCH_TERM, term);
   updateURL();
 }
@@ -38,7 +40,7 @@ function setSelectedCard(card: string | null) {
 }
 
 function updateURL() {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     window.history.replaceState(
       {},
       "",

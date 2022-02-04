@@ -223,12 +223,16 @@
             Show {{ showTechnology ? "Hand" : "Technology" }}
           </button>
         </div>
-        <div class="d20 text-black">
+        <button class="d20 text-black" @click="drawCardFromDie">
           <font-awesome size="4x" :icon="['fa', 'dice-d20']" :class="dieRoll" />
-        </div>
+        </button>
       </div>
       <div class="hand" v-if="shouldBoardDisplay">
-        <DropZone :list.sync="currentHandDisplay" group="hand" />
+        <DropZone
+          :list.sync="currentHandDisplay"
+          group="hand"
+          :loc="showTechnology ? 'tech' : 'hand'"
+        />
       </div>
     </div>
     <click-outside
@@ -282,6 +286,7 @@ import {
   SCIENCE,
   TECHNOLOGY,
   DAMAGEABLE,
+  SYSTEM,
   generateResolveContextMenu,
   generateCombatContextMenu,
 } from "@/lib/core-v2";
@@ -319,6 +324,7 @@ export default {
         },
       },
       activePlayer: "player1",
+      nextPlayer: "player2",
       contextCard: null,
       contextLoc: 0,
       contextCoordinates: {
@@ -379,55 +385,70 @@ export default {
         default:
           return "";
       }
-      // if (this.dieValue <= 5) {
-      //   return "industry";
-      // } else if (this.dieValue > 5 && this.dieValue <= 10) {
-      //   return "politics";
-      // } else if (this.dieValue > 10 && this.dieValue <= 15) {
-      //   return "science";
-      // } else if (this.dieValue > 15 && this.dieValue <= 18) {
-      //   return "tax";
-      // } else {
-      //   return "pirates";
-      // }
     },
     currentContextMenu() {
-      if (this.contextLoc === "stack" && this.contextCard.stepContextMenu) {
+      console.log("contextLoc", this.contextLoc);
+      if (
+        ((this.contextLoc === "stack" &&
+          this.contextCard.type !== TECHNOLOGY) ||
+          (this.contextLoc === "tech" &&
+            this.contextCard.type === TECHNOLOGY)) &&
+        this.contextCard.stepContextMenu
+      ) {
         return this.contextCard.stepContextMenu[this.contextCard.step]({
           ...this.contextCard.stepContext,
-          card: this.contextCard,
-          systems: this.systems,
-          activePlayer: this.activePlayer,
-          nonActivePlayer: this.nonActivePlayer,
-          players: this.players,
-          discard: this.discard,
-          stack: this.stack,
+          ...this.fnContext,
         });
+      }
+
+      if (
+        this.contextCard.type === SYSTEM &&
+        this.contextCard.perTurnAction &&
+        !this.contextCard.performedPerTurnAction
+      ) {
+        return [
+          ...this.contextCard.contextMenu,
+          ...this.contextCard.perTurnAction(this.fnContext),
+        ];
+      }
+
+      if (this.contextCard.type === SYSTEM && this.contextCard.abilityMenu) {
+        return [
+          ...this.contextCard.contextMenu,
+          ...this.contextCard.abilityMenu(this.fnContext),
+        ];
       }
 
       if (!this.showCombat || !this.contextCard.combatContextMenu) {
         // return this.contextCard.contextMenu;
       } else {
         return this.contextCard.combatContextMenu({
-          card: this.contextCard,
+          ...this.fnContext,
           system: this.systems[this.combatSystemLoc],
-          players: this.players,
         });
       }
 
       if (this.contextCard.buildShipContextMenu) {
         return [
           ...this.contextCard.contextMenu,
-          ...this.contextCard.buildShipContextMenu({
-            card: this.contextCard,
-            activePlayer: this.activePlayer,
-            players: this.players,
-            systems: this.systems,
-          }),
+          ...this.contextCard.buildShipContextMenu(this.fnContext),
         ];
       }
 
       return this.contextCard.contextMenu;
+    },
+    fnContext() {
+      return {
+        card: this.contextCard,
+        systems: this.systems,
+        activePlayer: this.activePlayer,
+        nonActivePlayer: this.nonActivePlayer,
+        nextPlayer: this.nextPlayer,
+        players: this.players,
+        discard: this.discard,
+        stack: this.stack,
+        getNextId: this.getNextId,
+      };
     },
   },
   methods: {
@@ -489,12 +510,11 @@ export default {
     },
     destroy(destroyedCard) {
       if (destroyedCard.onDestroy) {
-        const shouldContinueToDestroy = destroyedCard.onDestroy();
-        if (!shouldContinueToDestroy) return;
-      }
-
-      if (destroyedCard.damageAssignedTo) {
-        this.unassignCombatDamage(destroyedCard);
+        destroyedCard.onDestroy({
+          ...this.fnContext,
+          card: destroyedCard,
+          system: this.systems[this.contextLoc],
+        });
       }
 
       this.discard = [
@@ -534,10 +554,9 @@ export default {
       card.explored = true;
       if (card.onExplore) {
         card.onExplore({
+          ...this.fnContext,
           card,
           system: this.systems[card.loc],
-          activePlayer: this.activePlayer,
-          players: this.players,
         });
       }
     },
@@ -559,6 +578,14 @@ export default {
           }
           break;
         case "build-in":
+          if (this.contextCard.onBuild) {
+            this.contextCard.onBuild({
+              ...this.fnContext,
+              card: this.contextCard,
+              system: this.systems[keys[1]],
+            });
+          }
+
           this.systems[keys[1]][this.activePlayer] = [
             ...this.systems[keys[1]][this.activePlayer],
             { ...this.contextCard, contextMenu: [...DAMAGE_CONTEXT_MENU] },
@@ -571,14 +598,23 @@ export default {
         case "develop":
           this.contextCard.controlledBy = this.activePlayer;
 
+          console.log(this.contextCard.totalMaxDevelopmentLevel());
+
           if (
             this.contextCard.developmentLevel <
-            this.contextCard.maxDevelopmentLevel
+            this.contextCard.totalMaxDevelopmentLevel()
           ) {
             let cost = this.systems[this.contextLoc].card.developmentLevel + 1;
             if (cost === 0) cost = 1;
             this.players[this.activePlayer].credits -= cost;
             this.systems[this.contextLoc].card.developmentLevel++;
+
+            if (this.contextCard.onDevelop) {
+              this.contextCard.onDevelop({
+                ...this.fnContext,
+                system: this.systems[this.contextLoc],
+              });
+            }
           }
 
           break;
@@ -587,10 +623,7 @@ export default {
             this.contextCard.damage + parseInt(keys[1], 10);
           break;
         case "repair":
-          this.contextCard.damage =
-            this.contextCard.damage - parseInt(keys[1], 10);
-
-          this.players[this.activePlayer].credits -= 2;
+          option.repairAction(this.fnContext);
           break;
         case "destroy":
           this.destroy(this.contextCard);
@@ -607,12 +640,7 @@ export default {
                 this.stack = [
                   {
                     ...this.contextCard,
-                    contextMenu: generateResolveContextMenu({
-                      card: this.contextCard,
-                      systems: this.systems,
-                      activePlayer: this.activePlayer,
-                      players: this.players,
-                    }),
+                    contextMenu: generateResolveContextMenu(this.fnContext),
                   },
                   ...this.stack,
                 ];
@@ -660,10 +688,18 @@ export default {
           this.combatSystemLoc = this.contextLoc;
           break;
         case "assign-damage":
-          this.assignCombatDamage(this.contextCard, parseInt(keys[1], 10));
+          if (parseInt(keys[1], 10) === 0) {
+            this.contextCard.damageAssignedTo = true;
+          } else {
+            this.assignCombatDamage(this.contextCard, parseInt(keys[1], 10));
+          }
           break;
         case "unassign-damage":
-          this.unassignCombatDamage(this.contextCard);
+          if (this.contextCard.damageAssignedTo === true) {
+            this.contextCard.damageAssignedTo = undefined;
+          } else {
+            this.unassignCombatDamage(this.contextCard);
+          }
           break;
         case "step":
           // Perform the custom function in the step.
@@ -671,17 +707,28 @@ export default {
           // Increment the step
           // If it's the last step, run 'resolve'
 
-          const result = option.stepAction();
-          console.log(result);
+          const stepResult = option.stepAction();
+
           this.contextCard.stepContext = {
             ...this.contextCard.stepContext,
-            ...result,
+            ...stepResult,
           };
           this.contextCard.step++;
           if (
             this.contextCard.stepContextMenu.length <= this.contextCard.step
           ) {
-            this.resolveCardOnStack();
+            this.contextCard.step = 0;
+            this.contextCard.stepContext = {};
+
+            if (this.contextLoc === "stack") {
+              this.resolveCardOnStack();
+            }
+          }
+          break;
+        case "perform":
+          const actionResult = option.performAction();
+          if (keys[1] === "perTurn") {
+            this.contextCard.performedPerTurnAction = true;
           }
           break;
         default:
@@ -691,10 +738,12 @@ export default {
       this.showContextMenu = false;
     },
     resolveCardOnStack() {
-      // Reset step data
-      if (this.contextCard.step) {
-        this.contextCard.step = 0;
-        this.contextCard.stepContext = {};
+      // Perform the action on the card
+      if (this.contextCard.onResolve) {
+        this.contextCard.onResolve({
+          ...this.fnContext,
+          system: this.systems[this.contextLoc],
+        });
       }
 
       if (this.contextCard.type === TECHNOLOGY) {
@@ -721,33 +770,32 @@ export default {
       attackingCard.damageAssignedTo = targetId;
       this.systems[this.combatSystemLoc].player1.forEach((card) => {
         if (card.id === targetId) {
-          card.damage += attackingCard.attack;
+          card.damage += attackingCard.totalAttack();
         }
       });
 
       this.systems[this.combatSystemLoc].player2.forEach((card) => {
         if (card.id === targetId) {
-          card.damage += attackingCard.attack;
+          card.damage += attackingCard.totalAttack();
         }
       });
     },
     unassignCombatDamage(attackingCard) {
       this.systems[this.combatSystemLoc].player1.forEach((card) => {
         if (card.id === attackingCard.damageAssignedTo) {
-          card.damage -= attackingCard.attack;
+          card.damage -= attackingCard.totalAttack();
         }
       });
 
       this.systems[this.combatSystemLoc].player2.forEach((card) => {
         if (card.id === attackingCard.damageAssignedTo) {
-          card.damage -= attackingCard.attack;
+          card.damage -= attackingCard.totalAttack();
         }
       });
 
       attackingCard.damageAssignedTo = undefined;
     },
     endCombat() {
-      console.log("Fired!");
       this.showCombat = false;
 
       this.systems[this.combatSystemLoc].player1.forEach((card) => {
@@ -763,11 +811,11 @@ export default {
     cleanUpDestroyedShips() {
       this.systems.forEach((system) => {
         system.player1.forEach((card) => {
-          if (card.damage >= card.hp) this.destroy(card);
+          if (card.damage >= card.totalHp()) this.destroy(card);
         });
 
         system.player2.forEach((card) => {
-          if (card.damage >= card.hp) this.destroy(card);
+          if (card.damage >= card.totalHp()) this.destroy(card);
         });
       });
     },
@@ -789,33 +837,39 @@ export default {
 
       // End of turn effects end.
       this.systems.forEach((system) => {
+        if (
+          system.card.performedPerTurnAction == true &&
+          system.card.controlledBy == this.activePlayer
+        ) {
+          system.card.performedPerTurnAction = false;
+        }
         system.player1.forEach((card) => {
           if (card.onTurnEnd) {
             card.onTurnEnd({
+              ...this.fnContext,
               card,
               system,
-              systems: this.systems,
-              activePlayer: this.activePlayer,
-              players: this.players,
             });
           }
+          card.bonusAttack = 0;
+          card.bonusHp = 0;
         });
         system.player2.forEach((card) => {
           if (card.onTurnEnd) {
             card.onTurnEnd({
+              ...this.fnContext,
               card,
               system,
-              systems: this.systems,
-              activePlayer: this.activePlayer,
-              players: this.players,
             });
           }
+          card.bonusAttack = 0;
+          card.bonusHp = 0;
         });
       });
 
       // Next player
-      this.activePlayer =
-        this.activePlayer === "player1" ? "player2" : "player1";
+      this.activePlayer = this.nextPlayer;
+      this.nextPlayer = this.nextPlayer === "player1" ? "player2" : "player1";
 
       // Gain credits
       this.players[this.activePlayer].credits +=
@@ -826,10 +880,26 @@ export default {
       this.players[this.activePlayer].technology.forEach((technology) => {
         if (technology.onTurnStart) {
           technology.onTurnStart({
+            ...this.fnContext,
             card: technology,
-            systems: this.systems,
-            activePlayer: this.activePlayer,
-            players: this.players,
+          });
+        }
+
+        if (technology.onEachTurnStart) {
+          technology.onEachTurnStart({
+            ...this.fnContext,
+            card: technology,
+            player: this.activePlayer,
+          });
+        }
+      });
+
+      this.players[this.nonActivePlayer].technology.forEach((technology) => {
+        if (technology.onEachTurnStart) {
+          technology.onEachTurnStart({
+            ...this.fnContext,
+            card: technology,
+            player: this.nonActivePlayer,
           });
         }
       });
@@ -840,27 +910,26 @@ export default {
           system.card.onTurnStart
         ) {
           system.card.onTurnStart({
+            ...this.fnContext,
             card: system.card,
             system: system,
-            systems: this.systems,
-            activePlayer: this.activePlayer,
-            players: this.players,
           });
         }
         system[this.activePlayer].forEach((card) => {
           if (card.onTurnStart) {
             card.onTurnStart({
+              ...this.fnContext,
               card: card,
               system: system,
-              systems: this.systems,
-              activePlayer: this.activePlayer,
-              players: this.players,
             });
           }
         });
       });
 
       // Roll the new turn die
+      this.drawCardFromDie();
+    },
+    drawCardFromDie() {
       this.rollDie();
 
       let domain;
@@ -880,8 +949,13 @@ export default {
       // If it came up with a domain, draw a card if player has matching system
       if (domain) {
         if (this.playerControlsDomain(this.activePlayer, domain)) {
+          console.log("Drawing card from die");
           this.draw(this.activePlayer, domain);
+        } else {
+          console.log("No matching system");
         }
+      } else {
+        console.log("No matching domain");
       }
     },
   },
@@ -928,9 +1002,6 @@ export default {
     DamageDice,
     // Dialog,
   },
-  // directives: {
-  //   clickout,
-  // },
 };
 </script>
 

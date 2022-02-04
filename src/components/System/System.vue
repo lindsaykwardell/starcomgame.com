@@ -17,7 +17,8 @@
         x:card="system.card"
       />
       <div v-if="system.card.developmentLevel > 0" class="development-die">
-        <font-awesome size="2x" :icon="['fa', dice]" :class="dieColor" />
+        <font-awesome size="2x" :icon="['fa', firstDie]" :class="dieColor" />
+        <font-awesome v-if="system.card.developmentLevel > 6" size="2x" :icon="['fa', secondDie]" :class="dieColor" />
       </div>
     </div>
     <DropZone
@@ -76,7 +77,7 @@ export default {
         this._system = { ...this.system, player2 };
       },
     },
-    dice() {
+    firstDie() {
       switch (this.system.card.developmentLevel) {
         case 1:
           return "dice-one";
@@ -89,6 +90,23 @@ export default {
         case 5:
           return "dice-five";
         case 6:
+        default:
+          return "dice-six";
+      }
+    },
+    secondDie() {
+      switch (this.system.card.developmentLevel) {
+        case 7:
+          return "dice-one";
+        case 8:
+          return "dice-two";
+        case 9:
+          return "dice-three";
+        case 10:
+          return "dice-four";
+        case 11:
+          return "dice-five";
+        case 12:
         default:
           return "dice-six";
       }
@@ -152,7 +170,7 @@ export default {
 }
 
 .development-die {
-  @apply rounded-full;
+  @apply rounded-full flex gap-1;
   padding: 5px;
   background: white;
   position: absolute;

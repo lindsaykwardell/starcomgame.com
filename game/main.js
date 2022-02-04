@@ -33,7 +33,6 @@ const app = createApp(App)
 class ClickOutside extends HTMLElement {
   onClickOutside = new CustomEvent("clickoutside");
   clickOutside(e) {
-    console.log("outside");
     this.dispatchEvent(this.onClickOutside);
   }
 

@@ -69,7 +69,8 @@ const SYSTEM_CONTEXT_MENU = [
     condition: ({ card, system, activePlayer, players }) =>
       (card.controlledBy === activePlayer ||
         (!card.controlledBy && system[activePlayer].length > 0)) &&
-      players[activePlayer].credits >= (card.developmentLevel + 1 || 1),
+      players[activePlayer].credits >= (card.developmentLevel + 1 || 1) &&
+      card.developmentLevel < card.totalMaxDevelopmentLevel(),
   },
   {
     action: "combat",
@@ -99,6 +100,19 @@ export const DAMAGE_CONTEXT_MENU = [
       card.damage > 0 &&
       inCombat === false &&
       players[activePlayer].credits >= 2,
+    repairAction: ({ card, players, activePlayer }) => {
+      players[activePlayer].credits -= 2;
+      card.damage -= 1;
+    },
+  },
+  {
+    action: "repair:0",
+    label: "Remove 1 damage",
+    condition: ({ card, inCombat, players, activePlayer }) =>
+      card.damage > 0 && inCombat === true,
+    repairAction: ({ card }) => {
+      card.damage -= 1;
+    },
   },
   {
     action: "destroy",
@@ -146,7 +160,7 @@ const generateBuildShipContextMenu = ({
     };
   });
 
-const SHIP_CONTEXT_MENU = [
+const SMALL_SHIP_CONTEXT_MENU = [
   {
     action: "build:33",
     label: "Build Patrol Ship",
@@ -165,6 +179,10 @@ const SHIP_CONTEXT_MENU = [
     condition: ({ card, system, activePlayer, players }) =>
       card.controlledBy === activePlayer && players[activePlayer].credits >= 8,
   },
+];
+
+const SHIP_CONTEXT_MENU = [
+  ...SMALL_SHIP_CONTEXT_MENU,
   {
     action: "build:36",
     label: "Build Destroyer",
@@ -234,15 +252,21 @@ export const generateResolveContextMenu = ({ card, systems, activePlayer }) => {
 
 export const generateCombatContextMenu = ({ card, system, players }) => {
   const menu = [...DAMAGE_CONTEXT_MENU];
+  menu.unshift({
+    action: "assign-damage:0",
+    label: "Mark as Assigned",
+    condition: ({ card, system, activePlayer, players }) =>
+      card.totalAttack() > 0 && !card.damageAssignedTo,
+  });
   let opponent = system.player1.find((c) => c.id === card.id)
     ? "player2"
     : "player1";
   system[opponent].forEach((c) => {
     menu.unshift({
       action: `assign-damage:${c.id}`,
-      label: `Attack ${c.img} (${c.hp - c.damage}/${c.hp})`,
+      label: `Attack ${c.img} (${c.totalHp() - c.damage}/${c.totalHp()})`,
       condition: ({ card, system, activePlayer, players }) =>
-        card.attack > 0 && !card.damageAssignedTo,
+        card.totalAttack() > 0 && !card.damageAssignedTo,
     });
   });
   menu.unshift({
@@ -264,8 +288,18 @@ export const CARD_LIST = [
     count: 4,
     cost: 2,
     hp: 3,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 0,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [],
+    onTurnStart: ({ card, system, activePlayer, players }) =>
+      (players[activePlayer].credits += 2),
   },
   {
     id: 2,
@@ -278,6 +312,27 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, activePlayer, players }) => {
+        let menu = [];
+
+        systems.forEach((system) => {
+          if (system.card.developmentLevel > 0) {
+            menu.push({
+              label: `Gain ${system.card.developmentLevel} (${system.card.img})}`,
+              action: `step:0`,
+              stepAction: () => {
+                players[activePlayer].credits += system.card.developmentLevel;
+              },
+            });
+          }
+        });
+
+        return menu;
+      },
+    ],
   },
   {
     id: 3,
@@ -290,6 +345,31 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, activePlayer }) => {
+        let menu = [];
+
+        systems.forEach((system) => {
+          system[activePlayer].forEach((card) => {
+            if (card.damage > 0) {
+              menu.push({
+                label: `Repair ${card.img} (${
+                  card.totalHp() - card.damage
+                }/${card.totalHp()})`,
+                action: `step:0`,
+                stepAction: () => {
+                  card.damage = 0;
+                },
+              });
+            }
+          });
+        });
+
+        return menu;
+      },
+    ],
   },
   {
     id: 4,
@@ -302,6 +382,45 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, activePlayer }) => {
+        let menu = [];
+        systems.forEach((system) => {
+          system[activePlayer].forEach((card) => {
+            if (card.totalAttack() > 0) {
+              menu.push({
+                label: `Choose ${card.img} (ATK: ${card.totalAttack()})`,
+                action: `step:${menu.length}`,
+                stepAction: () => {
+                  return { chosenCard: card, chosenSystem: system };
+                },
+              });
+            }
+          });
+        });
+        return menu;
+      },
+      (ctx) => {
+        const { chosenCard, chosenSystem, nonActivePlayer } = ctx;
+        return [
+          {
+            label: `Deal ${chosenCard.totalAttack()} damage to all ships and stations in ${
+              chosenSystem.card.img
+            }`,
+            action: "step:0",
+            stepAction: () => {
+              const targets = chosenSystem[nonActivePlayer];
+
+              targets.forEach((target) => {
+                target.damage += chosenCard.totalAttack();
+              });
+            },
+          },
+        ];
+      },
+    ],
   },
   {
     id: 5,
@@ -314,6 +433,49 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, activePlayer }) => {
+        // Select a ship the active player controls, and add it to step context
+        let menu = [];
+        systems.forEach((system) => {
+          system[activePlayer].forEach((card, index) => {
+            menu.push({
+              label: `Choose ${card.img} (HP: ${card.totalHp()})`,
+              action: `step:${index}`,
+              stepAction: () => ({ chosenCard: card, chosenSystem: system }),
+            });
+          });
+        });
+        return menu;
+      },
+      ({ chosenCard, chosenSystem, nonActivePlayer }) => {
+        // Select a ship the non active player controls, and add it to step context
+        let menu = [];
+        chosenSystem[nonActivePlayer].forEach((card, index) => {
+          menu.push({
+            label: `Target ${card.img} (HP: ${card.totalHp() - card.damage})`,
+            action: `step:${index}`,
+            stepAction: () => ({ targetCard: card }),
+          });
+        });
+        return menu;
+      },
+      ({ chosenCard, targetCard }) => {
+        // Deal damage to the target card, and destroy the chosen card
+        return [
+          {
+            label: `Deal ${chosenCard.totalHp()} damage to ${targetCard.img}`,
+            action: "step:0",
+            stepAction: () => {
+              targetCard.damage += chosenCard.totalHp();
+              chosenCard.damage = 1000;
+            },
+          },
+        ];
+      },
+    ],
   },
   {
     id: 6,
@@ -326,6 +488,35 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, activePlayer, getNextId }) => {
+        let menu = [];
+
+        systems.forEach((system, index) => {
+          if (system.card.controlledBy == activePlayer) {
+            menu.push({
+              label: `Choose ${system.card.img}`,
+              action: `step:${index}`,
+              stepAction: () => {
+                const card = { ...CARD_LIST.find((c) => c.id == 33) };
+                if (card) {
+                  system[activePlayer] = [
+                    ...system[activePlayer],
+                    { ...card, id: getNextId() },
+                    { ...card, id: getNextId() },
+                    { ...card, id: getNextId() },
+                  ];
+                }
+              },
+            });
+          }
+        });
+
+        return menu;
+      },
+    ],
   },
   {
     id: 7,
@@ -338,6 +529,27 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, activePlayer }) => {
+        let menu = [];
+
+        systems.forEach((system) => {
+          system[activePlayer].forEach((card, index) => {
+            menu.push({
+              label: `Choose ${card.img} (Attack: ${card.totalAttack()})`,
+              action: `step:${index}`,
+              stepAction: () => {
+                card.bonusAttack += 2;
+              },
+            });
+          });
+        });
+
+        return menu;
+      },
+    ],
   },
   {
     id: 8,
@@ -350,6 +562,17 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onTurnStart: ({ systems, activePlayer, players }) => {
+      let total = 0;
+
+      systems.forEach((system) => {
+        total += system[activePlayer].filter(
+          (card) => card.type === STATION
+        ).length;
+      });
+
+      players[activePlayer].credits += total;
+    },
   },
   {
     id: 9,
@@ -362,6 +585,58 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, activePlayer, players }) => {
+        let menu = [];
+
+        if (players[activePlayer].credits <= 0) {
+          return menu;
+        }
+
+        systems.forEach((system) => {
+          system[activePlayer].forEach((card, index) => {
+            menu.push({
+              label: `Choose ${card.img} (Attack: ${card.totalAttack()})`,
+              action: `step:${index}`,
+              stepAction: () => {
+                return { chosenCard: card };
+              },
+            });
+          });
+        });
+
+        return menu;
+      },
+      ({ players, activePlayer }) => {
+        let menu = [];
+
+        for (let i = 1; i <= players[activePlayer].credits; i++) {
+          menu.push({
+            label: `Pay ${i} credits`,
+            action: `step:${i}`,
+            stepAction: () => {
+              return { cost: i };
+            },
+          });
+        }
+
+        return menu;
+      },
+      ({ chosenCard, cost, players, activePlayer }) => {
+        return [
+          {
+            label: `${chosenCard.img} gets +${cost} attack until end of turn`,
+            action: "step:0",
+            stepAction: () => {
+              chosenCard.bonusAttack += cost;
+              players[activePlayer].credits -= cost;
+            },
+          },
+        ];
+      },
+    ],
   },
   {
     id: 10,
@@ -385,8 +660,23 @@ export const CARD_LIST = [
     count: 4,
     cost: 6,
     hp: 12,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 3,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [],
+    onTurnStart: ({ card, system, activePlayer }) => {
+      system[activePlayer].forEach((c) => {
+        if (c.id !== card.id) {
+          c.bonusAttack += 1;
+        }
+      });
+    },
   },
   {
     id: 12,
@@ -398,8 +688,22 @@ export const CARD_LIST = [
     count: 3,
     cost: 4,
     hp: 6,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 0,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [],
+    onBuild: ({ system }) => {
+      system.card.bonusDevelopmentLevel += 2;
+    },
+    onDestroy: ({ system }) => {
+      system.card.bonusDevelopmentLevel -= 2;
+    },
   },
   {
     id: 13,
@@ -411,8 +715,16 @@ export const CARD_LIST = [
     count: 2,
     cost: 3,
     hp: 8,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 0,
-    contextMenu: [],
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
+    contextMenu: [...SMALL_SHIP_CONTEXT_MENU],
   },
   {
     id: 14,
@@ -437,6 +749,18 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ stack }) =>
+        stack.map((card, index) => ({
+          label: `Remove ${card.img} from the game`,
+          action: `step:${index}`,
+          stepAction: () => {
+            stack = stack.filter((c) => c.id !== card.id);
+          },
+        })),
+    ],
   },
   {
     id: 16,
@@ -449,6 +773,27 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, nonActivePlayer }) => {
+        let menu = [];
+
+        systems.forEach((system) => {
+          system[nonActivePlayer].forEach((card, index) => {
+            menu.push({
+              label: `Destroy ${card.img} in ${system.img}`,
+              action: `step:${index}`,
+              stepAction: () => {
+                card.damage = 1000;
+              },
+            });
+          });
+        });
+
+        return menu;
+      },
+    ],
   },
   {
     id: 17,
@@ -461,6 +806,43 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, nonActivePlayer }) => {
+        let menu = [];
+        systems.forEach((system) => {
+          system[nonActivePlayer].forEach((card) => {
+            menu.push({
+              label: `Target ${card.img} (${
+                card.totalHp() - card.damage
+              }/${card.totalHp()})`,
+              action: `step:${menu.length}`,
+              stepAction: () => {
+                return { target: card, targetSystem: system };
+              },
+            });
+          });
+        });
+        return menu;
+      },
+      ({ target, targetSystem, activePlayer, nonActivePlayer }) => [
+        {
+          label: `Gain control of ${target.img}`,
+          action: "step:0",
+          stepAction: () => {
+            targetSystem[nonActivePlayer] = targetSystem[
+              nonActivePlayer
+            ].filter((card) => card.id !== target.id);
+
+            targetSystem[activePlayer] = [
+              ...targetSystem[activePlayer],
+              target,
+            ];
+          },
+        },
+      ],
+    ],
   },
   {
     id: 18,
@@ -473,6 +855,9 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onResolve: ({ nextPlayer, activePlayer }) => {
+      nextPlayer = activePlayer;
+    },
   },
   {
     id: 19,
@@ -485,6 +870,13 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onEachTurnStart: ({ systems, player }) => {
+      systems.forEach((system) => {
+        system[player].forEach((card) => {
+          card.bonusAttack += 2;
+        });
+      });
+    },
   },
   {
     id: 20,
@@ -497,6 +889,15 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onEachTurnStart: ({ systems, player }) => {
+      systems.forEach((system) => {
+        system[player].forEach((card) => {
+          if (card.type === STATION || card.type === FIGHTER) {
+            card.bonusHp += 2;
+          }
+        });
+      });
+    },
   },
   {
     id: 21,
@@ -508,7 +909,15 @@ export const CARD_LIST = [
     count: 4,
     cost: 4,
     hp: 5,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 0,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [],
   },
   {
@@ -522,6 +931,9 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onResolve() {
+      alert("Draw two cards from any one deck.");
+    },
   },
   {
     id: 23,
@@ -558,6 +970,13 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onResolve: ({ systems, activePlayer }) => {
+      systems.forEach((system) => {
+        system[activePlayer].forEach((card) => {
+          card.bonusHp += 2;
+        });
+      });
+    },
   },
   {
     id: 26,
@@ -606,6 +1025,13 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onEachTurnStart: ({ systems, player }) => {
+      systems.forEach((system) => {
+        system[player].forEach((card) => {
+          card.bonusHp += 1;
+        });
+      });
+    },
   },
   {
     id: 30,
@@ -618,6 +1044,7 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onTurnStart: () => alert("You may roll the domain die an additional time."),
   },
   {
     id: 31,
@@ -629,7 +1056,15 @@ export const CARD_LIST = [
     damage: 0,
     cost: 0,
     hp: 2,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 0,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -643,7 +1078,15 @@ export const CARD_LIST = [
     damage: 0,
     cost: 2,
     hp: 2,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 1,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -657,7 +1100,15 @@ export const CARD_LIST = [
     damage: 0,
     cost: 5,
     hp: 5,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 2,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -671,7 +1122,15 @@ export const CARD_LIST = [
     damage: 0,
     cost: 8,
     hp: 8,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 3,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -685,7 +1144,15 @@ export const CARD_LIST = [
     damage: 0,
     cost: 8,
     hp: 12,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 2,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -699,7 +1166,15 @@ export const CARD_LIST = [
     damage: 0,
     cost: 13,
     hp: 15,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 4,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -713,7 +1188,15 @@ export const CARD_LIST = [
     damage: 0,
     cost: 13,
     hp: 18,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 3,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -727,7 +1210,15 @@ export const CARD_LIST = [
     damage: 0,
     cost: 21,
     hp: 25,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 5,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -741,8 +1232,16 @@ export const CARD_LIST = [
     damage: 0,
     cost: 21,
     hp: 28,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 2,
-    contextMenu: [...DAMAGE_CONTEXT_MENU],
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
+    contextMenu: [...DAMAGE_CONTEXT_MENU, ...BUILD_FIGHTER_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
   {
@@ -755,7 +1254,15 @@ export const CARD_LIST = [
     damage: 0,
     cost: 4,
     hp: 7,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 1,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -769,7 +1276,15 @@ export const CARD_LIST = [
     damage: 0,
     cost: 6,
     hp: 7,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
+    },
     attack: 0,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
     contextMenu: [...BUILD_FIGHTER_CONTEXT_MENU, ...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -782,8 +1297,15 @@ export const CARD_LIST = [
     count: 2,
     developmentLevel: 0,
     maxDevelopmentLevel: 4,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    onTurnStart() {
+      alert("Draw a card.");
+    },
   },
   {
     id: 43,
@@ -794,8 +1316,51 @@ export const CARD_LIST = [
     count: 2,
     developmentLevel: 0,
     maxDevelopmentLevel: 4,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    performedPerTurnAction: true,
+    onTurnStart({ systems, activePlayer }) {
+      const validTargets = systems.filter((system) => {
+        return (
+          system.card.controlledBy == activePlayer &&
+          system.developmentLevel < system.totalMaxDevelopmentLevel()
+        );
+      });
+
+      if (validTargets > 0) {
+        alert("Gambling World: Choose a system to develop.");
+      }
+    },
+    perTurnAction: ({ card, systems, activePlayer }) => {
+      let menu = [];
+
+      if (card.controlledBy != activePlayer || card.performedPerTurnAction) {
+        return menu;
+      }
+
+      systems
+        .filter((system) => system.card.controlledBy === activePlayer)
+        .forEach((system) => {
+          if (
+            system.card.developmentLevel <
+            system.card.totalMaxDevelopmentLevel()
+          ) {
+            menu.push({
+              label: `Develop ${system.card.img}`,
+              action: `perform:perTurn:${system.card.id}`,
+              performAction: () => {
+                system.card.developmentLevel++;
+              },
+            });
+          }
+        });
+
+      return menu;
+    },
   },
   {
     id: 44,
@@ -806,8 +1371,14 @@ export const CARD_LIST = [
     count: 2,
     developmentLevel: 0,
     maxDevelopmentLevel: 4,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    onTurnStart: ({ card, system, activePlayer, players }) =>
+      (players[activePlayer].credits += 2),
   },
   {
     id: 45,
@@ -818,8 +1389,24 @@ export const CARD_LIST = [
     count: 3,
     developmentLevel: 0,
     maxDevelopmentLevel: 3,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    onDevelop: ({ system, activePlayer, getNextId }) => {
+      if (system.card.developmentLevel === 1) {
+        const card = { ...CARD_LIST.find((c) => c.id == 40) };
+        if (card) {
+          system[activePlayer] = [
+            ...system[activePlayer],
+            { ...card, id: getNextId() },
+            { ...card, id: getNextId() },
+          ];
+        }
+      }
+    },
   },
   {
     id: 46,
@@ -830,8 +1417,17 @@ export const CARD_LIST = [
     count: 3,
     developmentLevel: 0,
     maxDevelopmentLevel: 3,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    onDevelop: () => {
+      if (card.developmentLevel === 1) {
+        alert("Draw two cards from any one deck");
+      }
+    },
   },
   {
     id: 47,
@@ -842,8 +1438,17 @@ export const CARD_LIST = [
     count: 3,
     developmentLevel: 0,
     maxDevelopmentLevel: 3,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    onDevelop: ({ card }) => {
+      if (card.developmentLevel === 1) {
+        card.developmentLevel = 2;
+      }
+    },
   },
   {
     id: 48,
@@ -854,6 +1459,10 @@ export const CARD_LIST = [
     count: 1,
     developmentLevel: 0,
     maxDevelopmentLevel: 2,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
@@ -866,6 +1475,10 @@ export const CARD_LIST = [
     count: 1,
     developmentLevel: 0,
     maxDevelopmentLevel: 2,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
@@ -878,6 +1491,10 @@ export const CARD_LIST = [
     count: 1,
     developmentLevel: 0,
     maxDevelopmentLevel: 2,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
@@ -890,8 +1507,43 @@ export const CARD_LIST = [
     count: 1,
     developmentLevel: 0,
     maxDevelopmentLevel: 5,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    buildShipContextMenu: generateBuildShipContextMenu,
+    abilityMenu: ({ card, systems, activePlayer, players }) => {
+      let menu = [];
+
+      if (
+        card.controlledBy != activePlayer ||
+        players[activePlayer].credits < 4
+      ) {
+        return menu;
+      }
+
+      systems
+        .filter((system) => system.card.controlledBy === activePlayer)
+        .forEach((system) => {
+          if (
+            system.card.developmentLevel <
+            system.card.totalMaxDevelopmentLevel()
+          ) {
+            menu.push({
+              label: `Develop ${system.card.img}`,
+              action: `perform:ability:${system.card.id}`,
+              performAction: () => {
+                system.card.developmentLevel++;
+                players[activePlayer].credits -= 4;
+              },
+            });
+          }
+        });
+
+      return menu;
+    },
   },
   {
     id: 52,
@@ -902,8 +1554,40 @@ export const CARD_LIST = [
     count: 1,
     developmentLevel: 0,
     maxDevelopmentLevel: 5,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    buildShipContextMenu: generateBuildShipContextMenu,
+    abilityMenu: ({ card, systems, activePlayer, players }) => {
+      let menu = [];
+
+      if (
+        card.controlledBy != activePlayer ||
+        players[activePlayer].credits < 4
+      ) {
+        return menu;
+      }
+
+      systems.forEach((system) => {
+        system[activePlayer].forEach((card) => {
+          if (card.damage > 0) {
+            menu.push({
+              label: `Repair ${card.img} in ${system.card.img}`,
+              action: `perform:ability:${system.card.id}`,
+              performAction: () => {
+                card.damage = 0;
+                players[activePlayer].credits -= 4;
+              },
+            });
+          }
+        });
+      });
+
+      return menu;
+    },
   },
   {
     id: 53,
@@ -914,8 +1598,31 @@ export const CARD_LIST = [
     count: 1,
     developmentLevel: 0,
     maxDevelopmentLevel: 5,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    buildShipContextMenu: generateBuildShipContextMenu,
+    abilityMenu: ({ card, systems, activePlayer, players }) => {
+      if (
+        card.controlledBy != activePlayer ||
+        players[activePlayer].credits < 4
+      ) {
+        return [];
+      }
+
+      return [
+        {
+          label: `Activate ability`,
+          action: `perform:ability:0`,
+          performAction: () => {
+            players[activePlayer].credits -= 4;
+          },
+        },
+      ];
+    },
   },
   {
     id: 54,
@@ -926,6 +1633,10 @@ export const CARD_LIST = [
     count: 4,
     developmentLevel: 0,
     maxDevelopmentLevel: 0,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: false,
     contextMenu: [],
   },
@@ -938,6 +1649,10 @@ export const CARD_LIST = [
     // count: 1,
     developmentLevel: 1,
     maxDevelopmentLevel: 6,
+    bonusDevelopmentLevel: 0,
+    totalMaxDevelopmentLevel() {
+      return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
+    },
     explored: true,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
     buildShipContextMenu: generateBuildShipContextMenu,
