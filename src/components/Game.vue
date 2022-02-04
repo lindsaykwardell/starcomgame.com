@@ -62,7 +62,7 @@
         <a
           class="flex-shrink relative"
           :href="`https://starcomgame.com/card-database?selectedCard=${hoveredCard.img}`"
-          target="__blank"
+          target="_blank"
         >
           <Card
             v-if="
