@@ -19,7 +19,7 @@ const SELECTED_CARD = "selectedCard";
 const params = (typeof window !== 'undefined') ? new URLSearchParams(window.location.search) : null;
 
 const searchTerm = params?.get(SEARCH_TERM) || "";
-const selectedCard = params?.get(SELECTED_CARD) || "";
+const selectedCard = params?.get(SELECTED_CARD);
 
 // Setters
 function setSearchTerm(term: string) {

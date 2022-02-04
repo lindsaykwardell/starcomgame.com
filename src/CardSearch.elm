@@ -12,7 +12,7 @@ import List.Extra as List
 type alias Model =
     { cardList : List Card
     , searchTerm : String
-    , selectedCard : Maybe Int
+    , selectedCard : Maybe String
     }
 
 
@@ -117,7 +117,7 @@ type alias Stats =
 
 type alias Flags =
     { searchTerm : String
-    , selectedCard : String
+    , selectedCard : Maybe String
     }
 
 
@@ -125,7 +125,7 @@ init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( { cardList = []
       , searchTerm = flags.searchTerm
-      , selectedCard = flags.selectedCard |> String.toInt
+      , selectedCard = flags.selectedCard
       }
     , Cmd.batch [ fetchMainCsv, fetchPlanetCsv ]
     )
@@ -304,7 +304,7 @@ type Msg
     | ParseMainCsv (Result Http.Error String)
     | ParsePlanetCsv (Result Http.Error String)
     | UpdateSearchTerm String
-    | SelectCard Int
+    | SelectCard Card
     | ReturnToCardList
 
 
@@ -339,8 +339,8 @@ update msg model =
         UpdateSearchTerm searchTerm ->
             ( { model | searchTerm = searchTerm }, setSearchTerm searchTerm )
 
-        SelectCard cardId ->
-            ( { model | selectedCard = Just cardId }, setSelectedCard <| Just cardId )
+        SelectCard card ->
+            ( { model | selectedCard = Just <| String.replace " " "_" card.name }, setSelectedCard <| Just (String.replace " " "_" card.name) )
 
         ReturnToCardList ->
             ( { model | selectedCard = Nothing }, setSelectedCard <| Nothing )
@@ -354,8 +354,8 @@ view model =
             [ label [] [ text "Filter cards by name and rules text", input [ class "w-full bg-gray-700 text-white p-1 shadow", value model.searchTerm, onInput UpdateSearchTerm ] [] ]
             ]
         , case model.selectedCard of
-            Just cardId ->
-                case List.find (\card -> card.id == cardId) model.cardList of
+            Just cardName ->
+                case List.find (\card -> String.replace " " "_" card.name == cardName) model.cardList of
                     Just card ->
                         div [ class "w-11/12 md:w-5/6 lg:w-4/5 xl:w-2/3 flex flex-col m-auto shadow" ]
                             [ h2 [ class "text-4xl font-megrim text-center py-6" ] [ text "Card Details" ]
@@ -366,7 +366,10 @@ view model =
 
                     Nothing ->
                         div [ class "w-full md:w-[500px] m-auto" ]
-                            [ div [ class "w-full bg-gray-600 text-white p-1" ] [ text "Card not found" ]
+                            [ div [ class "w-full bg-gray-600 text-white p-4 text-center" ]
+                                [ div [] [ text "Card not found" ]
+                                , returnToAllCardsButton
+                                ]
                             ]
 
             Nothing ->
@@ -408,7 +411,7 @@ displayCard searchTerm card =
              else
                 " hidden"
             )
-        , onClick <| SelectCard card.id
+        , onClick <| SelectCard card
         ]
         [ img
             [ class <|
@@ -500,10 +503,15 @@ displaySelectedCard card =
                     div [ class "italic text-center text-sm text-gray-300" ] [ text "No rules text" ]
                 ]
             , div [ class "text-center" ]
-                [ button [ class "rounded-lg bg-gradient-to-b from-blue-900 hover:from-blue-800 via-gray-900 hover:via-gray-800 to-black hover:to-gray-900 px-6 py-3 shadow hover:shadow-md", onClick ReturnToCardList ] [ text "Return to All Cards" ]
+                [ returnToAllCardsButton
                 ]
             ]
         ]
+
+
+returnToAllCardsButton : Html Msg
+returnToAllCardsButton =
+    button [ class "rounded-lg bg-gradient-to-b from-blue-900 hover:from-blue-800 via-gray-900 hover:via-gray-800 to-black hover:to-gray-900 px-6 py-3 shadow hover:shadow-md", onClick ReturnToCardList ] [ text "Return to All Cards" ]
 
 
 main : Program Flags Model Msg
@@ -519,4 +527,4 @@ main =
 port setSearchTerm : String -> Cmd msg
 
 
-port setSelectedCard : Maybe Int -> Cmd msg
+port setSelectedCard : Maybe String -> Cmd msg

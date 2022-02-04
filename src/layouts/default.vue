@@ -21,11 +21,11 @@ import "../assets/index.css";
       class="flex flex-col md:flex-row justify-around gap-12 mt-12 text-center"
     >
       <a
-        href="https://drive.google.com/file/d/1KLPobTj1qqrxwzRxa_q0H43E_LpUAs0w/view?usp=sharing"
+        href="https://play.starcomgame.com/"
         target="__blank"
         class="block rounded-lg bg-gradient-to-b from-blue-900 hover:from-blue-800 via-gray-900 hover:via-gray-800 to-black hover:to-gray-900 px-6 py-3 shadow hover:shadow-md"
       >
-        Download the Game
+        Play the Game
       </a>
 
       <a
