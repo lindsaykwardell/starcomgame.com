@@ -10,7 +10,8 @@
     "typecheck": "vue-tsc --noEmit",
     "rules:dev": "vuepress dev rules",
     "rules:build": "vuepress build rules",
-    "game:dev": "vite --config game.config.js"
+    "game:dev": "vite --config game.config.js",
+    "game:build": "cp play.html index.html && vite build --config game.config.js && rm index.html"
   },
   "engines": {
     "node": "^14.18 || >= 16.0.0"
