@@ -59,7 +59,11 @@
           </Dialog> -->
           <Card :card="stack[0]" class="md m-auto" loc="stack" />
         </div>
-        <div class="flex-shrink relative">
+        <a
+          class="flex-shrink relative"
+          :href="`https://starcomgame.com/card-database?selectedCard=${hoveredCard.img}`"
+          target="__blank"
+        >
           <Card
             v-if="
               hoveredCard &&
@@ -75,7 +79,7 @@
             :damage="hoveredCard.damage"
             size="3x"
           />
-        </div>
+        </a>
       </div>
     </div>
     <div class="flex-grow bg-black h-screen">
