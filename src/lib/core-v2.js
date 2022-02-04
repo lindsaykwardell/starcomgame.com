@@ -121,6 +121,12 @@ export const DAMAGE_CONTEXT_MENU = [
 ];
 
 const SHIP_ID_LIST = [33, 34, 35, 36, 37, 38, 39];
+export const CAPITAL_PLANET_NAME_LIST = [
+  "Homeworld",
+  "Drummond",
+  "Silis_Major",
+  "Forsei",
+];
 
 const generateBuildShipContextMenu = ({
   card,

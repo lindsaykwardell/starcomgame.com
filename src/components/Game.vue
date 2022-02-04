@@ -323,8 +323,10 @@ import {
   TECHNOLOGY,
   DAMAGEABLE,
   SYSTEM,
+  SHIP,
   generateResolveContextMenu,
   generateCombatContextMenu,
+  CAPITAL_PLANET_NAME_LIST,
 } from "@/lib/core-v2";
 import Deck from "@/models/Deck";
 
@@ -940,13 +942,24 @@ export default {
 
       // Conquest
       this.systems.forEach((system) => {
+        const invadingShips = system[this.activePlayer].filter(
+          (ship) => ship.type === SHIP && ship.totalAttack() > 0
+        );
+        const defendingShips = system[this.nonActivePlayer].filter(
+          (ship) => ship.totalAttack() > 0
+        );
+
         if (
           system.card.controlledBy === this.nonActivePlayer &&
-          system[this.activePlayer].length > 0 &&
-          system[this.nonActivePlayer].length === 0
+          invadingShips.length > 0 &&
+          defendingShips.length === 0
         ) {
-          system.card.controlledBy = this.activePlayer;
-          system.card.developmentLevel = 1;
+          system.card.developmentLevel -= invadingShips.length;
+
+          if (system.card.developmentLevel <= 0) {
+            system.card.controlledBy = this.activePlayer;
+            system.card.developmentLevel = 1;
+          }
         }
       });
 
@@ -985,6 +998,19 @@ export default {
       // Next player
       this.activePlayer = this.nextPlayer;
       this.nextPlayer = this.nextPlayer === "player1" ? "player2" : "player1";
+
+      // Validate the now-active player didn't lose last turn.
+      const systemCount = this.systems.filter(
+        (system) =>
+          system.card.controlledBy === this.activePlayer &&
+          CAPITAL_PLANET_NAME_LIST.includes(system.card.img)
+      ).length;
+
+      if (systemCount <= 0) {
+        alert("Game over!");
+
+        return;
+      }
 
       // Gain credits
       this.players[this.activePlayer].credits +=
