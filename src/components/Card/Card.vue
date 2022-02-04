@@ -76,7 +76,7 @@ export default {
 }
 
 .card {
-  @apply rounded-[18px];
+  @apply rounded-[7px];
   width: 125px;
   height: 175px;
 
@@ -91,21 +91,25 @@ export default {
   }
 
   &.sm {
+    @apply rounded-[5px];
     width: 75px;
     height: 105px;
   }
 
   &.xs {
+    @apply rounded-[2px];
     width: 30px;
     height: 45px;
   }
 
   &.md {
+    @apply rounded-[11px];
     width: 200px;
     height: 275px;
   }
 
   &.lg {
+    @apply rounded-[18px];
     width: 300px;
     height: 425px;
   }

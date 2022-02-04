@@ -69,7 +69,7 @@ const SYSTEM_CONTEXT_MENU = [
     condition: ({ card, system, activePlayer, players }) =>
       (card.controlledBy === activePlayer ||
         (!card.controlledBy && system[activePlayer].length > 0)) &&
-      players[activePlayer].credits >= (card.developmentLevel * 2 || 1),
+      players[activePlayer].credits >= (card.developmentLevel + 1 || 1),
   },
   {
     action: "combat",

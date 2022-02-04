@@ -575,7 +575,7 @@ export default {
             this.contextCard.developmentLevel <
             this.contextCard.maxDevelopmentLevel
           ) {
-            let cost = this.systems[this.contextLoc].card.developmentLevel * 2;
+            let cost = this.systems[this.contextLoc].card.developmentLevel + 1;
             if (cost === 0) cost = 1;
             this.players[this.activePlayer].credits -= cost;
             this.systems[this.contextLoc].card.developmentLevel++;
