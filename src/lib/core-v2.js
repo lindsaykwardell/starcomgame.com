@@ -1423,7 +1423,7 @@ export const CARD_LIST = [
     },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
-    onDevelop: () => {
+    onDevelop: ({ card }) => {
       if (card.developmentLevel === 1) {
         alert("Draw two cards from any one deck");
       }

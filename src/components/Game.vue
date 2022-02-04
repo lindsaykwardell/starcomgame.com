@@ -270,6 +270,10 @@ import DamageDice from "@/components/Dice/DamageDice.vue";
 // import Dialog from "@/components/Dialog/Dialog";
 // import { clickout } from "vuetensils/src/directives";
 
+import dieRollMp3 from "@/assets/audio/dieroll.mp3";
+import drawCardMp3 from "@/assets/audio/draw-card.mp3";
+import itemMp3 from "@/assets/audio/item.mp3";
+
 import {
   DECK_POLITICS,
   DECK_INDUSTRY,
@@ -293,6 +297,29 @@ import {
 import Deck from "@/models/Deck";
 
 import EventBus from "@/util/EventBus";
+
+const audio = new Audio();
+audio.volume = 1;
+
+function playItem() {
+  if (audio.paused) {
+    audio.src = itemMp3;
+    audio.volume = 0.1;
+    audio.play();
+
+    const restoreVolume = setInterval(() => {
+      if (audio.paused) {
+        audio.volume = 1;
+        clearInterval(restoreVolume);
+      }
+    }, 100);
+  }
+}
+
+function playCard() {
+  audio.src = drawCardMp3;
+  audio.play();
+}
 
 export default {
   name: "Game",
@@ -373,6 +400,8 @@ export default {
     },
     dieRoll() {
       switch (this.dieValue) {
+        case null:
+          return "animate-spin";
         case 1:
         case 2:
           return "industry";
@@ -401,24 +430,7 @@ export default {
         });
       }
 
-      if (
-        this.contextCard.type === SYSTEM &&
-        this.contextCard.perTurnAction &&
-        !this.contextCard.performedPerTurnAction
-      ) {
-        return [
-          ...this.contextCard.contextMenu,
-          ...this.contextCard.perTurnAction(this.fnContext),
-        ];
-      }
-
-      if (this.contextCard.type === SYSTEM && this.contextCard.abilityMenu) {
-        return [
-          ...this.contextCard.contextMenu,
-          ...this.contextCard.abilityMenu(this.fnContext),
-        ];
-      }
-
+      // Combat menus
       if (!this.showCombat || !this.contextCard.combatContextMenu) {
         // return this.contextCard.contextMenu;
       } else {
@@ -426,6 +438,33 @@ export default {
           ...this.fnContext,
           system: this.systems[this.combatSystemLoc],
         });
+      }
+
+      if (this.contextCard.type === SYSTEM) {
+        let menu = [...this.contextCard.contextMenu];
+
+        // Per turn actions
+        if (
+          this.contextCard.perTurnAction &&
+          !this.contextCard.performedPerTurnAction
+        ) {
+          menu = [...menu, ...this.contextCard.perTurnAction(this.fnContext)];
+        }
+
+        // Repeatable actions
+        if (this.contextCard.abilityMenu) {
+          menu = [...menu, ...this.contextCard.abilityMenu(this.fnContext)];
+        }
+
+        // Build ships
+        if (this.contextCard.buildShipContextMenu) {
+          menu = [
+            ...menu,
+            ...this.contextCard.buildShipContextMenu(this.fnContext),
+          ];
+        }
+
+        return menu;
       }
 
       if (this.contextCard.buildShipContextMenu) {
@@ -453,7 +492,20 @@ export default {
   },
   methods: {
     rollDie() {
-      this.dieValue = Math.floor(Math.random() * 6) + 1;
+      return new Promise((resolve) => {
+        const onPlayDone = () => {
+          audio.removeEventListener("ended", onPlayDone);
+          this.dieValue = Math.floor(Math.random() * 6) + 1;
+          resolve();
+        };
+
+        this.dieValue = null;
+
+        audio.addEventListener("ended", onPlayDone);
+
+        audio.src = dieRollMp3;
+        audio.play();
+      });
     },
     playerControlsDomain(player, domain) {
       for (const system of this.systems) {
@@ -492,6 +544,8 @@ export default {
       }
 
       if (this.players[player].hand.length < 8) {
+        playCard();
+
         const nextCard = deck.draw();
         this.players[player].hand = [
           ...this.players[player].hand,
@@ -575,6 +629,8 @@ export default {
             } else {
               this.players[this.activePlayer].credits -= card.cost;
             }
+
+            playItem();
           }
           break;
         case "build-in":
@@ -594,6 +650,8 @@ export default {
           this.stack = this.stack.filter(
             (card) => card.id !== this.contextCard.id
           );
+
+          playItem();
           break;
         case "develop":
           this.contextCard.controlledBy = this.activePlayer;
@@ -615,18 +673,26 @@ export default {
                 system: this.systems[this.contextLoc],
               });
             }
+
+            playItem();
           }
 
           break;
         case "damage":
           this.contextCard.damage =
             this.contextCard.damage + parseInt(keys[1], 10);
+
+          playItem();
           break;
         case "repair":
           option.repairAction(this.fnContext);
+
+          playItem();
           break;
         case "destroy":
           this.destroy(this.contextCard);
+
+          playItem();
           break;
         case "hand":
           switch (keys[1]) {
@@ -648,6 +714,8 @@ export default {
                 this.players[this.activePlayer].hand = this.players[
                   this.activePlayer
                 ].hand.filter((card) => card.id !== this.contextCard.id);
+
+                playItem();
               } else {
                 alert("You don't have enough credits!");
               }
@@ -662,6 +730,8 @@ export default {
               this.players[this.activePlayer].hand = this.players[
                 this.activePlayer
               ].hand.filter((card) => card.id !== this.contextCard.id);
+
+              playItem();
               break;
             case "return":
               this.players[this.activePlayer].hand = [
@@ -677,9 +747,13 @@ export default {
               this.stack = this.stack.filter(
                 (card) => card.id !== this.contextCard.id
               );
+
+              playItem();
               break;
             case "resolve":
               this.resolveCardOnStack();
+
+              playItem();
               break;
           }
           break;
@@ -693,6 +767,8 @@ export default {
           } else {
             this.assignCombatDamage(this.contextCard, parseInt(keys[1], 10));
           }
+
+          playItem();
           break;
         case "unassign-damage":
           if (this.contextCard.damageAssignedTo === true) {
@@ -700,6 +776,8 @@ export default {
           } else {
             this.unassignCombatDamage(this.contextCard);
           }
+
+          playItem();
           break;
         case "step":
           // Perform the custom function in the step.
@@ -730,6 +808,8 @@ export default {
           if (keys[1] === "perTurn") {
             this.contextCard.performedPerTurnAction = true;
           }
+
+          playItem();
           break;
         default:
         // Do nothing
@@ -929,8 +1009,8 @@ export default {
       // Roll the new turn die
       this.drawCardFromDie();
     },
-    drawCardFromDie() {
-      this.rollDie();
+    async drawCardFromDie() {
+      await this.rollDie();
 
       let domain;
 
@@ -960,6 +1040,8 @@ export default {
     },
   },
   mounted() {
+    // document.addEventListener("click", playItem);
+
     const systems = [];
     for (let i = 0; i < 16; i++) {
       systems.push({
@@ -994,6 +1076,9 @@ export default {
     EventBus.$on("card:context", ({ card, loc, event }) => {
       if (loc !== "hover") this.toggleContextMenu(card, loc, event);
     });
+  },
+  beforeUnmount() {
+    // document.removeEventListener("click", playItem);
   },
   components: {
     DropZone,
