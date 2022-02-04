@@ -35,9 +35,9 @@ export default {
   methods: {
     getImgUrl(cardName) {
       if (cardName) {
-        return "@/assets/cards/" + cardName + ".png"
+        return "/cards/" + cardName + ".webp"
       } else {
-        return "@/assets/back.jpg"
+        return "/back.jpg"
       }
     },
     hoverCard() {
@@ -76,6 +76,7 @@ export default {
 }
 
 .card {
+  @apply rounded-[18px];
   width: 125px;
   height: 175px;
 

@@ -25,6 +25,19 @@ type alias Card =
     }
 
 
+cardImg : Card -> Bool -> String
+cardImg card isThumb =
+    "/cards/"
+        ++ String.replace " " "_" card.name
+        ++ (if isThumb then
+                "-thumb"
+
+            else
+                ""
+           )
+        ++ ".webp"
+
+
 type Domain
     = Industry
     | Politics
@@ -405,7 +418,7 @@ displayCard searchTerm card =
 
                     _ ->
                         "hover:border hover:border-white rounded-lg h-60"
-            , src <| "/cards/" ++ String.fromInt card.id ++ "-thumb.webp"
+            , src <| cardImg card True
             , attribute "loading" "lazy"
             , alt card.name
             , title card.name
@@ -427,7 +440,7 @@ displaySelectedCard card =
                         _ ->
                             "rounded-lg m-auto h-96"
                     )
-                , src <| "/cards/" ++ String.fromInt card.id ++ ".webp"
+                , src <| cardImg card False
                 , alt ""
                 ]
                 []
