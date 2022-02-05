@@ -92,8 +92,9 @@
             "
             class="horizontal-lg"
             :card="hoveredCard"
+            showEffects
           />
-          <Card v-else class="lg" :card="hoveredCard" loc="hover" />
+          <Card v-else class="lg" :card="hoveredCard" loc="hover" showEffects />
           <DamageDice
             v-if="hoveredCard.damage"
             :damage="hoveredCard.damage"
@@ -110,6 +111,7 @@
             :key="card.id"
             :card="card"
             class="xs"
+            loc="tech"
           />
         </div>
         <div
@@ -120,6 +122,7 @@
             :key="card.id"
             :card="card"
             class="xs"
+            loc="tech"
           />
         </div>
         <template v-if="!showCombat">
@@ -224,6 +227,7 @@
               group="combat"
               :system.sync="systems[combatSystemLoc]"
               combat
+              showEffects
             />
           </div>
         </template>
@@ -676,6 +680,8 @@ export default {
       }
     },
     performAction(option) {
+      this.showContextMenu = false;
+
       const keys = option.action.split(":");
       switch (keys[0]) {
         case "build":
@@ -683,7 +689,7 @@ export default {
           if (card) {
             this.systems[this.contextLoc][this.activePlayer] = [
               ...this.systems[this.contextLoc][this.activePlayer],
-              { ...card, id: this.getNextId() },
+              { ...card, id: this.getNextId(), effects: [] },
             ];
             if (option.cost) {
               this.players[this.activePlayer].credits -= option.cost;
@@ -705,7 +711,11 @@ export default {
 
           this.systems[keys[1]][this.activePlayer] = [
             ...this.systems[keys[1]][this.activePlayer],
-            { ...this.contextCard, contextMenu: [...DAMAGE_CONTEXT_MENU] },
+            {
+              ...this.contextCard,
+              contextMenu: [...DAMAGE_CONTEXT_MENU],
+              effects: [],
+            },
           ];
 
           this.stack = this.stack.filter(
@@ -862,6 +872,8 @@ export default {
             if (this.contextLoc === "stack") {
               this.resolveCardOnStack();
             }
+          } else {
+            this.showContextMenu = true;
           }
           break;
         case "perform":
@@ -876,7 +888,6 @@ export default {
         // Do nothing
       }
 
-      this.showContextMenu = false;
       this.socket?.emit("state", JSON.stringify(this.fnContext));
     },
     resolveCardOnStack() {
@@ -1008,6 +1019,7 @@ export default {
           }
           card.bonusAttack = 0;
           card.bonusHp = 0;
+          card.effects = [];
         });
         system.player2.forEach((card) => {
           if (card.onTurnEnd) {
@@ -1019,6 +1031,7 @@ export default {
           }
           card.bonusAttack = 0;
           card.bonusHp = 0;
+          card.effects = [];
         });
       });
 
@@ -1259,9 +1272,9 @@ export default {
       });
     }
 
-    systems[0].player2.push({ ...SCOUT, id: this.getNextId() });
+    systems[0].player2.push({ ...SCOUT, id: this.getNextId(), effects: [] });
     systems[0].card.explored = true;
-    systems[15].player1.push({ ...SCOUT, id: this.getNextId() });
+    systems[15].player1.push({ ...SCOUT, id: this.getNextId(), effects: [] });
     systems[15].card.explored = true;
 
     this.systems = systems;

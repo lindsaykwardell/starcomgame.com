@@ -303,7 +303,8 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
-    contextMenu: [],
+    effects: [],
+    contextMenu: [...DAMAGE_CONTEXT_MENU],
     onTurnStart: ({ card, system, activePlayer, players }) =>
       (players[activePlayer].credits += 2),
   },
@@ -510,9 +511,9 @@ export const CARD_LIST = [
                 if (card) {
                   system[activePlayer] = [
                     ...system[activePlayer],
-                    { ...card, id: getNextId() },
-                    { ...card, id: getNextId() },
-                    { ...card, id: getNextId() },
+                    { ...card, id: getNextId(), effects: [] },
+                    { ...card, id: getNextId(), effects: [] },
+                    { ...card, id: getNextId(), effects: [] },
                   ];
                 }
               },
@@ -548,6 +549,7 @@ export const CARD_LIST = [
               action: `step:${index}`,
               stepAction: () => {
                 card.bonusAttack += 2;
+                card.effects.push("Maximum_Firepower");
               },
             });
           });
@@ -638,6 +640,7 @@ export const CARD_LIST = [
             stepAction: () => {
               chosenCard.bonusAttack += cost;
               players[activePlayer].credits -= cost;
+              chosenCard.effects.push("Railgun_Turrets");
             },
           },
         ];
@@ -655,6 +658,11 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onEachTurnStart: ({ card, system, player }) => {
+      system[player].forEach((c) => {
+        c.effects.push("Targeting_Systems");
+      });
+    },
   },
   {
     id: 11,
@@ -675,11 +683,13 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
-    contextMenu: [],
-    onTurnStart: ({ card, system, activePlayer }) => {
-      system[activePlayer].forEach((c) => {
-        if (c.id !== card.id) {
+    effects: [],
+    contextMenu: [...DAMAGE_CONTEXT_MENU],
+    onEachTurnStart: ({ card, system, player }) => {
+      system[player].forEach((c) => {
+        if (c.id !== card.id && c.type === STATION) {
           c.bonusAttack += 1;
+          c.effects.push("Missile_Platform");
         }
       });
     },
@@ -703,7 +713,8 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
-    contextMenu: [],
+    effects: [],
+    contextMenu: [...DAMAGE_CONTEXT_MENU],
     onBuild: ({ system }) => {
       system.card.bonusDevelopmentLevel += 2;
     },
@@ -730,7 +741,12 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
-    contextMenu: [...SMALL_SHIP_CONTEXT_MENU],
+    effects: [],
+    contextMenu: [
+      ...BUILD_FIGHTER_CONTEXT_MENU,
+      ...SMALL_SHIP_CONTEXT_MENU,
+      ...DAMAGE_CONTEXT_MENU,
+    ],
   },
   {
     id: 14,
@@ -880,6 +896,7 @@ export const CARD_LIST = [
       systems.forEach((system) => {
         system[player].forEach((card) => {
           card.bonusAttack += 2;
+          card.effects.push("Advanced_Weapons");
         });
       });
     },
@@ -900,6 +917,7 @@ export const CARD_LIST = [
         system[player].forEach((card) => {
           if (card.type === STATION || card.type === FIGHTER) {
             card.bonusHp += 2;
+            card.effects.push("Fighter_Bays");
           }
         });
       });
@@ -924,7 +942,8 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
-    contextMenu: [],
+    effects: [],
+    contextMenu: [...DAMAGE_CONTEXT_MENU],
   },
   {
     id: 22,
@@ -952,6 +971,33 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, activePlayer }) => {
+        let menu = [];
+
+        systems.forEach((system, index) => {
+          const ships = system[activePlayer].filter(
+            (card) => card.type !== STATION
+          );
+          const shipCount = ships.length;
+          if (shipCount > 0) {
+            menu.push({
+              label: `Target ${system.card.img} (${shipCount} ships)`,
+              action: `step:${index}`,
+              stepAction: () => {
+                ships.forEach((ship) => {
+                  ship.effects.push("Jump_Stabilization");
+                });
+              },
+            });
+          }
+        });
+
+        return menu;
+      },
+    ],
   },
   {
     id: 24,
@@ -964,6 +1010,34 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems }) => {
+        let menu = [];
+
+        systems.forEach((system, index) => {
+          const ships = [
+            ...system.player1.filter((card) => card.type !== STATION),
+            ...system.player2.filter((card) => card.type !== STATION),
+          ];
+          const shipCount = ships.length;
+          if (shipCount > 0) {
+            menu.push({
+              label: `Target ${system.card.img} (${shipCount} ships)`,
+              action: `step:${index}`,
+              stepAction: () => {
+                ships.forEach((ship) => {
+                  ship.effects.push("Interdiction");
+                });
+              },
+            });
+          }
+        });
+
+        return menu;
+      },
+    ],
   },
   {
     id: 25,
@@ -980,6 +1054,7 @@ export const CARD_LIST = [
       systems.forEach((system) => {
         system[activePlayer].forEach((card) => {
           card.bonusHp += 2;
+          card.effects.push("Raise_Shields");
         });
       });
     },
@@ -995,6 +1070,30 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, activePlayer }) => {
+        let menu = [];
+
+        systems.forEach((system, index) => {
+          const ships = system[activePlayer].filter(
+            (card) => card.type !== STATION
+          );
+          ships.forEach((ship) => {
+            menu.push({
+              label: `Target ${ship.img} (in ${system.card.img})`,
+              action: `step:${ship.id}`,
+              stepAction: () => {
+                ship.effects.push("Evasion");
+              },
+            });
+          });
+        });
+
+        return menu;
+      },
+    ],
   },
   {
     id: 27,
@@ -1007,6 +1106,26 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, activePlayer }) => {
+        let menu = [];
+
+        systems.forEach((system) => {
+          system[activePlayer].forEach((card) => {
+            menu.push({
+              label: `Target ${card.img} (in ${system.card.img})`,
+              action: `step:${card.id}`,
+              stepAction: () => {
+                card.effects.push("Experimental_Shields");
+                alert("Discard a card!");
+              },
+            });
+          });
+        });
+      },
+    ],
   },
   {
     id: 28,
@@ -1019,6 +1138,13 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onEachTurnStart: ({ systems, player }) => {
+      systems.forEach((system) => {
+        system[player].forEach((card) => {
+          card.effects.push("Enhanced_Jump_Drive");
+        });
+      });
+    },
   },
   {
     id: 29,
@@ -1035,6 +1161,7 @@ export const CARD_LIST = [
       systems.forEach((system) => {
         system[player].forEach((card) => {
           card.bonusHp += 1;
+          card.effects.push("Advanced_Shields");
         });
       });
     },
@@ -1071,6 +1198,7 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
+    effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -1093,6 +1221,7 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
+    effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -1115,6 +1244,7 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
+    effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -1137,6 +1267,7 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
+    effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -1159,6 +1290,7 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
+    effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -1181,6 +1313,7 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
+    effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -1203,6 +1336,7 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
+    effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -1225,6 +1359,7 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
+    effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -1247,6 +1382,7 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
+    effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU, ...BUILD_FIGHTER_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -1269,6 +1405,7 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
+    effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
@@ -1291,6 +1428,7 @@ export const CARD_LIST = [
     totalAttack() {
       return this.attack + this.bonusAttack;
     },
+    effects: [],
     contextMenu: [...BUILD_FIGHTER_CONTEXT_MENU, ...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },

@@ -9,12 +9,14 @@
       :group="`player2-${group}`"
       :loc="system.card.loc"
       :combat="combat"
+      :showEffects="showEffects"
     />
     <div class="relative">
       <Card
         :class="combat ? 'horizontal-lg' : 'horizontal'"
         :card="system.card.explored ? system.card : undefined"
         x:card="system.card"
+        :showEffects="showEffects"
       />
       <div v-if="system.card.developmentLevel > 0" class="development-die">
         <font-awesome size="2x" :icon="['fa', firstDie]" :class="dieColor" />
@@ -34,6 +36,7 @@
       :group="`player1-${group}`"
       :loc="system.card.loc"
       :combat="combat"
+      :showEffects="showEffects"
     />
   </div>
 </template>
@@ -53,6 +56,10 @@ export default {
       default: "default",
     },
     combat: {
+      type: Boolean,
+      default: false,
+    },
+    showEffects: {
       type: Boolean,
       default: false,
     },

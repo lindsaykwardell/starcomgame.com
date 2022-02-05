@@ -17,6 +17,7 @@
             :card="item?.element"
             :loc="loc"
             :combat="combat"
+            :showEffects="showEffects"
           />
           <DamageDice
             v-if="item?.element.damage"
@@ -57,6 +58,10 @@ export default {
       default: 0,
     },
     combat: {
+      type: Boolean,
+      default: false,
+    },
+    showEffects: {
       type: Boolean,
       default: false,
     },

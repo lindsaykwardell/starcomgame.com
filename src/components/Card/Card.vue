@@ -1,14 +1,25 @@
 <template>
-  <img
-    class="card"
-    :class="hasAssignedDamage"
-    :src="getImgUrl(card.img)"
-    :alt="card.img"
-    @mouseover="hoverCard"
-    @contextmenu.prevent="openContextMenu($event)"
-    :data-damage="card.damage"
-    :title="title"
-  />
+  <div class="card">
+    <img
+      :class="hasAssignedDamage"
+      :src="getImgUrl(card.img)"
+      :alt="card.img"
+      @mouseover="hoverCard"
+      @contextmenu.prevent="openContextMenu($event)"
+      :data-damage="card.damage"
+      :title="title"
+    />
+    <div v-if="showEffects" class="absolute bottom-1 left-1">
+      <img
+        v-for="(effect, index) in card.effects"
+        :key="index"
+        :src="getImgUrl(effect)"
+        class="card xs"
+        :title="effect"
+        :alt="effect"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -31,13 +42,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    showEffects: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     getImgUrl(cardName) {
       if (cardName) {
-        return "/cards/" + cardName + ".webp"
+        return "/cards/" + cardName + ".webp";
       } else {
-        return "/back.jpg"
+        return "/back.jpg";
       }
     },
     hoverCard() {
@@ -76,9 +91,16 @@ export default {
 }
 
 .card {
-  @apply rounded-[7px] hover:border;
+  @apply rounded-[7px] hover:border relative;
   width: 125px;
   height: 175px;
+  overflow: hidden;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+  }
 
   &.horizontal {
     width: 140px;
