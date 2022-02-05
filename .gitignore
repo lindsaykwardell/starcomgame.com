@@ -32,3 +32,5 @@ rules/.vuepress/.cache
 rules/.vuepress/.temp
 
 elm-stuff
+
+.env

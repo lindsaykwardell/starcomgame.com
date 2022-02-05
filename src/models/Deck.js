@@ -1,13 +1,15 @@
 export default class Deck {
   deck = [];
 
-  constructor(deck) {
+  constructor(deck, shuffled = false) {
     this.deck = deck;
-    this.shuffle();
+    if (!shuffled) {
+      this.shuffle();
+    }
   }
 
   get remaining() {
-    return this.deck.length
+    return this.deck.length;
   }
 
   shuffle() {
@@ -26,6 +28,6 @@ export default class Deck {
   }
 
   draw() {
-    return this.deck.pop()
+    return this.deck.pop();
   }
 }

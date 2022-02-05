@@ -233,9 +233,9 @@
         >
           {{ showCombat ? "End Combat" : "Pass Turn" }}
         </button>
-        <div class="active-player-stats flex">
+        <div class="active-player-stats flex items-center gap-4">
           <div
-            class="flex-1 mr-3 bg-red-400 p-1 rounded-lg duration-200 whitespace-nowrap"
+            class="flex-1 bg-red-400 p-1 rounded-lg duration-200 whitespace-nowrap"
             :class="
               activePlayer === 'player1' ? 'bg-red-400 shadow-lg' : 'bg-red-900'
             "
@@ -253,6 +253,15 @@
           >
             Credits: {{ players.player2.credits }}<br />
             Developments: {{ getPlayerDevelopmentCount("player2") }}
+          </div>
+          <div
+            v-if="multiplayerSeat"
+            class="font-megrim text-2xl bold"
+            :class="
+              multiplayerSeat === 'player1' ? 'text-red-600' : 'text-blue-600'
+            "
+          >
+            {{ multiplayerSeat === "player1" ? "Player 1" : "Player 2" }}
           </div>
         </div>
         <button class="d20 text-black" @click="drawCardFromDie">
@@ -305,6 +314,7 @@ import DamageDice from "@/components/Dice/DamageDice.vue";
 import dieRollMp3 from "@/assets/audio/dieroll.mp3";
 import drawCardMp3 from "@/assets/audio/draw-card.mp3";
 import itemMp3 from "@/assets/audio/item.mp3";
+import useSocket from "@/lib/useSocket";
 
 import {
   DECK_POLITICS,
@@ -386,6 +396,7 @@ export default {
       },
       activePlayer: "player1",
       nextPlayer: "player2",
+      multiplayerSeat: null,
       contextCard: null,
       contextLoc: 0,
       contextCoordinates: {
@@ -417,7 +428,11 @@ export default {
     },
     hand: {
       get() {
-        return this.players[this.activePlayer].hand;
+        if (this.multiplayerSeat) {
+          return this.players[this.multiplayerSeat].hand;
+        } else {
+          return this.players[this.activePlayer].hand;
+        }
       },
       set(val) {
         this.players[this.activePlayer].hand = val;
@@ -524,6 +539,12 @@ export default {
         discard: this.discard,
         stack: this.stack,
         getNextId: this.getNextId,
+        nextId: this.nextId,
+        showCombat: this.showCombat,
+        combatSystemLoc: this.combatSystemLoc,
+        dieValue: this.dieValue,
+        contextLoc: this.contextLoc,
+        decks: this.decks,
       };
     },
   },
@@ -595,6 +616,8 @@ export default {
             ],
           },
         ];
+
+        this.socket?.emit("state", JSON.stringify(this.fnContext));
       } else {
         alert("Too many cards in hand!");
       }
@@ -853,6 +876,7 @@ export default {
       }
 
       this.showContextMenu = false;
+      this.socket?.emit("state", JSON.stringify(this.fnContext));
     },
     resolveCardOnStack() {
       // Perform the action on the card
@@ -1068,7 +1092,9 @@ export default {
       });
 
       // Roll the new turn die
-      this.drawCardFromDie();
+      this.drawCardFromDie().then(() => {
+        this.socket?.emit("state", JSON.stringify(this.fnContext));
+      });
     },
     async drawCardFromDie() {
       await this.rollDie();
@@ -1098,6 +1124,109 @@ export default {
       } else {
         console.log("No matching domain");
       }
+    },
+    parseAndUpdateState(payload) {
+      const {
+        card,
+        systems,
+        activePlayer,
+        nextPlayer,
+        players,
+        discard,
+        stack,
+        nextId,
+        showCombat,
+        combatSystemLoc,
+        dieValue,
+        contextLoc,
+        decks,
+      } = JSON.parse(payload);
+
+      const performUpdate = () => {
+        this.contextCard = this.hydrateCard(card);
+        this.systems = systems.map((system) => {
+          return {
+            card: this.hydrateCard(system.card),
+            player1: system.player1.map((card) => this.hydrateCard(card)),
+            player2: system.player2.map((card) => this.hydrateCard(card)),
+          };
+        });
+        this.activePlayer = activePlayer;
+        this.nextPlayer = nextPlayer;
+        if (
+          this.players.player1.hand.length > players.player1.hand.length ||
+          this.players.player2.hand.length > players.player2.hand.length
+        ) {
+          audio.src = drawCardMp3;
+          audio.play();
+        }
+        this.players.player1 = {
+          ...players.player1,
+          technology: players.player1.technology.map((card) =>
+            this.hydrateCard(card)
+          ),
+          hand: players.player1.hand.map((card) => this.hydrateCard(card)),
+        };
+        this.players.player2 = {
+          ...players.player2,
+          technology: players.player2.technology.map((card) =>
+            this.hydrateCard(card)
+          ),
+          hand: players.player2.hand.map((card) => this.hydrateCard(card)),
+        };
+        this.discard = discard.map((card) => this.hydrateCard(card));
+        this.stack = stack.map((card) => this.hydrateCard(card));
+        this.nextId = parseInt(nextId, 10);
+        this.showCombat = showCombat;
+        this.combatSystemLoc = combatSystemLoc;
+        this.dieValue = dieValue;
+        this.contextLoc = contextLoc;
+        this.decks = {
+          politics: new Deck(decks.politics.deck.map(this.hydrateCard), true),
+          industry: new Deck(decks.industry.deck.map(this.hydrateCard), true),
+          science: new Deck(decks.science.deck.map(this.hydrateCard), true),
+          system: new Deck(decks.system.deck.map(this.hydrateCard), true),
+        };
+      };
+
+      // Audio effects
+      const dieRolled = this.dieValue !== dieValue;
+      const cardDrawn =
+        this.players.player1.hand.length > players.player1.hand.length ||
+        this.players.player2.hand.length > players.player2.hand.length;
+
+      if (dieRolled) {
+        this.dieValue = null;
+        audio.src = dieRollMp3;
+        audio.play();
+
+        const interval = setInterval(() => {
+          if (audio.paused) {
+            if (cardDrawn) {
+              playCard();
+            }
+            performUpdate();
+            clearInterval(interval);
+          }
+        }, 100);
+      } else if (cardDrawn) {
+        playCard();
+        performUpdate();
+      } else {
+        playItem();
+        performUpdate();
+      }
+    },
+    hydrateCard(cardPayload) {
+      if (!cardPayload) return null;
+      const cardTemplate = CARD_LIST.find((c) => c.img === cardPayload.img);
+
+      if (!cardTemplate) throw Error("No card template found");
+
+      return {
+        ...cardTemplate,
+        ...cardPayload,
+      };
     },
   },
   mounted() {
@@ -1136,6 +1265,33 @@ export default {
 
     EventBus.$on("card:context", ({ card, loc, event }) => {
       if (loc !== "hover") this.toggleContextMenu(card, loc, event);
+    });
+
+    this.socket = useSocket();
+
+    this.socket?.on("state", (payload) => {
+      this.parseAndUpdateState(payload);
+    });
+
+    this.socket?.on("joined", (payload) => {
+      switch (payload.playerCount) {
+        case 1:
+          this.multiplayerSeat = "player1";
+          break;
+        case 2:
+          this.multiplayerSeat = "player2";
+          break;
+        default:
+          this.multiplayerSeat = null;
+          break;
+      }
+    });
+
+    this.socket?.emit("join", location.hash);
+
+    EventBus.$on("dropzone-dropped", () => {
+      playItem();
+      this.socket?.emit("state", JSON.stringify(this.fnContext));
     });
   },
   beforeUnmount() {

@@ -7,6 +7,7 @@
     drag-class="drag"
     item-key="id"
     class="flex justify-center"
+    @end="dropped"
   >
     <template #item="item">
       <div>
@@ -32,6 +33,8 @@
 import draggable from "vuedraggable";
 import Card from "@/components/Card/Card.vue";
 import DamageDice from "@/components/Dice/DamageDice.vue";
+
+import EventBus from "@/util/EventBus";
 
 export default {
   name: "dropzone",
@@ -67,6 +70,11 @@ export default {
         this.$emit("update:list", list);
       },
     },
+  },
+  methods: {
+    dropped() {
+      EventBus.$emit("dropzone-dropped", this.group);
+    }
   },
   components: {
     draggable,
