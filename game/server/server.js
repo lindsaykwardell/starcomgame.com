@@ -38,7 +38,6 @@ const games = {};
 
 io.on("connection", (socket) => {
   let gameId;
-  console.log("a user connected");
 
   socket.on("join", (id) => {
     socket.join(id);
@@ -57,7 +56,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("state", (val) => {
-    console.log(gameId);
     if (gameId) {
       socket.to(gameId).emit("state", val);
     }

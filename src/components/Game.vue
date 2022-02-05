@@ -469,6 +469,7 @@ export default {
     },
     currentContextMenu() {
       console.log("contextLoc", this.contextLoc);
+      console.log("contextCard", this.contextCard);
       if (
         ((this.contextLoc === "stack" &&
           this.contextCard.type !== TECHNOLOGY) ||
@@ -948,6 +949,8 @@ export default {
       });
 
       this.cleanUpDestroyedShips();
+
+      this.socket?.emit("state", JSON.stringify(this.fnContext));
     },
     cleanUpDestroyedShips() {
       this.systems.forEach((system) => {
@@ -1143,7 +1146,7 @@ export default {
       } = JSON.parse(payload);
 
       const performUpdate = () => {
-        this.contextCard = this.hydrateCard(card);
+        // this.contextCard = this.hydrateCard(card);
         this.systems = systems.map((system) => {
           return {
             card: this.hydrateCard(system.card),
@@ -1175,7 +1178,9 @@ export default {
           hand: players.player2.hand.map((card) => this.hydrateCard(card)),
         };
         this.discard = discard.map((card) => this.hydrateCard(card));
+        console.log("THE STACK");
         this.stack = stack.map((card) => this.hydrateCard(card));
+        console.log("END THE STACK");
         this.nextId = parseInt(nextId, 10);
         this.showCombat = showCombat;
         this.combatSystemLoc = combatSystemLoc;
@@ -1218,10 +1223,15 @@ export default {
       }
     },
     hydrateCard(cardPayload) {
-      if (!cardPayload) return null;
+      if (!cardPayload) throw Error("No payload to hydrate!");
+      console.log(cardPayload);
       const cardTemplate = CARD_LIST.find((c) => c.img === cardPayload.img);
 
       if (!cardTemplate) throw Error("No card template found");
+
+      // Purge potentially invalid properties
+      delete cardPayload.stepContextMenu;
+      // delete cardPayload.contextMenu;
 
       return {
         ...cardTemplate,
