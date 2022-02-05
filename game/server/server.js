@@ -3,7 +3,7 @@ require("dotenv").config();
 const http = require("http");
 const server = http.createServer((req, res) => {
   const headers = {
-    "Access-Control-Allow-Origin": "http://localhost:3000",
+    "Access-Control-Allow-Origin": process.env.CLIENT_URL,
     "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
     "Access-Control-Max-Age": 2592000, // 30 days
     /** add other headers as per requirement */
@@ -73,4 +73,4 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(8080);
+server.listen(process.env.PORT || 8080);
