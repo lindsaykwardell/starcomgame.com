@@ -28,19 +28,19 @@
               class="p-1 bg-red-500 hover:bg-red-600 duration-200 flex-1"
               @click="draw(activePlayer, decks.industry)"
             >
-              Industry ({{ decks.industry.remaining }}/30)
+              Industry ({{ decks.industry.remaining }}/20)
             </button>
             <button
               class="p-1 bg-yellow-600 hover:bg-yellow-700 duration-200 flex-1"
               @click="draw(activePlayer, decks.politics)"
             >
-              Politics ({{ decks.politics.remaining }}/30)
+              Politics ({{ decks.politics.remaining }}/20)
             </button>
             <button
               class="p-1 bg-green-600 hover:bg-green-700 duration-200 flex-1"
               @click="draw(activePlayer, decks.science)"
             >
-              Science ({{ decks.science.remaining }}/30)
+              Science ({{ decks.science.remaining }}/20)
             </button>
           </div>
 
