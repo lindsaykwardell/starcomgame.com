@@ -6,4 +6,4 @@ For any system under siege (see [Siege](/etc/additional-rules.html#siege)), remo
 
 ## Cleanup
 
-End of turn effects end. All ships with more damage than HP are destroyed. If any player’s Homeworld has been captured, they lose. Remove all ships and counters they control from the board.
+End of turn effects end. All ships with more damage than HP are destroyed. If any player’s [Homeworld](https://www.starcomgame.com/card-database?selectedCard=Homeworld) has been captured, they lose. Remove all ships and counters they control from the board.

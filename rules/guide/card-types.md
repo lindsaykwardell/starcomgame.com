@@ -4,7 +4,7 @@ There are five card types in the game. Throughout play, you will be interacting 
 
 ## Ship
 
-There are four ship types - Fighter, Small, Medium, and Large. Each has a cost, attack, and hit points. Some ships have other abilities written on them. Ships are the only cards that can move between systems. Ships are built at your Homeworld, and are placed on the side of the system card closest to you. Ships are placed on the board with their text facing their controller. All ships (but Fighters) can jump 1 system per turn, while Fighters cannot jump unless otherwise stated (if a card gives the ability to jump, or to jump an additional time, then fighters can perform that action).
+There are four ship types - Fighter, Small, Medium, and Large. Each has a cost, attack, and hit points. Some ships have other abilities written on them. Ships are the only cards that can move between systems. Ships are built at your [Homeworld](https://www.starcomgame.com/card-database?selectedCard=Homeworld), and are placed on the side of the system card closest to you. Ships are placed on the board with their text facing their controller. All ships (but Fighters) can jump 1 system per turn, while Fighters cannot jump unless otherwise stated (if a card gives the ability to jump, or to jump an additional time, then fighters can perform that action).
 
 ## Station
 

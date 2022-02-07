@@ -3,9 +3,9 @@
 ## Starting the Game
 
 - Shuffle the domain decks and the system deck. 
-- Place system cards face down on the board (3x3, 4x4, or 5x5 grid is recommended). Place a Homeworld System in the starting system for each player, with a development token on it for that player.
+- Place system cards face down on the board (3x3, 4x4, or 5x5 grid is recommended). Place a [Homeworld](https://www.starcomgame.com/card-database?selectedCard=Homeworld) System in the starting system for each player, with a development token on it for that player.
 - Each player is given 3 credits.
-- Put a Scout into play in each player’s starting system under their control.
+- Put a [Scout](https://www.starcomgame.com/card-database?selectedCard=Scout) into play in each player’s starting system under their control.
 - Choose who goes first, by some random method.
 
 ## Game Phases
