@@ -20,7 +20,7 @@ Filibuster,Politics,Command,,,,Take another turn after this one.,,18,2
 Advanced Weapons,Politics,Technology,,,,Ships and stations you control have +1 attack.,,19,3
 Fighter Bays,Politics,Technology,,,,"Stations and fighters you control have +2 hit points. 
 
-You may build Orbital Hangars.",,20,3
+You may build fighters in any system you control.",,20,3
 Jump Nexus,Science,Station,4,0,5,Ships you control may jump to this system from any other system.,,21,4
 Explore the Unknown,Science,Command,,,,Draw two cards from any one deck.,,22,3
 Jump Stabilization,Science,Command,,,,Ships you control in target system may jump to any system this turn.,,23,2
@@ -41,4 +41,3 @@ Cruiser,Neutral,Ship - Medium,13,3,18,,,37,12
 Battleship,Neutral,Ship - Large,21,5,25,,,38,8
 Carrier,Neutral,Ship - Large,21,2,28,"You may build fighters in this system. When this ship jumps, all fighters in this system may also jump to that system.",,39,8
 Defense Station,Neutral,Station,4,1,7,,,40,26
-Orbital Hangar,Neutral,Station,6,0,7,You may build fighters in this system.,,41,10

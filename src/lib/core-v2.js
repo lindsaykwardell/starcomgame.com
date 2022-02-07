@@ -222,12 +222,12 @@ const STATION_CONTEXT_MENU = [
     condition: ({ card, system, activePlayer, players }) =>
       card.controlledBy === activePlayer && players[activePlayer].credits >= 4,
   },
-  {
-    action: "build:41",
-    label: "Build Orbital Hangar",
-    condition: ({ card, system, activePlayer, players }) =>
-      card.controlledBy === activePlayer && players[activePlayer].credits >= 6,
-  },
+  // {
+  //   action: "build:41",
+  //   label: "Build Orbital Hangar",
+  //   condition: ({ card, system, activePlayer, players }) =>
+  //     card.controlledBy === activePlayer && players[activePlayer].credits >= 6,
+  // },
 ];
 
 export const BUILD_FIGHTER_CONTEXT_MENU = [
@@ -1409,29 +1409,29 @@ export const CARD_LIST = [
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
-  {
-    id: 41,
-    img: "Orbital_Hangar",
-    type: STATION,
-    // subtype: SMALL,
-    domain: null,
-    deck: null,
-    damage: 0,
-    cost: 6,
-    hp: 7,
-    bonusHp: 0,
-    totalHp() {
-      return this.hp + this.bonusHp;
-    },
-    attack: 0,
-    bonusAttack: 0,
-    totalAttack() {
-      return this.attack + this.bonusAttack;
-    },
-    effects: [],
-    contextMenu: [...BUILD_FIGHTER_CONTEXT_MENU, ...DAMAGE_CONTEXT_MENU],
-    combatContextMenu: generateCombatContextMenu,
-  },
+  // {
+  //   id: 41,
+  //   img: "Orbital_Hangar",
+  //   type: STATION,
+  //   // subtype: SMALL,
+  //   domain: null,
+  //   deck: null,
+  //   damage: 0,
+  //   cost: 6,
+  //   hp: 7,
+  //   bonusHp: 0,
+  //   totalHp() {
+  //     return this.hp + this.bonusHp;
+  //   },
+  //   attack: 0,
+  //   bonusAttack: 0,
+  //   totalAttack() {
+  //     return this.attack + this.bonusAttack;
+  //   },
+  //   effects: [],
+  //   contextMenu: [...BUILD_FIGHTER_CONTEXT_MENU, ...DAMAGE_CONTEXT_MENU],
+  //   combatContextMenu: generateCombatContextMenu,
+  // },
   {
     id: 42,
     img: "Research_World",
