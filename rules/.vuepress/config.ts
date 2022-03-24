@@ -77,5 +77,15 @@ export default defineUserConfig<DefaultThemeOptions>({
     viteOptions: {},
   },
 
-  plugins: [["@vuepress/plugin-search"]],
+  plugins: [
+    ["@vuepress/plugin-search"],
+    [
+      "@vuepress/register-components",
+      {
+        components: {
+          Card: path.resolve(__dirname, "./components/Card.vue"),
+        },
+      },
+    ],
+  ],
 });
