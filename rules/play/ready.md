@@ -6,9 +6,9 @@
 
 Gain credits as shown on your cards. Most resources come from Systems, but may also come from other cards you control. Gain 1 credit for each development you control in systems that are not under siege (see [Siege](/etc/additional-rules.html#siege)).
 
-## Roll Domain Die
+## Draw a card
 
-Roll the Domain Die (6-sided die). If the domain of a system you control is rolled, draw a card from the respective domain deck.
+Draw a card for one of the domains you control. 
 
 ## Perform Start of Turn Actions
 

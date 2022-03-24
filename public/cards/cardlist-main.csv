@@ -30,7 +30,7 @@ Evasion,Science,Command,,,,Prevent all damage that would be dealt to target ship
 Experimental Shields,Science,Technology,,,,Discard a card: Prevent all damage to target ship or station.,,27,2
 Enhanced Jump Drive,Science,Technology,,,,Ships you control can jump an additional time each turn.,,28,4
 Advanced Shields,Science,Technology,,,,Ships and stations you control have +1 shield.,,29,4
-Thrill of Discovery,Science,Technology,,,,"Each turn, roll the domain die an additional time.",,30,2
+Thrill of Discovery,Science,Technology,,,,"Whenever you draw a card, draw an additional card of that type.",,30,2
 Scout,Neutral,Ship - Small,,0,2,,,31,4
 Strike Fighter,Neutral,Ship - Fighter,2,1,2,,,32,20
 Patrol Ship,Neutral,Ship - Small,5,2,5,,,33,17
@@ -39,5 +39,5 @@ Frigate,Neutral,Ship - Small,8,2,12,,,35,17
 Destroyer,Neutral,Ship - Medium,13,4,15,,,36,12
 Cruiser,Neutral,Ship - Medium,13,3,18,,,37,12
 Battleship,Neutral,Ship - Large,21,5,25,,,38,8
-Carrier,Neutral,Ship - Large,21,2,28,"You may build fighters in this system. When this ship jumps, all fighters in this system may also jump to that system.",,39,8
+Carrier,Neutral,Ship - Large,21,2,28,"When this ship jumps, up to five fighters may also jump to that system.",,39,8
 Defense Station,Neutral,Station,4,1,7,,,40,26
