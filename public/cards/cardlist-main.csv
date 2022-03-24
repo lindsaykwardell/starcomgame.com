@@ -38,6 +38,6 @@ Corvette,Neutral,Ship - Small,8,3,8, ,,34,17
 Frigate,Neutral,Ship - Small,8,2,12,,,35,17
 Destroyer,Neutral,Ship - Medium,13,4,15,,,36,12
 Cruiser,Neutral,Ship - Medium,13,3,18,,,37,12
-Battleship,Neutral,Ship - Large,21,5,25,,,38,8
+Battleship,Neutral,Ship - Large,21,5,25,"This ship can target an additional target during combat.",,38,8
 Carrier,Neutral,Ship - Large,21,2,28,"When this ship jumps, up to five fighters may also jump to that system.",,39,8
 Defense Station,Neutral,Station,4,1,7,,,40,26
