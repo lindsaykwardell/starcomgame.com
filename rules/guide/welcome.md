@@ -6,8 +6,6 @@ Star Commander (StarCom) is a card game of exploration, colonization, commerce, 
 
 Everything you need comes with the game - three Domain decks of 30 cards each, one System deck of 25 cards, and a number of cards to represent different ships and stations. Credit tokens and development tokens are also included.
 
-![All the cards and pieces required to play the game](/images/example-game-components.jpg)
-
 ## How to Win
 
 The goal of Star Commander is to dominate known space. To achieve that, you must conquer the homeworld of each opponent. When your homeworld is no longer under your control, you lose. When no other players remain, you win!

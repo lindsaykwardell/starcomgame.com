@@ -66,6 +66,10 @@ export default defineUserConfig<DefaultThemeOptions>({
         link: "/guide/welcome.html",
       },
       {
+        text: "Download PDF",
+        link: "https://rules.starcomgame.com/star_commander_rulebook.pdf",
+      },
+      {
         text: "Official Site",
         link: "https://starcomgame.com",
       },
