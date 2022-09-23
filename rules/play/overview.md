@@ -12,13 +12,13 @@
 
 - Ready Phase (skip on first turn)
   - [Gain credits](/play/ready.html#gain-credits)
-  - [Roll Domain Die](/play/ready.html#roll-domain-die)
+  - [Draw a card](/play/ready.html#draw-a-card)
   - [Perform Start of Turn actions](/play/ready.html#perform-start-of-turn-actions)
 - Command Phase
   - [Move Ships](/play/command.html#move-ships)
   - [Explore](/play/command.html#explore)
   - [Build ships/stations](/play/command.html#build-ships-stations)
-  - [Repair/Scrap](/play/command.html#repair-scrap)
+  - [Scrap](/play/command.html#scrap)
   - [Trade](/play/command.html#trade)
   - [Develop](/play/command.html#develop)
 - Combat Phase

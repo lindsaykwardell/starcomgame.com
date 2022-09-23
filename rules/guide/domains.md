@@ -6,7 +6,7 @@ Each card in the game (besides the core ships and stations) is part of a Domain.
 
 <Card src="https://www.starcomgame.com/cards/Railgun_Turrets-thumb.webp" alt="Railgun Turrets" />
 
-Industry is primarily focused on getting the most out of your resources. Industry cards provide additional combat options, as well as work to keep your ships operational. Industry also focuses on generating more credits.
+Industry is primarily focused on getting the most out of your resources. Industry cards provide additional combat options, as well as maintaining the size of your fleets. Industry also focuses on generating more credits.
 
 ## Politics 
 
@@ -18,4 +18,4 @@ Politics focuses on defensive play, providing tools for building a strong suppor
 
 <Card src="https://www.starcomgame.com/cards/Thrill_of_Discovery-thumb.webp" alt="Thrill of Discovery" />
 
-Science is all about researching new technologies. Science cards typically will help defend your ships from attacks, or help you move your ships into position faster. 
+Science is all about researching new technologies. Science cards typically will help defend your ships from attacks, or help you move your ships into position faster. Science is also good at drawing additional cards from the domain decks.

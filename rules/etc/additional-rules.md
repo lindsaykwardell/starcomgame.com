@@ -18,11 +18,13 @@ Whenever, during either the Command or Combat Phases, a player plays a card or u
 
 ## Contested System
 
-A contested system is a system which is controlled by a player where combat has occurred since their last turn. Ships and stations cannot be built in contested systems, and existing ships cannot be repaired or scrapped (unless otherwise stated).
+A contested system is a system which is controlled by a player where combat has occurred since their last turn. Ships and stations cannot be built in contested systems. The exception to this is your starting system, which can build ships while contested, but not stations.
 
 ## Siege
 
-A system is considered under siege when an opponent has non-Fighter ships in that system, and the controlling player has no ships or stations with attack values. Systems that are under siege do not generate credits from developments, and players cannot build ships or stations in systems that are under siege.
+A system is considered under siege when an opponent has non-Fighter ships in that system, and the controlling player has no ships or stations with attack values. Systems that are under siege do not generate credits from developments, and players cannot build ships or stations in systems that are under siege. Effects of that system do not trigger and abilities cannot be used.
+
+Note that for the purposes of drawing cards, a player may still choose the domain of a system under siege. 
 
 ## Fighters
 
