@@ -20,13 +20,13 @@ import "../assets/index.css";
     <div
       class="flex flex-col md:flex-row justify-around gap-12 mt-12 text-center"
     >
-      <a
+      <!-- <a
         href="https://play.starcomgame.com/"
         target="_blank"
         class="block rounded-lg bg-gradient-to-b from-blue-900 hover:from-blue-800 via-gray-900 hover:via-gray-800 to-black hover:to-gray-900 px-6 py-3 shadow hover:shadow-md"
       >
         Play the Game
-      </a>
+      </a> -->
 
       <a
         href="https://rules.starcomgame.com"
