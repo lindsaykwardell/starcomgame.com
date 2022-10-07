@@ -34,3 +34,6 @@ rules/.vuepress/.temp
 elm-stuff
 
 .env
+
+./tmp/**/*
+cards.pdf

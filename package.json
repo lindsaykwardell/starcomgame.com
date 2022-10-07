@@ -45,6 +45,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
     "@vueuse/core": "^7.5.5",
+    "csv": "^6.2.0",
     "dotenv": "^16.0.0",
     "elm-vue-bridge": "^1.2.3",
     "socket.io": "^4.4.1",

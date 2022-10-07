@@ -40,7 +40,7 @@ cardImg card isThumb =
 
 type Domain
     = Industry
-    | Politics
+    | Statecraft
     | Science
     | Neutral
 
@@ -51,8 +51,8 @@ domainToString domain =
         Industry ->
             "Industry"
 
-        Politics ->
-            "Politics"
+        Statecraft ->
+            "Statecraft"
 
         Science ->
             "Science"
@@ -67,8 +67,8 @@ domainToClass domain =
         Industry ->
             "domain-industry"
 
-        Politics ->
-            "domain-politics"
+        Statecraft ->
+            "domain-Statecraft"
 
         Science ->
             "domain-science"
@@ -161,8 +161,8 @@ decodeMainCsv =
                                 "Industry" ->
                                     Decode.succeed Industry
 
-                                "Politics" ->
-                                    Decode.succeed Politics
+                                "Statecraft" ->
+                                    Decode.succeed Statecraft
 
                                 "Science" ->
                                     Decode.succeed Science
@@ -265,8 +265,8 @@ decodePlanetCsv =
                                 "Industry" ->
                                     Decode.succeed Industry
 
-                                "Politics" ->
-                                    Decode.succeed Politics
+                                "Statecraft" ->
+                                    Decode.succeed Statecraft
 
                                 "Science" ->
                                     Decode.succeed Science
