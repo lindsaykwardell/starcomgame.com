@@ -35,5 +35,6 @@ elm-stuff
 
 .env
 
-./tmp/**/*
+tmp
+tgc
 cards.pdf
