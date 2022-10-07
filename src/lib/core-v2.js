@@ -11,18 +11,9 @@ export const SYSTEM = "System";
 export const CAPITAL_SYSTEM = "Capital System";
 export const START_SYSTEM = "Starting System";
 export const COMMAND = "Command";
-export const MANEUVER = "Maneuver";
 export const TECHNOLOGY = "Technology";
 
-export const CARD_TYPES = [
-  SHIP,
-  FIGHTER,
-  STATION,
-  SYSTEM,
-  COMMAND,
-  MANEUVER,
-  TECHNOLOGY,
-];
+export const CARD_TYPES = [SHIP, FIGHTER, STATION, SYSTEM, COMMAND, TECHNOLOGY];
 
 export const SMALL = "Small";
 export const MEDIUM = "Medium";
@@ -343,7 +334,7 @@ export const CARD_LIST = [
   },
   {
     id: 3,
-    img: "Repair_Crews",
+    img: "Orbital_Bombardment",
     type: COMMAND,
     domain: INDUSTRY,
     deck: INDUSTRY,
@@ -355,27 +346,25 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, activePlayer }) => {
-        let menu = [];
-
-        systems.forEach((system) => {
-          system[activePlayer].forEach((card) => {
-            if (card.damage > 0) {
-              menu.push({
-                label: `Repair ${card.img} (${
-                  card.totalHp() - card.damage
-                }/${card.totalHp()})`,
-                action: `step:0`,
-                stepAction: () => {
-                  card.damage = 0;
-                },
-              });
-            }
-          });
-        });
-
-        return menu;
-      },
+      // ({ systems, activePlayer }) => {
+      //   let menu = [];
+      //   systems.forEach((system) => {
+      //     system[activePlayer].forEach((card) => {
+      //       if (card.damage > 0) {
+      //         menu.push({
+      //           label: `Repair ${card.img} (${
+      //             card.totalHp() - card.damage
+      //           }/${card.totalHp()})`,
+      //           action: `step:0`,
+      //           stepAction: () => {
+      //             card.damage = 0;
+      //           },
+      //         });
+      //       }
+      //     });
+      //   });
+      //   return menu;
+      // },
     ],
   },
   {
@@ -724,7 +713,7 @@ export const CARD_LIST = [
   },
   {
     id: 13,
-    img: "Undersized_Shipyard",
+    img: "Shipyard",
     type: STATION,
     domain: POLITICS,
     deck: POLITICS,
@@ -743,8 +732,7 @@ export const CARD_LIST = [
     },
     effects: [],
     contextMenu: [
-      ...BUILD_FIGHTER_CONTEXT_MENU,
-      ...SMALL_SHIP_CONTEXT_MENU,
+      ...SHIP_CONTEXT_MENU,
       ...DAMAGE_CONTEXT_MENU,
     ],
   },
