@@ -10,7 +10,7 @@
     "typecheck": "vue-tsc --noEmit",
     "rules:dev": "vuepress dev rules",
     "rules:build": "vuepress build rules",
-    "rules:pdf": "pandoc rules/guide/welcome.md rules/guide/play-area.md rules/guide/card-types.md rules/guide/domains.md rules/play/overview.md rules/play/ready.md rules/play/command.md rules/play/combat.md rules/play/end.md rules/etc/additional-rules.md --output rules/.vuepress/public/star_commander_rulebook.pdf",
+    "rules:pdf": "pandoc --table-of-contents -V geometry:paperwidth=5in -V geometry:paperheight=8in rules/guide/welcome.md rules/guide/play-area.md rules/guide/card-types.md rules/guide/domains.md rules/play/overview.md rules/play/ready.md rules/play/command.md rules/play/combat.md rules/play/end.md rules/etc/additional-rules.md --output rules/.vuepress/public/star_commander_rulebook.pdf",
     "game:dev": "vite --config game.config.js",
     "game:build": "cp play.html index.html && vite build --config game.config.js && rm index.html",
     "gameserver:dev": "nodemon ./game/server/server.js",

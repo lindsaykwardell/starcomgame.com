@@ -1,3 +1,7 @@
+---
+fontfamily: merriweather 
+---
+
 # Welcome to Star Commander
 
 Star Commander (StarCom) is a card game of exploration, colonization, commerce, and conflict. In a single round of StarCom, you are fighting against other would-be empires vying for control of star systems, in order to grow your own influence across the galaxy.
