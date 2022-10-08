@@ -44,10 +44,6 @@ for (const card of [...main, ...planets]) {
     `./tmp/${card["Card #"]}.png`,
     `./tgc/${subfolder}/${card.Name}[face,${card.Count}].png`
   );
-  fs.copyFileSync(
-    `./tmp/${card["Card #"]}.png`,
-    `./pdf/${card.Name.replace(/ /g, "_")}.png`
-  );
   fs.rmSync(`./tmp/${card["Card #"]}.webp`);
   fs.rmSync(`./tmp/${card["Card #"]}.png`);
 }
