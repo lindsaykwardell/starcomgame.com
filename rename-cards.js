@@ -46,7 +46,7 @@ for (const card of [...main, ...planets]) {
   );
   fs.copyFileSync(
     `./tmp/${card["Card #"]}.png`,
-    `./rules/.vuepress/public/${card.Name.replace(/ /g, "_")}.png`
+    `./pdf/${card.Name.replace(/ /g, "_")}.png`
   );
   fs.rmSync(`./tmp/${card["Card #"]}.webp`);
   fs.rmSync(`./tmp/${card["Card #"]}.png`);

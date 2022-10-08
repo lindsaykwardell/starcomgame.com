@@ -10,6 +10,7 @@ mkdir tgc/industry
 mkdir tgc/statecraft
 mkdir tgc/science
 mkdir tgc/back
+mkdir pdf
 
 gsc -dNOPAUSE -sDEVICE=png16m -r256 -sOutputFile=tmp/%01d.png cards.pdf -c quit;
 
