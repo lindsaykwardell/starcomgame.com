@@ -23,7 +23,7 @@ sips --resampleHeightWidth 1125 825 tgc/statecraft/*.png
 sips --resampleHeightWidth 1125 825 tgc/science/*.png
 sips --resampleHeightWidth 1125 825 tgc/ships/*.png
 sips -r 270 tgc/planets/*.png
-sips --resampleHeightWidth 1125 825 tgc/ships/*.png
+sips --resampleHeightWidth 1125 825 tgc/planets/*.png
 
 cp public/back.jpg tgc/back.jpg
 sips --resampleHeightWidth 1125 825 tgc/back.jpg
