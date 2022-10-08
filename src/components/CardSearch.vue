@@ -41,7 +41,7 @@ function setSelectedCard(card: string | null) {
 
 function updateURL() {
   if (typeof window !== "undefined") {
-    window.history.replaceState(
+    window.history.pushState(
       {},
       "",
       `${window.location.pathname}?${params?.toString()}`
