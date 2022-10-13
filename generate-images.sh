@@ -35,6 +35,8 @@ cp public/ship.png tgc/back/ship.png
 cp public/statecraft.png tgc/back/statecraft.png
 cp public/frontcover.png tgc/rules/0.png
 cp public/backcover.png tgc/rules/z.png
+cp public/blankpage.png tgc/rules/00.png
+cp public/blankpage.png tgc/rules/y.png
 
 sips --resampleHeightWidth 1125 825 tgc/back/*.png
 

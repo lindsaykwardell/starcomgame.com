@@ -1,7 +1,7 @@
 Name,Domain,Card Types,Cost,Attack,Shield,Rules,Flavor,Card #,Count
 Refinery,Industry,Station,2,0,2,"At the start of your turn, gain 2 credits.",,1,4
 Orbital Bombardment,Industry,Command,,,,"Choose a ship you control. Remove developments in that system equal to the ship's attack. If all would be removed, leave 1.",,2,3
-Trade Envoy,Industry,Command,,,,Gain credits equal to target system's development level.,,3,4
+Trade Envoy,Industry,Command,,,,Gain credits equal to twice target system's development level.,,3,4
 Barrage,Industry,Command,,,,Choose a ship or station you control. It deals damage equal to its attack to each ship or station an opponent controls in that system.,,4,4
 Ram,Industry,Command,,,,Destroy target ship you control. It deals damage equal to its hit points to target ship or station in that system.,,5,3
 Mass Production,Industry,Command,,,,Build 3 Corvettes in a system you control.,,6,2
@@ -18,23 +18,23 @@ Sabotage,Statecraft,Command,,,,Choose a system with a ship or station you contro
 Bribery,Statecraft,Command,,,,Choose a system with a ship or station you control. Gain control of target ship.,,17,3
 Filibuster,Statecraft,Command,,,,Take another turn after this one.,,18,2
 Advanced Weapons,Statecraft,Technology,,,,Ships and stations you control have +1 attack.,,19,3
-Fighter Bays,Statecraft,Technology,,,,"Fighters you control get +1 hit point. You may build fighters in any system you control with a station.",,20,3
-Jump Nexus,Science,Station,4,0,2,Ships you control may jump to this system from any other system.,,21,4
+Fighter Bays,Statecraft,Technology,,,,Fighters you control get +1 hit point. You may build fighters in any system you control with a station.,,20,3
+Jump Nexus,Science,Station,4,0,2,Ships you control in this system may jump an additional time this turn.,,21,4
 Explore the Unknown,Science,Command,,,,Draw two cards.,,22,3
-Jump Stabilization,Science,Command,,,,Ships you control in target system may jump to any system this turn.,,23,2
+Jump Stabilization,Science,Command,,,,Choose a system. Ships in that system may jump directly to any system within two jumps of it.,,23,2
 Interdiction,Science,Command,,,,Ships in target system cannot jump until your next ready phase.,,24,3
-Raise Shields,Science,Command,,,,Ships and stations you control get +2 shield until end of turn.,,25,3
+Raise Shields,Science,Command,,,,"Target ship or station gets +2 hit points until end of turn, and you may redirect combat damage from one target to this ship or station.",,25,3
 Evasion,Science,Command,,,,Prevent all damage that would be dealt to target ship this turn.,,26,3
-Experimental Shields,Science,Technology,,,,Discard a card: Prevent all damage to target ship or station.,,27,2
+Experimental Shields,Science,Technology,,,,"Discard a card: Prevent all damage to target ship or station, and it cannot be the target of commands or abilities until end of turn.",,27,2
 Enhanced Jump Drive,Science,Technology,,,,Ships you control can jump an additional time each turn.,,28,4
-Advanced Shields,Science,Technology,,,,Ships and stations you control have +1 shield.,,29,4
+Advanced Shields,Science,Technology,,,,Ships and stations you control have +1 hit point.,,29,4
 Thrill of Discovery,Science,Technology,,,,"At the start of your turn, draw a card.",,30,2
 Scout,Neutral,Ship - Small,,0,2,,,31,4
 Strike Fighter,Neutral,Ship - Fighter,1,1,1,,,32,20
 Corvette,Neutral,Ship - Small,3,2,2,This ship can target an additional target during combat.,,33,17
 Frigate,Neutral,Ship - Small,5,3,3,This ship may jump the turn it is built.,,34,14
 Destroyer,Neutral,Ship - Medium,8,4,5,You may redirect combat damage from one target to this ship.,,35,10
-Cruiser,Neutral,Ship - Medium,12,5,7,This ship can target an additional target during combat.,,36,10
-Battleship,Neutral,Ship - Large,16,6,10,This ship counts twice during conquest.,,37,6
+Cruiser,Neutral,Ship - Medium,12,5,7,This ship may perform conquest even if the system still has opposing ships and stations.,,36,10
+Battleship,Neutral,Ship - Large,16,6,10,This ship can target an additional target during combat.,,37,6
 Carrier,Neutral,Ship - Large,16,2,8,"When this ship jumps, up to five fighters may also jump to that system.",,38,6
-Defense Station,Neutral,Station,3,1,4,You may redirect combat damage from one target source to this station.,,39,20
+Defense Station,Neutral,Station,3,1,4,You may redirect combat damage from one target to this station.,,39,20
