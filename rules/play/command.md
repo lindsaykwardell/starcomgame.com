@@ -16,11 +16,7 @@ You may build any ships or stations that you can afford. Stations can be built i
 
 - You can only build a number of stations in a system equal to its development level (the number of development counters on it). If a system only has one development counter, it can only have one station.
 - You can only build a number of fighters in a system equal to its development level.
-- You cannot build a ship or station in a contested system (see [Contested System](/etc/additional-rules.html#contested-system)) or a system that is under siege (see [Siege](/etc/additional-rules.html#siege)). The exception is your starting system, which can always build ships (but not stations).
-
-## Scrap
-
-You may destroy a ship you control and gain credits equal to half its cost, rounded down (but no less than 1). These actions can only take place in uncontested systems (see [Contested System](/etc/additional-rules.html#contested-system)).
+- You cannot build a ship or station in a system that is under siege (see [Siege](/etc/additional-rules.html#siege)). The exception is your starting system, which can always build ships (but not stations).
 
 ## Play Commands
 

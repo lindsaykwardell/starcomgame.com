@@ -2,7 +2,7 @@
 
 ## Hand Limit
 
-You may only have up to eight cards in your hand at a time. If you attempt to draw a card with eight cards already in your hand, you must discard one first. If an action puts a card into your hand, you must also first discard a card. At no time should you have more than eight cards in hand.
+You may only have up to five cards in your hand at a time. If you attempt to draw a card with five cards already in your hand, you must either discard one first or skip your draw. At no time should you have more than five cards in hand.
 
 ## Turn Order
 
@@ -12,13 +12,13 @@ If there are more than two players in a game, players will take turns in a clock
 
 Ships and stations can only target in their current system. If an ability on a card says that a ship or station you control does something to another ship, this same rule applies. Any card that refers to “target ship or station” (or similar) may perform its action in any system.
 
+## Vessels
+
+Some cards refer to vessels. A vessel is either a ship or station.
+
 ## Responses
 
 Whenever, during either the Command or Combat Phases, a player plays a card or uses an ability, it can be responded to. In each case, the active player chooses whether to use another card or ability, then each other player may choose, going clockwise from the active player. When all players pass, the sequence of cards and abilities is resolved. These actions are resolved in “last on, first off” order. 
-
-## Contested System
-
-A contested system is a system which is controlled by a player where combat has occurred since their last turn. Ships and stations cannot be built in contested systems. The exception to this is your starting system, which can build ships while contested, but not stations.
 
 ## Siege
 

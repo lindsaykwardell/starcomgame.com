@@ -1,6 +1,6 @@
 {
   "name": "starcomgame.com",
-  "version": "0.9.1",
+  "version": "0.9.4",
   "scripts": {
     "postinstall": "elm-tooling install",
     "dev": "iles dev --open",

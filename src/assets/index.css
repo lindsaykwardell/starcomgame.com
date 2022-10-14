@@ -20,11 +20,11 @@ a {
   @apply bg-red-400;
 }
 
-.domain-politics {
+.domain-statecraft {
   @apply text-yellow-500;
 }
 
-.bg-domain-politics {
+.bg-domain-statecraft {
   @apply bg-yellow-500;
 }
 

@@ -29,8 +29,7 @@ import "../assets/index.css";
       </a> -->
 
       <a
-        href="https://starcomgame.com/card-database"
-        target="_blank"
+        href="/card-database"
         class="block rounded-lg bg-gradient-to-b from-blue-900 hover:from-blue-800 via-gray-900 hover:via-gray-800 to-black hover:to-gray-900 px-6 py-3 shadow hover:shadow-md"
       >
         See the Cards

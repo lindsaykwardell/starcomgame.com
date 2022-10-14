@@ -68,7 +68,7 @@ domainToClass domain =
             "domain-industry"
 
         Statecraft ->
-            "domain-Statecraft"
+            "domain-statecraft"
 
         Science ->
             "domain-science"
@@ -112,6 +112,7 @@ type alias Stats =
     { cost : Int
     , attack : Int
     , hp : Int
+    , speed : Maybe Int
     }
 
 
@@ -185,7 +186,14 @@ decodeMainCsv =
                                     Decode.into Stats
                                         |> Decode.pipeline (Decode.field "Cost" Decode.int)
                                         |> Decode.pipeline (Decode.field "Attack" Decode.int)
-                                        |> Decode.pipeline (Decode.field "Shield" Decode.int)
+                                        |> Decode.pipeline (Decode.field "HP" Decode.int)
+                                        |> Decode.pipeline
+                                            (Decode.field "Speed"
+                                                (Decode.string
+                                                    |> Decode.andThen
+                                                        (String.toInt >> Decode.succeed)
+                                                )
+                                            )
                                         |> Decode.andThen (\stats -> Decode.succeed (Ship Fighter stats))
 
                                 "Ship - Small" ->
@@ -205,28 +213,56 @@ decodeMainCsv =
                                                 )
                                             )
                                         |> Decode.pipeline (Decode.field "Attack" Decode.int)
-                                        |> Decode.pipeline (Decode.field "Shield" Decode.int)
+                                        |> Decode.pipeline (Decode.field "HP" Decode.int)
+                                        |> Decode.pipeline
+                                            (Decode.field "Speed"
+                                                (Decode.string
+                                                    |> Decode.andThen
+                                                        (String.toInt >> Decode.succeed)
+                                                )
+                                            )
                                         |> Decode.andThen (\stats -> Decode.succeed (Ship Small stats))
 
                                 "Ship - Medium" ->
                                     Decode.into Stats
                                         |> Decode.pipeline (Decode.field "Cost" Decode.int)
                                         |> Decode.pipeline (Decode.field "Attack" Decode.int)
-                                        |> Decode.pipeline (Decode.field "Shield" Decode.int)
+                                        |> Decode.pipeline (Decode.field "HP" Decode.int)
+                                        |> Decode.pipeline
+                                            (Decode.field "Speed"
+                                                (Decode.string
+                                                    |> Decode.andThen
+                                                        (String.toInt >> Decode.succeed)
+                                                )
+                                            )
                                         |> Decode.andThen (\stats -> Decode.succeed (Ship Medium stats))
 
                                 "Ship - Large" ->
                                     Decode.into Stats
                                         |> Decode.pipeline (Decode.field "Cost" Decode.int)
                                         |> Decode.pipeline (Decode.field "Attack" Decode.int)
-                                        |> Decode.pipeline (Decode.field "Shield" Decode.int)
+                                        |> Decode.pipeline (Decode.field "HP" Decode.int)
+                                        |> Decode.pipeline
+                                            (Decode.field "Speed"
+                                                (Decode.string
+                                                    |> Decode.andThen
+                                                        (String.toInt >> Decode.succeed)
+                                                )
+                                            )
                                         |> Decode.andThen (\stats -> Decode.succeed (Ship Large stats))
 
                                 "Station" ->
                                     Decode.into Stats
                                         |> Decode.pipeline (Decode.field "Cost" Decode.int)
                                         |> Decode.pipeline (Decode.field "Attack" Decode.int)
-                                        |> Decode.pipeline (Decode.field "Shield" Decode.int)
+                                        |> Decode.pipeline (Decode.field "HP" Decode.int)
+                                        |> Decode.pipeline
+                                            (Decode.field "Speed"
+                                                (Decode.string
+                                                    |> Decode.andThen
+                                                        (String.toInt >> Decode.succeed)
+                                                )
+                                            )
                                         |> Decode.andThen (\stats -> Decode.succeed (Station stats))
 
                                 "Command" ->
@@ -317,7 +353,7 @@ update msg model =
         ParseMainCsv (Ok result) ->
             case result |> Decode.decodeCsv Decode.FieldNamesFromFirstRow decodeMainCsv of
                 Ok cards ->
-                    ( { model | cardList = model.cardList ++ cards }, Cmd.none )
+                    ( { model | cardList = updateCardList model.cardList cards }, Cmd.none )
 
                 Err err ->
                     ( model, Cmd.none )
@@ -328,7 +364,7 @@ update msg model =
         ParsePlanetCsv (Ok result) ->
             case result |> Decode.decodeCsv Decode.FieldNamesFromFirstRow decodePlanetCsv of
                 Ok cards ->
-                    ( { model | cardList = model.cardList ++ cards }, Cmd.none )
+                    ( { model | cardList = updateCardList model.cardList cards }, Cmd.none )
 
                 Err err ->
                     ( model, Cmd.none )
@@ -344,6 +380,13 @@ update msg model =
 
         ReturnToCardList ->
             ( { model | selectedCard = Nothing }, setSelectedCard <| Nothing )
+
+
+updateCardList : List Card -> List Card -> List Card
+updateCardList cardList cards =
+    cardList
+        ++ cards
+        |> List.sortBy .name
 
 
 view : Model -> Html Msg
@@ -385,7 +428,6 @@ view model =
                        )
             ]
             (model.cardList
-                |> List.sortBy .id
                 |> List.map (displayCard model.searchTerm)
             )
         ]
@@ -450,23 +492,17 @@ displaySelectedCard card =
             ]
         , div [ class "flex-grow order-1 flex flex-col" ]
             [ div [ class "relative border-b-2 mb-2 border-gray-500" ]
-                [ h3 [ class "text-3xl italic py-6" ] [ text card.name ]
+                [ h3 [ class "text-3xl italic py-9" ] [ text card.name ]
                 , div [ class "md:absolute top-1 right-1 flex flex-row md:flex-col justify-around" ]
                     (case card.cardType of
                         System maxDev ->
                             [ div [] [ text <| "Max Development: " ++ String.fromInt maxDev ] ]
 
                         Ship _ stats ->
-                            [ div [] [ text <| "Cost: " ++ String.fromInt stats.cost ]
-                            , div [] [ text <| "Attack: " ++ String.fromInt stats.attack ]
-                            , div [] [ text <| "Hull: " ++ String.fromInt stats.hp ]
-                            ]
+                            viewVesselStats stats
 
                         Station stats ->
-                            [ div [] [ text <| "Cost: " ++ String.fromInt stats.cost ]
-                            , div [] [ text <| "Attack: " ++ String.fromInt stats.attack ]
-                            , div [] [ text <| "Hull: " ++ String.fromInt stats.hp ]
-                            ]
+                            viewVesselStats stats
 
                         _ ->
                             []
@@ -474,7 +510,7 @@ displaySelectedCard card =
                 ]
             , div [ class "text-2xl" ]
                 [ case card.cardType of
-                    Ship size stats ->
+                    Ship size _ ->
                         text <| "Ship - " ++ sizeToString size
 
                     Station _ ->
@@ -507,6 +543,15 @@ displaySelectedCard card =
                 ]
             ]
         ]
+
+
+viewVesselStats : Stats -> List (Html Msg)
+viewVesselStats stats =
+    [ div [] [ text <| "Cost: " ++ String.fromInt stats.cost ]
+    , div [] [ text <| "Attack: " ++ String.fromInt stats.attack ]
+    , div [] [ text <| "Hit Points: " ++ String.fromInt stats.hp ]
+    , div [] [ text <| "Speed: " ++ (stats.speed |> Maybe.map String.fromInt |> Maybe.withDefault "-") ]
+    ]
 
 
 returnToAllCardsButton : Html Msg
