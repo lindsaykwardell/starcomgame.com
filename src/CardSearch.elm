@@ -85,6 +85,31 @@ type CardType
     | System Int
 
 
+cardTypeToString : Card -> String
+cardTypeToString card =
+    case card.cardType of
+        Ship size _ ->
+            "Ship - " ++ sizeToString size
+
+        Station _ ->
+            "Station"
+
+        Command ->
+            "Command"
+
+        Technology ->
+            "Technology"
+
+        System _ ->
+            "System"
+                ++ (if card.domain /= Neutral then
+                        " | "
+
+                    else
+                        ""
+                   )
+
+
 type Size
     = Fighter
     | Small
@@ -386,7 +411,29 @@ updateCardList : List Card -> List Card -> List Card
 updateCardList cardList cards =
     cardList
         ++ cards
-        |> List.sortBy .name
+        |> List.sortWith
+            (\a b ->
+                case ( a.cardType, b.cardType ) of
+                    ( System _, System _ ) ->
+                        compare a.name b.name
+
+                    ( System _, _ ) ->
+                        GT
+
+                    ( _, System _ ) ->
+                        LT
+
+                    _ ->
+                        case compare (domainToString a.domain) (domainToString b.domain) of
+                            LT ->
+                                LT
+
+                            GT ->
+                                GT
+
+                            EQ ->
+                                compare a.name b.name
+            )
 
 
 view : Model -> Html Msg
@@ -419,7 +466,7 @@ view model =
                 text ""
         , div
             [ class <|
-                "flex flex-wrap justify-around gap-4 p-2 w-full md:w-5/6 lg:w-2/3 m-auto"
+                "flex flex-col md:flex-row flex-wrap justify-around gap-4 p-2 w-full md:w-5/6 lg:w-2/3 m-auto"
                     ++ (if model.selectedCard /= Nothing then
                             " hidden"
 
@@ -444,15 +491,20 @@ displayCard searchTerm card =
 
         rules =
             String.toLower card.rules
+
+        cardType =
+            cardTypeToString card
+                |> String.toLower
     in
     button
-        [ class
-            (if String.contains term name || String.contains term rules then
-                ""
+        [ class <|
+            "m-auto"
+                ++ (if String.contains term name || String.contains term rules || String.contains term cardType then
+                        ""
 
-             else
-                " hidden"
-            )
+                    else
+                        " hidden"
+                   )
         , onClick <| SelectCard card
         ]
         [ img
@@ -509,26 +561,7 @@ displaySelectedCard card =
                     )
                 ]
             , div [ class "text-2xl" ]
-                [ case card.cardType of
-                    Ship size _ ->
-                        text <| "Ship - " ++ sizeToString size
-
-                    Station _ ->
-                        text "Station"
-
-                    Command ->
-                        text "Command"
-
-                    Technology ->
-                        text "Technology"
-
-                    System _ ->
-                        text "System"
-                , if card.domain /= Neutral then
-                    text " | "
-
-                  else
-                    text ""
+                [ cardTypeToString card |> text
                 , span [ class <| "text-lg " ++ domainToClass card.domain ] [ text <| domainToString card.domain ]
                 ]
             , div [ class "p-4 m-auto text-base lg:text-lg" ]
@@ -565,8 +598,27 @@ main =
         { init = init
         , update = update
         , view = view
-        , subscriptions = \_ -> Sub.none
+        , subscriptions =
+            \model ->
+                Sub.batch
+                    [ updateSelectedCard
+                        (\value ->
+                            if String.length value == 0 then
+                                ReturnToCardList
+
+                            else
+                                case List.find (\card -> card.name == String.replace "_" " " value) model.cardList of
+                                    Just card ->
+                                        SelectCard card
+
+                                    Nothing ->
+                                        UpdateSearchTerm value
+                        )
+                    ]
         }
+
+
+port updateSelectedCard : (String -> msg) -> Sub msg
 
 
 port setSearchTerm : String -> Cmd msg

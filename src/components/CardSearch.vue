@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Elm } from "../CardSearch.elm";
 import elmBridge from "elm-vue-bridge";
+import { watchEffect, computed, onMounted, onUnmounted } from "vue";
 
 const CardSearch = elmBridge(Elm, {
   name: "CardSearchElm",
@@ -14,6 +15,8 @@ const CardSearch = elmBridge(Elm, {
 // Constants
 const SEARCH_TERM = "searchTerm";
 const SELECTED_CARD = "selectedCard";
+let ports: any;
+let preventPush: boolean = false;
 
 // Current parameters
 const params =
@@ -36,24 +39,50 @@ function setSelectedCard(card: string | null) {
   } else {
     params?.delete(SELECTED_CARD);
   }
-  updateURL();
+  updateURL(true);
 }
 
-function updateURL() {
+function updateURL(push?: boolean) {
   if (typeof window !== "undefined") {
-    window.history.replaceState(
-      {},
-      "",
-      `${window.location.pathname}?${params?.toString()}`
-    );
+    const updatedParams = `${window.location.pathname}?${params?.toString()}`;
+    if (preventPush) {
+      preventPush = false;
+      return;
+    }
+
+    if (push) {
+      window.history.pushState({}, "", updatedParams);
+    } else {
+      window.history.replaceState({}, "", updatedParams);
+    }
   }
 }
+
+function registerPorts(p: unknown) {
+  ports = p;
+}
+
+function reportParamsToElm() {
+  preventPush = true;
+  const updatedParams = new URLSearchParams(window.location.search);
+  const updatedSelectedCard = updatedParams?.get(SELECTED_CARD);
+  ports?.updateSelectedCard?.send(updatedSelectedCard || "");
+}
+
+onMounted(() => {
+  window.addEventListener("popstate", reportParamsToElm);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("popstate", reportParamsToElm);
+});
 </script>
 
 <template>
   <CardSearch
     :searchTerm="searchTerm"
     :selectedCard="selectedCard"
+    :ports="registerPorts"
     @setSearchTerm="setSearchTerm"
     @setSelectedCard="setSelectedCard"
   />
