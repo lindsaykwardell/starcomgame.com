@@ -1,0 +1,52 @@
+---
+date: "2018-08-28"
+title: "Version 0.7.1 Update"
+snippet: "After a recent successful playtest, I got a lot of great feedback."
+---
+
+<h1 class="font-megrim text-5xl text-center pb-6">Version 0.7.1 Update</h1>
+
+<Prose class="lg:prose-lg text-justify text-white w-11/12">
+
+After a recent successful playtest, I got a lot of great feedback. Here's the main bits I took away:
+
+- Don't use so many counters, it's hard to keep track of and too fiddly for a card game.
+- Simplify everything as much as possible (this ties into the above).
+- Change up the domains (Production and Economy are too close together conceptually).
+- Perhaps don't make a TCG (something I'd been fighting myself over).
+
+And so, with these changes, I've started work on what I'm calling version 7.1. This is a major version update, as it does change the game significantly. And so, in no particular order, here are the updates:
+
+## No Longer a TCG
+
+Star Commander is now a self-contained game, rather than a TCG. From a design perspective, I love this change, because it makes design more limited. Rather than the version 3 variant of 100 cards per faction, or the version 6 of 40 cards per domain, each domain now has a hard limit of 20 unique cards. This means that I am much more restricted in what can go in and what can't, forcing me to make tough decisions. This should bring out the flavor of each domain more, or at least that's the end goal.
+
+## Change the Domains
+
+This has allowed me to rebrand the domains as well. Now, the three domains are **Industry**, **Politics**, and **Science**. This should, I hope, lead to the archetypes of Aggro, Control, and Combo, while allowing to mix and match between them. Rather than players having their own decks, there will be three Domain decks to draw from (more on drawing later).
+
+## Remove Counters
+
+Almost all counters have been removed from the game. Prior to this, the game had you track three different resources, shield values, hull damage... it was too much. And so, the following changes have been made:
+
+##### Shields have been reworked completely
+
+Since version 3, shields have been an integral part of the Science domain's tactics. Increasing shields, moving shields around, using shields as weapons, these were all ways to make a Science fleet nearly invincible. This has bothered me, but it felt so fun to play. The problem was how fiddly it was. Now, rather than using counters, shields are a static value that restore at the end of the turn. Science still has ships that increase shield power, or transfer shield into attack, but it's not as hard to grasp any more.
+
+##### Hull damage has been removed
+
+Rather than tracking hull damage, if a ship takes enough damage to overwhelm its shields, it is destroyed. Simple as that.
+
+##### Only one resource, instead of three
+
+The number of resources is reduced as well. My initial version had one resource - credits. The idea was that ships took time to build, not resources, but you _could_ pay for construction to go faster. Version 2.4 increased that to two resources, credits and production, to simplify this, but then we added technologies that shouldn't cost either credits or production points. So in version 3, I added research as a third resource. This added too much complexity, and has been scrapped back to just using credits. Production power is now reflected in making things cheaper, rather than its own resource.
+
+## Simplify Everything
+
+Also, the limit on playing a card from a domain if you have a planet of that domain is gone as well. You can now mix and match the domains as much as you want. This, in turn, allowed me to decouple the planets from the domains, and create a separate _Planet deck_. The Planet Deck with be dealt to fill out the grid at the start of the game, and planets are flipped over when explored rather than playing planets from your hands. Each planet will have unique abilities as well, which should trigger some fighting over them.
+
+Now, as far as drawing a card... _this is no longer a freebie_. To draw a card, you must pay 3 credits. You can draw as many cards as you want, as long as you have the money for it. Some cards (in Science) allow for drawing more cards, but that's it. This is because you can now play without drawing cards (although I can't imagine it's as effective). Without cards, you can now always build a Scout ship (costs 1 credit, has 0 attack and 2 shield) or a Destroyer (costs 3 credits, has 2 attack and 3 shield). If you want to build anything else, you'll need to draw some cards.
+
+The newest draft of the rules and cards (not planets, sadly) are already available to look at. Feel free to take a look. I hope to test them soon, and keep making changes and progress. Thank you for your interest!
+
+</Prose>

@@ -17,7 +17,7 @@ const posts = naturalOrder(raw).orderBy("desc").sort();
       <h2 class="text-3xl flex-grow">{{ post.title }}</h2>
       <div>{{ dayjs(post.date).format("MMM DD YYYY") }}</div>
     </div>
-    <Img :src="post.image" />
+    <Img :src="post.image" v-if="post.image" />
     <p class="p-5">{{ post.snippet }}</p>
   </a>
 </template>
