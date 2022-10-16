@@ -22,7 +22,7 @@ useHead({
         >Star Commander</a
       >
     </div>
-    <nav class="flex flex-col md:flex-row md:gap-10">
+    <nav class="flex flex-col md:flex-row md:gap-10 justify-center">
       <router-link to="/" class="flex items-center gap-1">
         <img src="@/assets/starcom-logo.png" class="w-8" />
         Home
