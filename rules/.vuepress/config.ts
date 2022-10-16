@@ -1,8 +1,10 @@
-import { defineUserConfig } from "vuepress";
-import type { DefaultThemeOptions } from "vuepress";
-const { path } = require("@vuepress/utils");
+import { defineUserConfig, defaultTheme } from "vuepress";
+// const { path } = require("@vuepress/utils");
+import { searchPlugin } from "@vuepress/plugin-search";
+import { registerComponentsPlugin } from "@vuepress/plugin-register-components";
+import { path } from '@vuepress/utils'
 
-export default defineUserConfig<DefaultThemeOptions>({
+export default defineUserConfig({
   lang: "en-US",
   title: "Star Commander Rulebook",
   description: "Official Rulebook for Star Commander",
@@ -32,7 +34,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     ],
   ],
 
-  themeConfig: {
+  theme: defaultTheme({
     logo: "/images/favicon.png",
     contributors: false,
     sidebar: {
@@ -74,22 +76,26 @@ export default defineUserConfig<DefaultThemeOptions>({
         link: "https://starcomgame.com",
       },
     ],
-  },
-
-  bundler: "@vuepress/bundler-vite",
-  bundlerConfig: {
-    viteOptions: {},
-  },
+  }),
 
   plugins: [
-    ["@vuepress/plugin-search"],
-    [
-      "@vuepress/register-components",
-      {
-        components: {
-          Card: path.resolve(__dirname, "./components/Card.vue"),
-        },
+    searchPlugin(),
+    registerComponentsPlugin({
+      components: {
+        Card: path.resolve(__dirname, "./components/Card.vue"),
       },
-    ],
+    }),
   ],
+
+  // plugins: [
+  //   ["@vuepress/plugin-search"],
+  //   [
+  //     "@vuepress/register-components",
+  // {
+  //   components: {
+  //     Card: path.resolve(__dirname, "./components/Card.vue"),
+  //   },
+  // },
+  //   ],
+  // ],
 });

@@ -11,7 +11,6 @@ declare module 'vue' {
     DropZone: typeof import('./src/components/DropZone/DropZone.vue')['default']
     Game: typeof import('./src/components/Game.vue')['default']
     Img: typeof import('./src/components/Img.vue')['default']
-    Island: typeof import('./node_modules/iles/dist/client/app/components/Island.vue')['default']
     Prose: typeof import('./src/components/Prose.vue')['default']
     System: typeof import('./src/components/System/System.vue')['default']
   }

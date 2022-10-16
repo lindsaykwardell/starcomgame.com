@@ -4,7 +4,7 @@ module.exports = {
     extend: {
       fontFamily: {
         megrim: ["Megrim", "serif"],
-        raleway: ["Raleway", "serif"],
+        raleway: ["Raleway", "sans-serif"],
       },
       typography: {
         DEFAULT: {
