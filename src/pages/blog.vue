@@ -1,11 +1,15 @@
 <script setup>
 import dayjs from "dayjs";
-const posts = useDocuments("~/pages/blog");
+const pages = useDocuments("~/pages/blog");
+
+const posts = [...pages.value].sort(
+  (a, b) => new Date(b.date) - new Date(a.date)
+);
 </script>
 
 <template>
   <a
-    v-for="post in posts.reverse()"
+    v-for="post in posts"
     class="bg-gray-900 border border-transparent hover:border-white p-3 rounded w-2/3 md:w-[700px] my-3"
     :href="post.href"
   >
