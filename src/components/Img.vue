@@ -2,6 +2,7 @@
   <figure class="text-center">
     <img
       class="border-8 rounded-lg border-black shadow-md"
+      :class="class"
       :src="src"
       :alt="alt"
       loading="lazy"
@@ -16,6 +17,7 @@
 defineProps<{
   src: string;
   alt: string;
+  class?: string;
 }>();
 </script>
 

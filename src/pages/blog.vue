@@ -1,0 +1,23 @@
+<script setup>
+import dayjs from "dayjs";
+import naturalOrder from "natural-order";
+
+const raw = useDocuments("~/pages/blog").value;
+
+const posts = naturalOrder(raw).orderBy("desc").sort();
+</script>
+
+<template>
+  <a
+    v-for="post in posts"
+    class="bg-gray-900 border border-transparent hover:border-white p-3 rounded w-2/3 md:w-[700px] my-3"
+    :href="post.href"
+  >
+    <div class="flex items-center border-b border-gray-500 py-3 mb-3">
+      <h2 class="text-3xl flex-grow">{{ post.title }}</h2>
+      <div>{{ dayjs(post.date).format("MMM DD YYYY") }}</div>
+    </div>
+    <Img :src="post.image" />
+    <p class="p-5">{{ post.snippet }}</p>
+  </a>
+</template>
