@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Elm } from "../CardSearch.elm";
-import elmBridge from "elm-vue-bridge";
+import elmBridge from "elm-vue-bridge/dist/elm-vue-bridge.umd";
 import { watchEffect, computed, onMounted, onUnmounted } from "vue";
 
 const CardSearch = elmBridge(Elm, {
