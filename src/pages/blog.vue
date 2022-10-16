@@ -1,15 +1,11 @@
 <script setup>
 import dayjs from "dayjs";
-import naturalOrder from "natural-order";
-
-const raw = useDocuments("~/pages/blog").value;
-
-const posts = naturalOrder(raw).orderBy("desc").sort();
+const posts = useDocuments("~/pages/blog");
 </script>
 
 <template>
   <a
-    v-for="post in posts"
+    v-for="post in posts.reverse()"
     class="bg-gray-900 border border-transparent hover:border-white p-3 rounded w-2/3 md:w-[700px] my-3"
     :href="post.href"
   >

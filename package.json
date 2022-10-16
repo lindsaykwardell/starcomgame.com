@@ -49,7 +49,6 @@
     "dayjs": "^1.11.5",
     "dotenv": "^16.0.0",
     "elm-vue-bridge": "^1.2.3",
-    "natural-order": "^2.0.2",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
     "tiny-emitter": "^2.1.0",
