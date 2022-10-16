@@ -1,20 +1,16 @@
 # Additional Rules
 
+## Drawing Cards
+
+Whenever a card or an action directs you to draw a card, you may only draw from a deck that matches a domain you control. For example, if you play [Explore the Unknown](https://www.starcomgame.com/card-database?selectedCard=Explore_the_Unknown), and you only control systems with a Science domain, then you must draw from the Science deck.
+
+## Fighters
+
+Fighters are small, single-occupant ships that are unable to jump or support themselves. Fighters are unable to participate in a siege (see [Siege](/etc/additional-rules.html#siege)). If a fighter is abandoned (only fighters remain in a system you do not control) at the start of your turn, and remains abandoned at the end of your turn, it is destroyed.
+
 ## Hand Limit
 
 You may only have up to five cards in your hand at a time. If you attempt to draw a card with five cards already in your hand, you must either discard one first or skip your draw. At no time should you have more than five cards in hand.
-
-## Turn Order
-
-If there are more than two players in a game, players will take turns in a clockwise order. The same applies for performing any actions, such as playing Commands or activating abilities (see [Responses](/etc/additional-rules.html#responses)).
-
-## Targeting
-
-Ships and stations can only target in their current system. If an ability on a card says that a ship or station you control does something to another ship, this same rule applies. Any card that refers to “target ship or station” (or similar) may perform its action in any system.
-
-## Vessels
-
-Some cards refer to vessels. A vessel is either a ship or station.
 
 ## Responses
 
@@ -26,8 +22,14 @@ A system is considered under siege when an opponent has non-Fighter ships in tha
 
 Note that for the purposes of drawing cards, a player may still choose the domain of a system under siege. 
 
-## Fighters
+## Turn Order
 
-Fighters are small, single-occupant ships that are unable to jump or support themselves. You may only control a number of fighters equal to your total development count, and you may only have a number of fighters in a system equal to its development level. Fighters are unable to participate in a siege (see [Siege](/etc/additional-rules.html#siege)). Treat fighters as having a jump distance of 0. If a card says that a ship may perform a jump outside of its normal ability, that card applies to fighters as well (for example, [Jump Nexus](https://www.starcomgame.com/card-database?selectedCard=Jump_Nexus) or [Enhanced Jump Drive](https://www.starcomgame.com/card-database?selectedCard=Enhanced_Jump_Drive)).
+If there are more than two players in a game, players will take turns in a clockwise order. The same applies for performing any actions, such as playing Commands, taking turn actions, or activating abilities (see [Responses](/etc/additional-rules.html#responses)).
 
-If a fighter is abandoned (only fighters remain in a system you do not control) at the start of your turn, and remains abandoned at the end of your turn, it is destroyed.
+## Targeting
+
+Ships and stations can only target in their current system. If an ability on a card says that a ship or station you control does something to another ship, this same rule applies. Any card that refers to “target ship or station” (or similar) may perform its action in any system.
+
+## Vessels
+
+Some cards refer to vessels. A vessel is either a ship or station.

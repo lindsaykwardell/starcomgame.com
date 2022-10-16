@@ -2,9 +2,9 @@ Name,Domain,Card Types,,MaxDev,,,Rules,Template,Card #,Count
 Research World,Science,System,,4,,,"At the start of your turn, draw a card.",,26,2
 Core World,Statecraft,System,,4,,,"At the start of your turn, place a development on a valid system you control.",,27,2
 Trade World,Industry,System,,4,,,"At the start of your turn, gain 2 credits.",,28,2
-Military Base,Industry,System,,3,,,"When you first develop this system, build a Defense Stations.",,29,3
-Alien System,Science,System,,3,,,"When you first develop this system, draw two cards.",,30,3
-New Colony,Statecraft,System,,3,,,"When you first develop this system, place another development on it.",,31,3
+Military Base,Industry,System,,3,,,"When this system is first developed, build a Defense Stations.",,29,3
+Alien System,Science,System,,3,,,"When this system is first developed, draw two cards.",,30,3
+New Colony,Statecraft,System,,3,,,"When this system is first developed, place another development on it.",,31,3
 Asteroid Field,Statecraft,System,,2,,,Only small ships and Fighters can enter this system.,,32,1
 Pulsar System,Industry,System,,2,,,Ships in this system cannot be targeted by Commands.,,33,1
 Black Hole,Science,System,,2,,,Ships that enter this system cannot attack until next turn.,,34,1

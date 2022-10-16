@@ -4,7 +4,9 @@
 
 ## Move Ships
 
-Ships that you have controlled since the start of your turn have one movement action. You may move them (called jumping) to another adjacent system. Ship may only jump once per turn unless otherwise stated (except Fighters).
+Ships that you have controlled since the start of your turn have one movement action. You may move them (called jumping) to another adjacent system. Ships may only jump according to their speed. For example, a [Corvette](https://www.starcomgame.com/card-database?selectedCard=Corvette) has a speed of 1, and so can only jump once per turn. A [Fighter](https://www.starcomgame.com/card-database?selectedCard=Strike_Fighter) has a speed of 0, and so cannot jump.
+
+Some cards (like [Enhanced Jump Drive](/card-database?selectedCard=Enhanced_Jump_Drive)) can increase a ship's speed, which allows for additional movement actions. The only time a Fighter can jump while having a speed of 0 is if a [Carrier](https://www.starcomgame.com/card-database?selectedCard=Carrier) is in the same system as the Fighter and it jumps to another system.
 
 ## Explore
 
@@ -14,8 +16,8 @@ Whenever a ship enters a system with a face down System card, you may flip it ov
 
 You may build any ships or stations that you can afford. Stations can be built in any system you control, while ships can only be constructed in starting systems and capital systems. There are some restrictions on when you can build ships or stations:
 
-- You can only build a number of stations in a system equal to its development level (the number of development counters on it). If a system only has one development counter, it can only have one station.
-- You can only build a number of fighters in a system equal to its development level.
+- You can only build a number of stations in a system equal to the number of development counters in that system. If a system only has one development counter, it can only have one station.
+- You can only build a number of ships equal to the total number of developments you control.
 - You cannot build a ship or station in a system that is under siege (see [Siege](/etc/additional-rules.html#siege)). The exception is your starting system, which can always build ships (but not stations).
 
 ## Play Commands

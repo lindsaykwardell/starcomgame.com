@@ -10,11 +10,13 @@ There are five card types in the game. Throughout play, you will be interacting 
 
 There are four ship types - Fighter, Small, Medium, and Large. Each has a cost, attack, hit points, and speed. Some ships have other abilities written on them. Ships are the only cards that can move between systems. Ships are built at your [Homeworld](https://www.starcomgame.com/card-database?selectedCard=Homeworld) or in [Capital Systems](https://www.starcomgame.com/card-database?selectedCard=Drummond), and are placed on the side of the system card closest to you. Ships are placed on the board with their text facing their controller. Ships can move (jump) between systems equal to their speed; a ship with a speed of 1 can jump to another system once per turn.
 
+You can only control a number of ships equal to the total number of developments you control. If your number of developments is equal to or less than the number of ships you control, you cannot build more ships.
+
 ## Station
 
 <Card src="https://www.starcomgame.com/cards/Refinery-thumb.webp" alt="Refinery" float="right" />
 
-Stations act just like ships, but cannot move between systems.
+Stations act just like ships, but cannot move between systems. Stations can be built in any system you control. You may only build a number of stations equal to the number of developments in that system.
 
 ## System
 
