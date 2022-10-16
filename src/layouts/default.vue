@@ -1,5 +1,11 @@
 <script setup lang="ts">
 import "../assets/index.css";
+
+useHead({
+  link: [
+    { rel: 'icon', href: 'favicon.png'}
+  ]
+})
 </script>
 
 <template>
