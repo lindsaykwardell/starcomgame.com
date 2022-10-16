@@ -22,8 +22,8 @@ defineProps<{
 </script>
 
 <style>
-  figure.card img {
-    aspect-ratio: 2/3;
-    object-fit: cover;
-  }
+img.card {
+  aspect-ratio: 2/3;
+  object-fit: cover;
+}
 </style>
