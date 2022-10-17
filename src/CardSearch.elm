@@ -89,10 +89,23 @@ cardTypeToString : Card -> String
 cardTypeToString card =
     case card.cardType of
         Ship size _ ->
-            "Ship - " ++ sizeToString size
+            "Ship - "
+                ++ sizeToString size
+                ++ (if card.domain /= Neutral then
+                        " | "
+
+                    else
+                        ""
+                   )
 
         Station _ ->
             "Station"
+                ++ (if card.domain /= Neutral then
+                        " | "
+
+                    else
+                        ""
+                   )
 
         Command ->
             "Command"
