@@ -453,7 +453,7 @@ export default {
         if (this.multiplayerSeat) {
           return this.players[this.multiplayerSeat].hand;
         } else {
-          return this.players[this.activePlayer].hand;
+          return this.players[this.activePlayerHand].hand;
         }
       },
       set(val) {
@@ -514,10 +514,7 @@ export default {
       }
 
       if (this.contextCard.type === SYSTEM) {
-        let menu = [
-          ...this.contextCard.contextMenu,
-          ...this.contextCard.bonusContextMenu,
-        ];
+        let menu = [...this.contextCard.contextMenu];
 
         // Per turn actions
         if (

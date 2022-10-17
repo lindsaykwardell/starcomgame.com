@@ -228,7 +228,7 @@ const STATION_CONTEXT_MENU = [
     condition: ({ card, system, activePlayer, players }) =>
       card.controlledBy === activePlayer &&
       players[activePlayer].credits >= 3 &&
-      system[activePlayer].length < system.card.developmentLevel,
+      system[activePlayer].filter(c => c.type === STATION).length < system.card.developmentLevel,
   },
   // {
   //   action: "build:41",
@@ -918,7 +918,7 @@ export const CARD_LIST = [
     type: TECHNOLOGY,
     domain: STATECRAFT,
     deck: STATECRAFT,
-    count: 300,
+    count: 3,
     cost: 0,
     hp: null,
     attack: null,
@@ -1635,7 +1635,7 @@ export const CARD_LIST = [
     type: SYSTEM,
     domain: STATECRAFT,
     deck: SYSTEM,
-    count: 300,
+    count: 3,
     developmentLevel: 0,
     maxDevelopmentLevel: 3,
     bonusDevelopmentLevel: 0,
