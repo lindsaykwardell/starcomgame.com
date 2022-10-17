@@ -24,7 +24,7 @@
 
 <script>
 import EventBus from "@/util/EventBus";
-import { DAMAGEABLE } from "@/lib/core-v2";
+import { DAMAGEABLE } from "@/lib/core-v3";
 
 export default {
   props: {

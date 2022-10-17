@@ -28,19 +28,19 @@
               class="p-1 bg-red-500 hover:bg-red-600 duration-200 flex-1"
               @click="draw(activePlayer, decks.industry)"
             >
-              Industry ({{ decks.industry.remaining }}/20)
+              Industry ({{ decks.industry.remaining }}/30)
             </button>
             <button
               class="p-1 bg-yellow-600 hover:bg-yellow-700 duration-200 flex-1"
               @click="draw(activePlayer, decks.politics)"
             >
-              Politics ({{ decks.politics.remaining }}/20)
+              Politics ({{ decks.politics.remaining }}/30)
             </button>
             <button
               class="p-1 bg-green-600 hover:bg-green-700 duration-200 flex-1"
               @click="draw(activePlayer, decks.science)"
             >
-              Science ({{ decks.science.remaining }}/20)
+              Science ({{ decks.science.remaining }}/30)
             </button>
           </div>
 
@@ -268,9 +268,9 @@
             {{ multiplayerSeat === "player1" ? "Player 1" : "Player 2" }}
           </div>
         </div>
-        <button class="d20 text-black" @click="drawCardFromDie">
+        <!-- <button class="d20 text-black" @click="drawCardFromDie">
           <font-awesome size="4x" :icon="['fa', 'dice-d20']" :class="dieRoll" />
-        </button>
+        </button> -->
       </div>
       <div class="hand" v-if="shouldBoardDisplay">
         <DropZone
@@ -293,6 +293,7 @@
             option.condition({
               card: contextCard,
               system: systems[contextLoc],
+              systems: systems,
               activePlayer,
               players,
               inCombat: showCombat,
@@ -341,7 +342,7 @@ import {
   generateResolveContextMenu,
   generateCombatContextMenu,
   CAPITAL_PLANET_NAME_LIST,
-} from "@/lib/core-v2";
+} from "@/lib/core-v3";
 import Deck from "@/models/Deck";
 
 import EventBus from "@/util/EventBus";
@@ -606,7 +607,7 @@ export default {
         if (deck === SCIENCE) deck = this.decks.science;
       }
 
-      if (this.players[player].hand.length < 8) {
+      if (this.players[player].hand.length < 5) {
         playCard();
 
         const nextCard = deck.draw();
@@ -966,11 +967,19 @@ export default {
     cleanUpDestroyedShips() {
       this.systems.forEach((system) => {
         system.player1.forEach((card) => {
-          if (card.damage >= card.totalHp()) this.destroy(card);
+          if (card.damage >= card.totalHp()) {
+            this.destroy(card);
+          } else {
+            card.damage = 0;
+          }
         });
 
         system.player2.forEach((card) => {
-          if (card.damage >= card.totalHp()) this.destroy(card);
+          if (card.damage >= card.totalHp()) {
+            this.destroy(card);
+          } else {
+            card.damage = 0;
+          }
         });
       });
     },
@@ -1108,39 +1117,39 @@ export default {
       });
 
       // Roll the new turn die
-      this.drawCardFromDie().then(() => {
-        this.socket?.emit("state", JSON.stringify(this.fnContext));
-      });
+      // this.drawCardFromDie().then(() => {
+      //   this.socket?.emit("state", JSON.stringify(this.fnContext));
+      // });
     },
-    async drawCardFromDie() {
-      await this.rollDie();
+    // async drawCardFromDie() {
+    //   await this.rollDie();
 
-      let domain;
+    //   let domain;
 
-      switch (this.dieRoll) {
-        case "industry":
-          domain = INDUSTRY;
-          break;
-        case "politics":
-          domain = POLITICS;
-          break;
-        case "science":
-          domain = SCIENCE;
-          break;
-      }
+    //   switch (this.dieRoll) {
+    //     case "industry":
+    //       domain = INDUSTRY;
+    //       break;
+    //     case "politics":
+    //       domain = POLITICS;
+    //       break;
+    //     case "science":
+    //       domain = SCIENCE;
+    //       break;
+    //   }
 
-      // If it came up with a domain, draw a card if player has matching system
-      if (domain) {
-        if (this.playerControlsDomain(this.activePlayer, domain)) {
-          console.log("Drawing card from die");
-          this.draw(this.activePlayer, domain);
-        } else {
-          console.log("No matching system");
-        }
-      } else {
-        console.log("No matching domain");
-      }
-    },
+    //   // If it came up with a domain, draw a card if player has matching system
+    //   if (domain) {
+    //     if (this.playerControlsDomain(this.activePlayer, domain)) {
+    //       console.log("Drawing card from die");
+    //       this.draw(this.activePlayer, domain);
+    //     } else {
+    //       console.log("No matching system");
+    //     }
+    //   } else {
+    //     console.log("No matching domain");
+    //   }
+    // },
     parseAndUpdateState(payload) {
       const {
         card,
