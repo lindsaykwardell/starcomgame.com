@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    BlogPostCard: typeof import('./src/components/BlogPostCard.vue')['default']
     Card: typeof import('./src/components/Card/Card.vue')['default']
     CardSearch: typeof import('./src/components/CardSearch.vue')['default']
     DamageDice: typeof import('./src/components/Dice/DamageDice.vue')['default']
@@ -15,6 +16,7 @@ declare module '@vue/runtime-core' {
     Game: typeof import('./src/components/Game.vue')['default']
     Img: typeof import('./src/components/Img.vue')['default']
     Island: typeof import('./node_modules/iles/dist/client/app/components/Island.vue')['default']
+    LatestPost: typeof import('./src/components/LatestPost.vue')['default']
     Prose: typeof import('./src/components/Prose.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
