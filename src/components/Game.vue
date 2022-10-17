@@ -25,20 +25,26 @@
         <div class="flex-grow">
           <div class="flex">
             <button
-              class="p-1 bg-red-500 hover:bg-red-600 duration-200 flex-1"
+              class="p-1 bg-red-500 hover:bg-red-600 disabled:bg-red-900 disabled:text-gray-400 duration-200 flex-1"
               @click="draw(activePlayer, decks.industry)"
+              @mouseover="hoveredCard = { img: '', backImg: '/industry.png' }"
+              :disabled="!activePlayerControlsIndustry"
             >
               Industry ({{ decks.industry.remaining }}/30)
             </button>
             <button
-              class="p-1 bg-yellow-600 hover:bg-yellow-700 duration-200 flex-1"
+              class="p-1 bg-yellow-600 hover:bg-yellow-700 disabled:bg-yellow-900 disabled:text-gray-400 duration-200 flex-1"
               @click="draw(activePlayer, decks.politics)"
+              @mouseover="hoveredCard = { img: '', backImg: '/statecraft.png' }"
+              :disabled="!activePlayerControlsStatecraft"
             >
-              Politics ({{ decks.politics.remaining }}/30)
+              Statecraft ({{ decks.politics.remaining }}/30)
             </button>
             <button
-              class="p-1 bg-green-600 hover:bg-green-700 duration-200 flex-1"
+              class="p-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-900 disabled:text-gray-400 duration-200 flex-1"
               @click="draw(activePlayer, decks.science)"
+              @mouseover="hoveredCard = { img: '', backImg: '/science.png' }"
+              :disabled="!activePlayerControlsScience"
             >
               Science ({{ decks.science.remaining }}/30)
             </button>
@@ -77,7 +83,11 @@
               class="inline lg"
             />
           </Dialog> -->
-          <Card :card="stack[0]" class="md m-auto" loc="stack" />
+          <Card
+            :card="stack[0] || { backImg: '/ship.png' }"
+            class="md m-auto"
+            loc="stack"
+          />
         </div>
         <a
           class="flex-shrink relative"
@@ -115,7 +125,7 @@
           />
         </div>
         <div
-          class="fixed bottom-[250px] bg-red-300/25 p-1 rounded-lg flex gap-1"
+          class="fixed bottom-[260px] bg-red-300/25 p-1 rounded-lg flex gap-1"
         >
           <Card
             v-for="card in player1Technology"
@@ -238,26 +248,32 @@
           {{ showCombat ? "End Combat" : "Pass Turn" }}
         </button>
         <div class="active-player-stats flex items-center gap-4">
-          <div
-            class="flex-1 bg-red-400 p-1 rounded-lg duration-200 whitespace-nowrap"
+          <button
+            class="flex-1 bg-red-400 p-1 rounded-lg duration-200 whitespace-nowrap text-left"
             :class="
               activePlayer === 'player1' ? 'bg-red-400 shadow-lg' : 'bg-red-900'
             "
+            @click="activePlayerHand = 'player1'"
           >
+            <em>Player 1</em><br />
+            <hr />
             Credits: {{ players.player1.credits }}<br />
             Developments: {{ getPlayerDevelopmentCount("player1") }}
-          </div>
-          <div
-            class="flex-1 bg-blue-400 p-1 rounded-lg duration-200 whitespace-nowrap"
+          </button>
+          <button
+            class="flex-1 bg-blue-400 p-1 rounded-lg duration-200 whitespace-nowrap text-left"
             :class="
               activePlayer === 'player2'
                 ? 'bg-blue-400 shadow-lg'
                 : 'bg-blue-900'
             "
+            @click="activePlayerHand = 'player2'"
           >
+            <em>Player 2</em><br />
+            <hr />
             Credits: {{ players.player2.credits }}<br />
             Developments: {{ getPlayerDevelopmentCount("player2") }}
-          </div>
+          </button>
           <div
             v-if="multiplayerSeat"
             class="font-megrim text-2xl bold"
@@ -272,7 +288,7 @@
           <font-awesome size="4x" :icon="['fa', 'dice-d20']" :class="dieRoll" />
         </button> -->
       </div>
-      <div class="hand" v-if="shouldBoardDisplay">
+      <div class="hand" :class="activePlayerHand" v-if="shouldBoardDisplay">
         <DropZone
           :list.sync="hand"
           group="hand"
@@ -322,7 +338,7 @@ import itemMp3 from "@/assets/audio/item.mp3";
 import useSocket from "@/lib/useSocket";
 
 import {
-  DECK_POLITICS,
+  DECK_STATECRAFT,
   DECK_INDUSTRY,
   DECK_SCIENCE,
   DECK_SYSTEM,
@@ -332,7 +348,7 @@ import {
   DISCARD_CONTEXT_MENU,
   DAMAGE_CONTEXT_MENU,
   SCOUT,
-  POLITICS,
+  STATECRAFT,
   INDUSTRY,
   SCIENCE,
   TECHNOLOGY,
@@ -401,6 +417,7 @@ export default {
       },
       activePlayer: "player1",
       nextPlayer: "player2",
+      activePlayerHand: "player1",
       multiplayerSeat: null,
       contextCard: null,
       contextLoc: 0,
@@ -415,7 +432,7 @@ export default {
       discard: [],
       stack: [],
       decks: {
-        politics: new Deck(DECK_POLITICS),
+        politics: new Deck(DECK_STATECRAFT),
         industry: new Deck(DECK_INDUSTRY),
         science: new Deck(DECK_SCIENCE),
         system: new Deck(DECK_SYSTEM),
@@ -440,7 +457,7 @@ export default {
         }
       },
       set(val) {
-        this.players[this.activePlayer].hand = val;
+        this.players[this.activePlayerHand].hand = val;
       },
     },
     technology() {
@@ -553,6 +570,27 @@ export default {
         decks: this.decks,
       };
     },
+    activePlayerControlsIndustry() {
+      return this.systems.find(
+        (system) =>
+          system.card.controlledBy === this.activePlayer &&
+          system.card.domain === INDUSTRY
+      );
+    },
+    activePlayerControlsStatecraft() {
+      return this.systems.find(
+        (system) =>
+          system.card.controlledBy === this.activePlayer &&
+          system.card.domain === STATECRAFT
+      );
+    },
+    activePlayerControlsScience() {
+      return this.systems.find(
+        (system) =>
+          system.card.controlledBy === this.activePlayer &&
+          system.card.domain === SCIENCE
+      );
+    },
   },
   methods: {
     rollDie() {
@@ -603,7 +641,7 @@ export default {
     draw(player, deck) {
       if (typeof deck === "string") {
         if (deck === INDUSTRY) deck = this.decks.industry;
-        if (deck === POLITICS) deck = this.decks.politics;
+        if (deck === STATECRAFT) deck = this.decks.politics;
         if (deck === SCIENCE) deck = this.decks.science;
       }
 
@@ -1046,6 +1084,7 @@ export default {
 
       // Next player
       this.activePlayer = this.nextPlayer;
+      this.activePlayerHand = this.nextPlayer;
       this.nextPlayer = this.nextPlayer === "player1" ? "player2" : "player1";
 
       // Validate the now-active player didn't lose last turn.
@@ -1131,7 +1170,7 @@ export default {
     //       domain = INDUSTRY;
     //       break;
     //     case "politics":
-    //       domain = POLITICS;
+    //       domain = STATECRAFT;
     //       break;
     //     case "science":
     //       domain = SCIENCE;
@@ -1376,6 +1415,13 @@ export default {
   height: 175px;
   /* overflow-y: scroll; */
   background: black;
+
+  &.player1 {
+    @apply bg-red-900;
+  }
+  &.player2 {
+    @apply bg-blue-900;
+  }
 }
 
 .context-menu {
@@ -1396,7 +1442,7 @@ export default {
 
 .active-player-stats {
   @apply fixed text-white text-left;
-  bottom: 185px;
+  bottom: 175px;
   left: 310px;
 }
 

@@ -24,7 +24,7 @@
 
 <script>
 import EventBus from "@/util/EventBus";
-import { DAMAGEABLE } from "@/lib/core-v3";
+import { DAMAGEABLE, SYSTEM, CAPITAL_SYSTEM } from "@/lib/core-v3";
 
 export default {
   props: {
@@ -32,6 +32,9 @@ export default {
       type: Object,
       default: () => ({
         img: "",
+        type: "",
+        backImg: "",
+        explored: false,
       }),
     },
     loc: {
@@ -49,10 +52,17 @@ export default {
   },
   methods: {
     getImgUrl(cardName) {
+      if (
+        [SYSTEM, CAPITAL_SYSTEM].includes(this.card.type) &&
+        !this.card.explored
+      ) {
+        return this.card.backImg;
+      }
+
       if (cardName) {
         return "/cards/" + cardName + ".webp";
       } else {
-        return "/back.jpg";
+        return this.card.backImg || "/back.jpg";
       }
     },
     hoverCard() {

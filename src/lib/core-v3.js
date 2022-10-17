@@ -1,8 +1,8 @@
-export const POLITICS = "Politics";
+export const STATECRAFT = "Statecraft";
 export const INDUSTRY = "Industry";
 export const SCIENCE = "Science";
 
-export const DOMAINS = [POLITICS, INDUSTRY, SCIENCE];
+export const DOMAINS = [STATECRAFT, INDUSTRY, SCIENCE];
 
 export const SHIP = "Ship";
 export const FIGHTER = "Fighter";
@@ -225,9 +225,9 @@ const SHIP_CONTEXT_MENU = [
 const STATION_CONTEXT_MENU = [
   {
     action: "build:40",
-    label: "Build Defense Station",
+    label: "Build Defense Station (3 credits)",
     condition: ({ card, system, activePlayer, players }) =>
-      card.controlledBy === activePlayer && players[activePlayer].credits >= 4,
+      card.controlledBy === activePlayer && players[activePlayer].credits >= 3,
   },
   // {
   //   action: "build:41",
@@ -676,8 +676,8 @@ export const CARD_LIST = [
     id: 11,
     img: "Missile_Platform",
     type: STATION,
-    domain: POLITICS,
-    deck: POLITICS,
+    domain: STATECRAFT,
+    deck: STATECRAFT,
     damage: 0,
     count: 4,
     cost: 6,
@@ -706,8 +706,8 @@ export const CARD_LIST = [
     id: 12,
     img: "Orbital_Habitat",
     type: STATION,
-    domain: POLITICS,
-    deck: POLITICS,
+    domain: STATECRAFT,
+    deck: STATECRAFT,
     damage: 0,
     count: 3,
     cost: 4,
@@ -739,8 +739,8 @@ export const CARD_LIST = [
     id: 13,
     img: "Shipyard",
     type: STATION,
-    domain: POLITICS,
-    deck: POLITICS,
+    domain: STATECRAFT,
+    deck: STATECRAFT,
     damage: 0,
     count: 2,
     cost: 3,
@@ -761,8 +761,8 @@ export const CARD_LIST = [
     id: 14,
     img: "Spy_Network",
     type: COMMAND,
-    domain: POLITICS,
-    deck: POLITICS,
+    domain: STATECRAFT,
+    deck: STATECRAFT,
     count: 4,
     cost: 0,
     hp: null,
@@ -773,8 +773,8 @@ export const CARD_LIST = [
     id: 15,
     img: "Intercept_Orders",
     type: COMMAND,
-    domain: POLITICS,
-    deck: POLITICS,
+    domain: STATECRAFT,
+    deck: STATECRAFT,
     count: 2,
     cost: 0,
     hp: null,
@@ -797,8 +797,8 @@ export const CARD_LIST = [
     id: 16,
     img: "Sabotage",
     type: COMMAND,
-    domain: POLITICS,
-    deck: POLITICS,
+    domain: STATECRAFT,
+    deck: STATECRAFT,
     count: 4,
     cost: 0,
     hp: null,
@@ -830,8 +830,8 @@ export const CARD_LIST = [
     id: 17,
     img: "Bribery",
     type: COMMAND,
-    domain: POLITICS,
-    deck: POLITICS,
+    domain: STATECRAFT,
+    deck: STATECRAFT,
     count: 3,
     cost: 0,
     hp: null,
@@ -878,8 +878,8 @@ export const CARD_LIST = [
     id: 18,
     img: "Filibuster",
     type: COMMAND,
-    domain: POLITICS,
-    deck: POLITICS,
+    domain: STATECRAFT,
+    deck: STATECRAFT,
     count: 2,
     cost: 0,
     hp: null,
@@ -893,8 +893,8 @@ export const CARD_LIST = [
     id: 19,
     img: "Advanced_Weapons",
     type: TECHNOLOGY,
-    domain: POLITICS,
-    deck: POLITICS,
+    domain: STATECRAFT,
+    deck: STATECRAFT,
     count: 3,
     cost: 0,
     hp: null,
@@ -913,8 +913,8 @@ export const CARD_LIST = [
     id: 20,
     img: "Fighter_Bays",
     type: TECHNOLOGY,
-    domain: POLITICS,
-    deck: POLITICS,
+    domain: STATECRAFT,
+    deck: STATECRAFT,
     count: 3,
     cost: 0,
     hp: null,
@@ -1463,7 +1463,7 @@ export const CARD_LIST = [
     id: 43,
     img: "Core_World",
     type: SYSTEM,
-    domain: POLITICS,
+    domain: STATECRAFT,
     deck: SYSTEM,
     count: 2,
     developmentLevel: 0,
@@ -1584,7 +1584,7 @@ export const CARD_LIST = [
     id: 47,
     img: "New_Colony",
     type: SYSTEM,
-    domain: POLITICS,
+    domain: STATECRAFT,
     deck: SYSTEM,
     count: 3,
     developmentLevel: 0,
@@ -1621,7 +1621,7 @@ export const CARD_LIST = [
     id: 49,
     img: "Pulsar_System",
     type: SYSTEM,
-    domain: POLITICS,
+    domain: STATECRAFT,
     deck: SYSTEM,
     count: 1,
     developmentLevel: 0,
@@ -1653,7 +1653,7 @@ export const CARD_LIST = [
     id: 51,
     img: "Silis_Major",
     type: SYSTEM,
-    domain: POLITICS,
+    domain: STATECRAFT,
     deck: SYSTEM,
     count: 1,
     developmentLevel: 0,
@@ -1789,7 +1789,7 @@ export const CARD_LIST = [
       return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
     },
     explored: false,
-    contextMenu: [],
+    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
     id: 55,
@@ -1816,8 +1816,8 @@ export const randomCard = () => {
 
 export const HOMEWORLD = CARD_LIST.find((card) => card.img === "Homeworld");
 
-export const DECK_POLITICS = CARD_LIST.filter(
-  (card) => card.deck === POLITICS
+export const DECK_STATECRAFT = CARD_LIST.filter(
+  (card) => card.deck === STATECRAFT
 ).reduce((deck, card) => {
   const list = [...deck];
   for (let i = 0; i < card.count; i++) {
@@ -1849,6 +1849,7 @@ export const DECK_SCIENCE = CARD_LIST.filter(
 export const DECK_SYSTEM = CARD_LIST.filter(
   (card) => card.deck === SYSTEM
 ).reduce((deck, card) => {
+  card.backImg = "/planet.png";
   const list = [...deck];
   for (let i = 0; i < card.count; i++) {
     list.push({ ...card });

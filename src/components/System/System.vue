@@ -14,8 +14,7 @@
     <div class="relative">
       <Card
         :class="combat ? 'horizontal-lg' : 'horizontal'"
-        :card="system.card.explored ? system.card : undefined"
-        x:card="system.card"
+        :card="system.card"
         :showEffects="showEffects"
       />
       <div v-if="system.card.developmentLevel > 0" class="development-die">
