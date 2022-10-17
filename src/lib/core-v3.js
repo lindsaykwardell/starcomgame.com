@@ -120,6 +120,19 @@ export const CAPITAL_PLANET_NAME_LIST = [
   "Forsei",
 ];
 
+function shipCountBelowDevelopmentLevel(systems, activePlayer) {
+  const playerDevelopmentLevel = systems
+    .filter((system) => system.card.controlledBy === activePlayer)
+    .reduce((total, system) => system.card.developmentLevel + total, 0);
+
+  const playerTotalShipCount = systems.reduce(
+    (total, system) =>
+      system[activePlayer].filter((c) => c.type !== STATION).length + total,
+    0
+  );
+  return playerDevelopmentLevel > playerTotalShipCount;
+}
+
 const generateBuildShipContextMenu = ({
   card,
   systems,
@@ -147,20 +160,6 @@ const generateBuildShipContextMenu = ({
         cost = technology.buildCostModifier({ card: ship, cost });
       }
     });
-
-    function shipCountBelowDevelopmentLevel(systems, activePlayer) {
-      const playerDevelopmentLevel = systems
-        .filter((system) => system.card.controlledBy === activePlayer)
-        .reduce((total, system) => system.card.developmentLevel + total, 0);
-
-      const playerTotalShipCount = systems.reduce(
-        (total, system) =>
-          system[activePlayer].filter((c) => c.type !== STATION).length + total,
-        0
-      );
-
-      return playerDevelopmentLevel > playerTotalShipCount;
-    }
 
     return {
       action: `build:${id}`,
@@ -227,7 +226,9 @@ const STATION_CONTEXT_MENU = [
     action: "build:40",
     label: "Build Defense Station (3 credits)",
     condition: ({ card, system, activePlayer, players }) =>
-      card.controlledBy === activePlayer && players[activePlayer].credits >= 3,
+      card.controlledBy === activePlayer &&
+      players[activePlayer].credits >= 3 &&
+      system[activePlayer].length < system.card.developmentLevel,
   },
   // {
   //   action: "build:41",
@@ -241,8 +242,10 @@ export const BUILD_FIGHTER_CONTEXT_MENU = [
   {
     action: "build:32",
     label: "Build Strike Fighter",
-    condition: ({ card, system, activePlayer, players }) =>
-      card.controlledBy === activePlayer && players[activePlayer].credits >= 2,
+    condition: ({ card, system, systems, activePlayer, players }) =>
+      card.controlledBy === activePlayer &&
+      players[activePlayer].credits >= 1 &&
+      shipCountBelowDevelopmentLevel(systems, activePlayer),
   },
 ];
 
@@ -915,15 +918,61 @@ export const CARD_LIST = [
     type: TECHNOLOGY,
     domain: STATECRAFT,
     deck: STATECRAFT,
-    count: 3,
+    count: 300,
     cost: 0,
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContextMenu: [
+      ({ systems, activePlayer, getNextId, players }) => {
+        return systems.map((system) => {
+          return {
+            action: "step:0",
+            label: `Build Strike Fighter in ${system.card.img}`,
+            condition: ({ card, systems, activePlayer, players }) => {
+              return (
+                system.card.controlledBy === activePlayer &&
+                players[activePlayer].credits >= 1 &&
+                shipCountBelowDevelopmentLevel(systems, activePlayer) &&
+                system[activePlayer].find((c) => c.type === STATION)
+              );
+            },
+            stepAction: () => {
+              const card = { ...CARD_LIST.find((c) => c.id === 32) };
+              if (card) {
+                system[activePlayer] = [
+                  ...system[activePlayer],
+                  { ...card, id: getNextId(), effects: [] },
+                ];
+
+                players[activePlayer].credits -= 1;
+              }
+            },
+          };
+        });
+      },
+    ],
+    onResolve: ({ systems, activePlayer }) => {
+      systems.forEach((system) => {
+        system[activePlayer].forEach((card) => {
+          if (card.type === FIGHTER) {
+            card.bonusHp += 1;
+            card.effects.push("Fighter_Bays");
+          }
+        });
+      });
+    },
+    onBuildOther: ({ card, systems, player }) => {
+      if (card.type === FIGHTER) {
+        card.bonusHp += 1;
+        card.effects.push("Fighter_Bays");
+      }
+    },
     onEachTurnStart: ({ systems, player }) => {
       systems.forEach((system) => {
         system[player].forEach((card) => {
-          if (card.type === STATION || card.type === FIGHTER) {
+          if (card.type === FIGHTER) {
             card.bonusHp += 1;
             card.effects.push("Fighter_Bays");
           }
@@ -1391,7 +1440,7 @@ export const CARD_LIST = [
       return this.attack + this.bonusAttack;
     },
     effects: [],
-    contextMenu: [...DAMAGE_CONTEXT_MENU, ...BUILD_FIGHTER_CONTEXT_MENU],
+    contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
   {
@@ -1586,7 +1635,7 @@ export const CARD_LIST = [
     type: SYSTEM,
     domain: STATECRAFT,
     deck: SYSTEM,
-    count: 3,
+    count: 300,
     developmentLevel: 0,
     maxDevelopmentLevel: 3,
     bonusDevelopmentLevel: 0,
@@ -1615,7 +1664,7 @@ export const CARD_LIST = [
       return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
     },
     explored: false,
-    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU]
   },
   {
     id: 49,
@@ -1631,7 +1680,7 @@ export const CARD_LIST = [
       return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
     },
     explored: false,
-    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU]
   },
   {
     id: 50,
@@ -1648,7 +1697,7 @@ export const CARD_LIST = [
     },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
-  },
+},
   {
     id: 51,
     img: "Silis_Major",
@@ -1789,7 +1838,7 @@ export const CARD_LIST = [
       return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
     },
     explored: false,
-    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
+    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU]
   },
   {
     id: 55,

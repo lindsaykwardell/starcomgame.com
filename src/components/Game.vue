@@ -490,8 +490,6 @@ export default {
       }
     },
     currentContextMenu() {
-      console.log("contextLoc", this.contextLoc);
-      console.log("contextCard", this.contextCard);
       if (
         ((this.contextLoc === "stack" &&
           this.contextCard.type !== TECHNOLOGY) ||
@@ -516,7 +514,10 @@ export default {
       }
 
       if (this.contextCard.type === SYSTEM) {
-        let menu = [...this.contextCard.contextMenu];
+        let menu = [
+          ...this.contextCard.contextMenu,
+          ...this.contextCard.bonusContextMenu,
+        ];
 
         // Per turn actions
         if (
@@ -542,7 +543,10 @@ export default {
         return menu;
       }
 
-      if (this.contextCard.buildShipContextMenu) {
+      if (
+        !["hand", "stack"].includes(this.contextLoc) &&
+        this.contextCard.buildShipContextMenu
+      ) {
         return [
           ...this.contextCard.contextMenu,
           ...this.contextCard.buildShipContextMenu(this.fnContext),
@@ -726,15 +730,22 @@ export default {
         case "build":
           const card = { ...CARD_LIST.find((c) => c.id == keys[1]) };
           if (card) {
+            const newcard = { ...card, id: this.getNextId(), effects: [] };
             this.systems[this.contextLoc][this.activePlayer] = [
               ...this.systems[this.contextLoc][this.activePlayer],
-              { ...card, id: this.getNextId(), effects: [] },
+              newcard,
             ];
             if (option.cost) {
               this.players[this.activePlayer].credits -= option.cost;
             } else {
               this.players[this.activePlayer].credits -= card.cost;
             }
+
+            this.players[this.activePlayer].technology.forEach((technology) => {
+              if (technology.onBuildOther) {
+                technology.onBuildOther({ ...this.fnContext, card: newcard });
+              }
+            });
 
             playItem();
           }
