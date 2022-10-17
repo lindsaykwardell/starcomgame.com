@@ -10,10 +10,10 @@ useHead({
 
 <template>
   <header
-    class="flex flex-col gap-8 pt-4 pb-16 justify-center w-2/3 md:w-[750px] m-auto"
+    class="flex flex-col gap-8 pt-4 pb-6 md:pb-16 justify-center w-2/3 md:w-[750px] m-auto"
   >
     <div
-      class="flex flex-col md:flex-row items-center gap-8 pt-4 pb-16 justify-center"
+      class="flex flex-col md:flex-row items-center gap-8 pt-4 md:pb-16 justify-center"
     >
       <img src="@/assets/starcom-logo.png" alt="" />
       <a
@@ -22,7 +22,7 @@ useHead({
         >Star Commander</a
       >
     </div>
-    <nav class="flex flex-col md:flex-row md:gap-10 justify-center">
+    <nav class="flex flex-col md:flex-row gap-3 md:gap-10 justify-center m-auto">
       <router-link to="/" class="flex items-center gap-1">
         <img src="@/assets/starcom-logo.png" class="w-8" />
         Home
