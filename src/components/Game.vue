@@ -23,7 +23,19 @@
           </div>
         </div>
         <div class="flex-grow">
-          <div class="flex">
+          <DeckSelector
+            :drawIndustry="() => draw(activePlayer, decks.industry)"
+            :drawStatecraft="() => draw(activePlayer, decks.statecraft)"
+            :drawScience="() => draw(activePlayer, decks.science)"
+            :industryRemaining="decks.industry.remaining"
+            :statecraftRemaining="decks.politics.remaining"
+            :scienceRemaining="decks.science.remaining"
+            :activePlayerControlsIndustry="activePlayerControlsIndustry"
+            :activePlayerControlsStatecraft="activePlayerControlsStatecraft"
+            :activePlayerControlsScience="activePlayerControlsScience"
+            :hoverCard="(card) => (hoveredCard = card)"
+          />
+          <!-- <div class="flex">
             <button
               class="p-1 bg-red-500 hover:bg-red-600 disabled:bg-red-900 disabled:text-gray-400 duration-200 flex-1"
               @click="draw(activePlayer, decks.industry)"
@@ -48,7 +60,25 @@
             >
               Science ({{ decks.science.remaining }}/30)
             </button>
-          </div>
+          </div> -->
+
+          <Dialog v-model="showDrawCardModal">
+            <template #header>
+              <div class="text-3xl">Draw a Card</div>
+            </template>
+            <DeckSelector
+              :drawIndustry="() => draw(activePlayer, decks.industry)"
+              :drawStatecraft="() => draw(activePlayer, decks.statecraft)"
+              :drawScience="() => draw(activePlayer, decks.science)"
+              :industryRemaining="decks.industry.remaining"
+              :statecraftRemaining="decks.politics.remaining"
+              :scienceRemaining="decks.science.remaining"
+              :activePlayerControlsIndustry="activePlayerControlsIndustry"
+              :activePlayerControlsStatecraft="activePlayerControlsStatecraft"
+              :activePlayerControlsScience="activePlayerControlsScience"
+              :hoverCard="(card) => (hoveredCard = card)"
+            />
+          </Dialog>
 
           <!-- <Dialog :show="showDiscard" @toggle="toggleDiscard">
             <template v-slot:button
@@ -329,7 +359,8 @@ import DropZone from "@/components/DropZone/DropZone.vue";
 import System from "@/components/System/System.vue";
 import Card from "@/components/Card/Card.vue";
 import DamageDice from "@/components/Dice/DamageDice.vue";
-// import Dialog from "@/components/Dialog/Dialog";
+import Dialog from "@/components/Dialog/Dialog.vue";
+import DeckSelector from "@/components/DeckSelector.vue";
 // import { clickout } from "vuetensils/src/directives";
 
 import dieRollMp3 from "@/assets/audio/dieroll.mp3";
@@ -396,6 +427,7 @@ export default {
       dieValue: 0,
       showBoard: false,
       showCombat: false,
+      showDrawCardModal: false,
       combatSystemLoc: 0,
       showDiscard: false,
       showTechnology: false,
@@ -572,21 +604,21 @@ export default {
       };
     },
     activePlayerControlsIndustry() {
-      return this.systems.find(
+      return !!this.systems.find(
         (system) =>
           system.card.controlledBy === this.activePlayer &&
           system.card.domain === INDUSTRY
       );
     },
     activePlayerControlsStatecraft() {
-      return this.systems.find(
+      return !!this.systems.find(
         (system) =>
           system.card.controlledBy === this.activePlayer &&
           system.card.domain === STATECRAFT
       );
     },
     activePlayerControlsScience() {
-      return this.systems.find(
+      return !!this.systems.find(
         (system) =>
           system.card.controlledBy === this.activePlayer &&
           system.card.domain === SCIENCE
@@ -1163,6 +1195,14 @@ export default {
         });
       });
 
+      // Show the draw a card dialog.
+      if (
+        this.activePlayerControlsIndustry ||
+        this.activePlayerControlsScience ||
+        this.activePlayerControlsStatecraft
+      ) {
+        this.showDrawCardModal = true;
+      }
       // Roll the new turn die
       // this.drawCardFromDie().then(() => {
       //   this.socket?.emit("state", JSON.stringify(this.fnContext));
@@ -1381,7 +1421,8 @@ export default {
     System,
     Card,
     DamageDice,
-    // Dialog,
+    Dialog,
+    DeckSelector,
   },
 };
 </script>
