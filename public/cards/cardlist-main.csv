@@ -7,7 +7,7 @@ Ram,Industry,Command,,,,,Destroy target ship you control. It deals damage equal 
 Mass Production,Industry,Command,,,,,Build 3 Corvettes in a system you control.,Industry,5,2
 Maximum Firepower,Industry,Command,,,,,"Target vessel gets +2 attack until end of turn, and can divide its damage between an additional target this combat.",Industry,6,3
 Trade Routes,Industry,Technology,,,,,"At the start of your turn, gain 1 credit for each station you control.",Industry,7,2
-Railgun Turrets,Industry,Technology,,,,,"Choose a ship you control. Pay X, where X is its attack, to double its attack.",Industry,8,3
+Railgun Turrets,Industry,Technology,,,,,"Choose a vessel you control. Pay X, where X is its attack, to double its attack.",Industry,8,3
 Targeting Systems,Industry,Technology,,,,,"When assigning combat damage, vessels you control may select any number of additional targets.",Industry,9,2
 Missile Platform,Statecraft,Station,5,3,5,-,Other stations you control in this system get +1 attack.,StatecraftStats,41,4
 Orbital Habitat,Statecraft,Station,4,0,2,-,"At the start of your turn, place a development in this system if valid. You may build an additional two developments in this system.",StatecraftStats,42,3
@@ -20,8 +20,8 @@ Filibuster,Statecraft,Command,,,,,Take another turn after this one.,Statecraft,1
 Advanced Weapons,Statecraft,Technology,,,,,Vessels you control have +1 attack.,Statecraft,15,3
 Fighter Bays,Statecraft,Technology,,,,,Fighters you control get +1 hit point. You may build fighters in any system you control with a station.,Statecraft,16,3
 Jump Nexus,Science,Station,4,0,2,-,Ships you control in this system have +1 speed until end of turn.,ScienceStats,44,4
-Explore the Unknown,Science,Command,,,,,Draw two cards.,Science,17,3
-Jump Stabilization,Science,Command,,,,,Choose a system. Ships in that system may jump directly to any system within two jumps of it.,Science,18,2
+Jump Drive Detonation,Science,Command,,,,,Destroy target ship you control. Destroy all vessels in that system.,Science,17,2
+Jump Stabilization,Science,Command,,,,,Choose a system. Ships in that system may jump directly to any system within two jumps of it.,Science,18,3
 Interdiction,Science,Command,,,,,Ships in target system cannot jump until your next ready phase.,Science,19,3
 Raise Shields,Science,Command,,,,,"Target vessel gets +2 hit points until end of turn, and you may redirect combat damage from one target to this vessel.",Science,20,3
 Evasion,Science,Command,,,,,Prevent all damage that would be dealt to target ship this turn.,Science,21,4
