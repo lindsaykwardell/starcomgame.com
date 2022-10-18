@@ -380,7 +380,7 @@ export const CARD_LIST = [
             system[activePlayer].forEach((card) => {
               if (card.totalAttack() > 0) {
                 menu.push({
-                  label: `Choose ${card.img} (ATK: ${card.totalAttack()})`,
+                  label: `Choose ${card.img} (ATK: ${card.totalAttack()}) in ${system.card.img}`,
                   action: `step:${menu.length}`,
                   stepAction: () => {
                     return { chosenCard: card, chosenSystem: system };
@@ -431,7 +431,7 @@ export const CARD_LIST = [
           system[activePlayer].forEach((card) => {
             if (card.totalAttack() > 0) {
               menu.push({
-                label: `Choose ${card.img} (ATK: ${card.totalAttack()})`,
+                label: `Choose ${card.img} (ATK: ${card.totalAttack()}) in ${system.card.img}`,
                 action: `step:${menu.length}`,
                 stepAction: () => {
                   return { chosenCard: card, chosenSystem: system };
@@ -482,7 +482,7 @@ export const CARD_LIST = [
         systems.forEach((system) => {
           system[activePlayer].forEach((card, index) => {
             menu.push({
-              label: `Choose ${card.img} (HP: ${card.totalHp()})`,
+              label: `Choose ${card.img} (HP: ${card.totalHp()}) in ${system.card.img}`,
               action: `step:${index}`,
               stepAction: () => ({ chosenCard: card, chosenSystem: system }),
             });
@@ -578,7 +578,7 @@ export const CARD_LIST = [
         systems.forEach((system) => {
           system[activePlayer].forEach((card, index) => {
             menu.push({
-              label: `Choose ${card.img} (Attack: ${card.totalAttack()})`,
+              label: `Choose ${card.img} (Attack: ${card.totalAttack()}) in ${system.card.img}`,
               action: `step:${index}`,
               stepAction: () => {
                 card.bonusAttack += 2;
@@ -639,7 +639,7 @@ export const CARD_LIST = [
         systems.forEach((system) => {
           system[activePlayer].forEach((card, index) => {
             menu.push({
-              label: `Choose ${card.img} (Attack: ${card.totalAttack()})`,
+              label: `Choose ${card.img} (Attack: ${card.totalAttack()}) in ${system.card.img}`,
               action: `step:${index}`,
               stepAction: () => {
                 return { chosenCard: card };
@@ -760,7 +760,7 @@ export const CARD_LIST = [
       if (
         system.card.totalMaxDevelopmentLevel() < system.card.developmentLevel
       ) {
-        system.developmentLevel++;
+        system.card.developmentLevel++;
       }
     },
   },
@@ -842,7 +842,7 @@ export const CARD_LIST = [
         systems.forEach((system) => {
           system[nonActivePlayer].forEach((card, index) => {
             menu.push({
-              label: `Destroy ${card.img} in ${system.img}`,
+              label: `Destroy ${card.img} in ${system.card.img}`,
               action: `step:${index}`,
               stepAction: () => {
                 card.damage = 1000;
