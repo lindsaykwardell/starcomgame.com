@@ -127,7 +127,9 @@ function shipCountBelowDevelopmentLevel(systems, activePlayer) {
 
   const playerTotalShipCount = systems.reduce(
     (total, system) =>
-      system[activePlayer].filter((c) => c.type !== STATION).length + total,
+      system[activePlayer].filter(
+        (c) => c.type !== STATION && c.img !== "Scout"
+      ).length + total,
     0
   );
   return playerDevelopmentLevel > playerTotalShipCount;
@@ -228,7 +230,8 @@ const STATION_CONTEXT_MENU = [
     condition: ({ card, system, activePlayer, players }) =>
       card.controlledBy === activePlayer &&
       players[activePlayer].credits >= 3 &&
-      system[activePlayer].filter(c => c.type === STATION).length < system.card.developmentLevel,
+      system[activePlayer].filter((c) => c.type === STATION).length <
+        system.card.developmentLevel,
   },
   // {
   //   action: "build:41",
@@ -315,8 +318,10 @@ export const CARD_LIST = [
     },
     effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
-    onTurnStart: ({ card, system, activePlayer, players }) =>
-      (players[activePlayer].credits += 2),
+    onTurnStart: ({ card, system, activePlayer, players }) => {
+      console.log("Here");
+      players[activePlayer].credits += 2;
+    },
   },
   {
     id: 2,
@@ -368,25 +373,42 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      // ({ systems, activePlayer }) => {
-      //   let menu = [];
-      //   systems.forEach((system) => {
-      //     system[activePlayer].forEach((card) => {
-      //       if (card.damage > 0) {
-      //         menu.push({
-      //           label: `Repair ${card.img} (${
-      //             card.totalHp() - card.damage
-      //           }/${card.totalHp()})`,
-      //           action: `step:0`,
-      //           stepAction: () => {
-      //             card.damage = 0;
-      //           },
-      //         });
-      //       }
-      //     });
-      //   });
-      //   return menu;
-      // },
+      ({ systems, activePlayer }) => {
+        let menu = [];
+        systems.forEach((system) => {
+          if (system.card.controlledBy !== activePlayer) {
+            system[activePlayer].forEach((card) => {
+              if (card.totalAttack() > 0) {
+                menu.push({
+                  label: `Choose ${card.img} (ATK: ${card.totalAttack()})`,
+                  action: `step:${menu.length}`,
+                  stepAction: () => {
+                    return { chosenCard: card, chosenSystem: system };
+                  },
+                });
+              }
+            });
+          }
+        });
+        return menu;
+      },
+      ({ chosenCard, chosenSystem }) => {
+        const attack = chosenCard.totalAttack();
+        const developmentLevel = chosenSystem.card.developmentLevel;
+
+        const countersToRemove =
+          developmentLevel - attack <= 0 ? developmentLevel - 1 : attack;
+
+        return [
+          {
+            label: `Remove ${countersToRemove} from ${chosenSystem.card.img}`,
+            action: "step:0",
+            stepAction: () => {
+              chosenSystem.card.developmentLevel -= countersToRemove;
+            },
+          },
+        ];
+      },
     ],
   },
   {
@@ -669,10 +691,12 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
-    onEachTurnStart: ({ card, system, player }) => {
-      system[player].forEach((c) => {
-        c.effects.push("Targeting_Systems");
-      });
+    onEachTurnStart: ({ card, systems, player }) => {
+      systems.forEach((system) =>
+        system[player].forEach((c) => {
+          c.effects.push("Targeting_Systems");
+        })
+      );
     },
   },
   {
@@ -733,7 +757,9 @@ export const CARD_LIST = [
       system.card.bonusDevelopmentLevel -= 2;
     },
     onTurnStart: ({ system }) => {
-      if (system.totalMaxDevelopmentLevel() < system.developmentLevel) {
+      if (
+        system.card.totalMaxDevelopmentLevel() < system.card.developmentLevel
+      ) {
         system.developmentLevel++;
       }
     },
@@ -840,42 +866,42 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
-    step: 0,
-    stepContext: {},
-    stepContextMenu: [
-      // ({ systems, nonActivePlayer }) => {
-      //   let menu = [];
-      //   systems.forEach((system) => {
-      //     system[nonActivePlayer].forEach((card) => {
-      //       menu.push({
-      //         label: `Target ${card.img} (${
-      //           card.totalHp() - card.damage
-      //         }/${card.totalHp()})`,
-      //         action: `step:${menu.length}`,
-      //         stepAction: () => {
-      //           return { target: card, targetSystem: system };
-      //         },
-      //       });
-      //     });
-      //   });
-      //   return menu;
-      // },
-      // ({ target, targetSystem, activePlayer, nonActivePlayer }) => [
-      //   {
-      //     label: `Gain control of ${target.img}`,
-      //     action: "step:0",
-      //     stepAction: () => {
-      //       targetSystem[nonActivePlayer] = targetSystem[
-      //         nonActivePlayer
-      //       ].filter((card) => card.id !== target.id);
-      //       targetSystem[activePlayer] = [
-      //         ...targetSystem[activePlayer],
-      //         target,
-      //       ];
-      //     },
-      //   },
-      // ],
-    ],
+    // step: 0,
+    // stepContext: {},
+    // stepContextMenu: [
+    //   // ({ systems, nonActivePlayer }) => {
+    //   //   let menu = [];
+    //   //   systems.forEach((system) => {
+    //   //     system[nonActivePlayer].forEach((card) => {
+    //   //       menu.push({
+    //   //         label: `Target ${card.img} (${
+    //   //           card.totalHp() - card.damage
+    //   //         }/${card.totalHp()})`,
+    //   //         action: `step:${menu.length}`,
+    //   //         stepAction: () => {
+    //   //           return { target: card, targetSystem: system };
+    //   //         },
+    //   //       });
+    //   //     });
+    //   //   });
+    //   //   return menu;
+    //   // },
+    //   // ({ target, targetSystem, activePlayer, nonActivePlayer }) => [
+    //   //   {
+    //   //     label: `Gain control of ${target.img}`,
+    //   //     action: "step:0",
+    //   //     stepAction: () => {
+    //   //       targetSystem[nonActivePlayer] = targetSystem[
+    //   //         nonActivePlayer
+    //   //       ].filter((card) => card.id !== target.id);
+    //   //       targetSystem[activePlayer] = [
+    //   //         ...targetSystem[activePlayer],
+    //   //         target,
+    //   //       ];
+    //   //     },
+    //   //   },
+    //   // ],
+    // ],
   },
   {
     id: 18,
@@ -1528,7 +1554,7 @@ export const CARD_LIST = [
       const validTargets = systems.filter((system) => {
         return (
           system.card.controlledBy == activePlayer &&
-          system.developmentLevel < system.totalMaxDevelopmentLevel()
+          system.card.developmentLevel < system.card.totalMaxDevelopmentLevel()
         );
       });
 
@@ -1664,7 +1690,7 @@ export const CARD_LIST = [
       return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
     },
     explored: false,
-    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU]
+    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
     id: 49,
@@ -1680,7 +1706,7 @@ export const CARD_LIST = [
       return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
     },
     explored: false,
-    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU]
+    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
     id: 50,
@@ -1697,7 +1723,7 @@ export const CARD_LIST = [
     },
     explored: false,
     contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
-},
+  },
   {
     id: 51,
     img: "Silis_Major",
@@ -1838,7 +1864,7 @@ export const CARD_LIST = [
       return this.maxDevelopmentLevel + this.bonusDevelopmentLevel;
     },
     explored: false,
-    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU]
+    contextMenu: [...SYSTEM_CONTEXT_MENU, ...STATION_CONTEXT_MENU],
   },
   {
     id: 55,

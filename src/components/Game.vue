@@ -1,4 +1,9 @@
 <template>
+  <InitGameModal
+    v-model="showInitGameModal"
+    v-model:gameSize="gameSize"
+    @startGame="initGame"
+  />
   <div class="flex">
     <div class="bar">
       <div class="bar-content flex flex-col">
@@ -25,7 +30,7 @@
         <div class="flex-grow">
           <DeckSelector
             :drawIndustry="() => draw(activePlayer, decks.industry)"
-            :drawStatecraft="() => draw(activePlayer, decks.statecraft)"
+            :drawStatecraft="() => draw(activePlayer, decks.politics)"
             :drawScience="() => draw(activePlayer, decks.science)"
             :industryRemaining="decks.industry.remaining"
             :statecraftRemaining="decks.politics.remaining"
@@ -35,40 +40,13 @@
             :activePlayerControlsScience="activePlayerControlsScience"
             :hoverCard="(card) => (hoveredCard = card)"
           />
-          <!-- <div class="flex">
-            <button
-              class="p-1 bg-red-500 hover:bg-red-600 disabled:bg-red-900 disabled:text-gray-400 duration-200 flex-1"
-              @click="draw(activePlayer, decks.industry)"
-              @mouseover="hoveredCard = { img: '', backImg: '/industry.png' }"
-              :disabled="!activePlayerControlsIndustry"
-            >
-              Industry ({{ decks.industry.remaining }}/30)
-            </button>
-            <button
-              class="p-1 bg-yellow-600 hover:bg-yellow-700 disabled:bg-yellow-900 disabled:text-gray-400 duration-200 flex-1"
-              @click="draw(activePlayer, decks.politics)"
-              @mouseover="hoveredCard = { img: '', backImg: '/statecraft.png' }"
-              :disabled="!activePlayerControlsStatecraft"
-            >
-              Statecraft ({{ decks.politics.remaining }}/30)
-            </button>
-            <button
-              class="p-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-900 disabled:text-gray-400 duration-200 flex-1"
-              @click="draw(activePlayer, decks.science)"
-              @mouseover="hoveredCard = { img: '', backImg: '/science.png' }"
-              :disabled="!activePlayerControlsScience"
-            >
-              Science ({{ decks.science.remaining }}/30)
-            </button>
-          </div> -->
-
           <Dialog v-model="showDrawCardModal">
             <template #header>
               <div class="text-3xl">Draw a Card</div>
             </template>
             <DeckSelector
               :drawIndustry="() => draw(activePlayer, decks.industry)"
-              :drawStatecraft="() => draw(activePlayer, decks.statecraft)"
+              :drawStatecraft="() => draw(activePlayer, decks.politics)"
               :drawScience="() => draw(activePlayer, decks.science)"
               :industryRemaining="decks.industry.remaining"
               :statecraftRemaining="decks.politics.remaining"
@@ -166,100 +144,304 @@
           />
         </div>
         <template v-if="!showCombat">
-          <div class="flex justify-around mt-6 relative">
-            <System
-              :system.sync="systems[0]"
-              group="board"
-              @explored="onExplore"
-            />
-          </div>
-          <div class="flex justify-around w-4/5 m-auto">
-            <System
-              :system.sync="systems[1]"
-              group="board"
-              @explored="onExplore"
-            />
-            <System
-              :system.sync="systems[2]"
-              group="board"
-              @explored="onExplore"
-            />
-          </div>
-          <div class="flex justify-around">
-            <System
-              :system.sync="systems[3]"
-              group="board"
-              @explored="onExplore"
-            />
-            <System
-              :system.sync="systems[4]"
-              group="board"
-              @explored="onExplore"
-            />
-            <System
-              :system.sync="systems[5]"
-              group="board"
-              @explored="onExplore"
-            />
-          </div>
-          <div class="flex justify-between">
-            <System
-              :system.sync="systems[6]"
-              group="board"
-              @explored="onExplore"
-            />
-            <System
-              :system.sync="systems[7]"
-              group="board"
-              @explored="onExplore"
-            />
-            <System
-              :system.sync="systems[8]"
-              group="board"
-              @explored="onExplore"
-            />
-            <System
-              :system.sync="systems[9]"
-              group="board"
-              @explored="onExplore"
-            />
-          </div>
-          <div class="flex justify-around">
-            <System
-              :system.sync="systems[10]"
-              group="board"
-              @explored="onExplore"
-            />
-            <System
-              :system.sync="systems[11]"
-              group="board"
-              @explored="onExplore"
-            />
-            <System
-              :system.sync="systems[12]"
-              group="board"
-              @explored="onExplore"
-            />
-          </div>
-          <div class="flex justify-around w-4/5 m-auto">
-            <System
-              :system.sync="systems[13]"
-              group="board"
-              @explored="onExplore"
-            />
-            <System
-              :system.sync="systems[14]"
-              group="board"
-              @explored="onExplore"
-            />
-          </div>
-          <div class="flex justify-around">
-            <System
-              :system.sync="systems[15]"
-              group="board"
-              @explored="onExplore"
-            />
-          </div>
+          <template v-if="gameSize === 3">
+            <div class="flex justify-around mt-6 relative">
+              <System
+                :system.sync="systems[0]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around w-4/5 m-auto">
+              <System
+                :system.sync="systems[1]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[2]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around">
+              <System
+                :system.sync="systems[3]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[4]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[5]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around w-4/5 m-auto">
+              <System
+                :system.sync="systems[6]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[7]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around">
+              <System
+                :system.sync="systems[8]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+          </template>
+          <template v-else-if="gameSize === 4">
+            <div class="flex justify-around mt-6 relative">
+              <System
+                :system.sync="systems[0]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around w-4/5 m-auto">
+              <System
+                :system.sync="systems[1]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[2]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around">
+              <System
+                :system.sync="systems[3]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[4]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[5]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-between">
+              <System
+                :system.sync="systems[6]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[7]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[8]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[9]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around">
+              <System
+                :system.sync="systems[10]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[11]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[12]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around w-4/5 m-auto">
+              <System
+                :system.sync="systems[13]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[14]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around">
+              <System
+                :system.sync="systems[15]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+          </template>
+          <template v-else-if="gameSize === 5">
+            <div class="flex justify-around mt-6 relative">
+              <System
+                :system.sync="systems[0]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around w-3/5 m-auto">
+              <System
+                :system.sync="systems[1]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[2]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around w-5/6 m-auto">
+              <System
+                :system.sync="systems[3]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[4]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[5]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-between w-5/6 m-auto">
+              <System
+                :system.sync="systems[6]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[7]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[8]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[9]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-between">
+              <System
+                :system.sync="systems[10]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[11]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[12]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[13]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[14]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-between w-5/6 m-auto">
+              <System
+                :system.sync="systems[15]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[16]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[17]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[18]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around w-5/6 m-auto">
+              <System
+                :system.sync="systems[19]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[20]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[21]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around w-3/5 m-auto">
+              <System
+                :system.sync="systems[22]"
+                group="board"
+                @explored="onExplore"
+              />
+              <System
+                :system.sync="systems[23]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+            <div class="flex justify-around">
+              <System
+                :system.sync="systems[24]"
+                group="board"
+                @explored="onExplore"
+              />
+            </div>
+          </template>
         </template>
         <template v-else>
           <div class="flex justify-around items-center board-height">
@@ -361,6 +543,7 @@ import Card from "@/components/Card/Card.vue";
 import DamageDice from "@/components/Dice/DamageDice.vue";
 import Dialog from "@/components/Dialog/Dialog.vue";
 import DeckSelector from "@/components/DeckSelector.vue";
+import InitGameModal from "@/components/InitGameModal.vue";
 // import { clickout } from "vuetensils/src/directives";
 
 import dieRollMp3 from "@/assets/audio/dieroll.mp3";
@@ -386,6 +569,7 @@ import {
   DAMAGEABLE,
   SYSTEM,
   SHIP,
+  STATION,
   generateResolveContextMenu,
   generateCombatContextMenu,
   CAPITAL_PLANET_NAME_LIST,
@@ -428,6 +612,8 @@ export default {
       showBoard: false,
       showCombat: false,
       showDrawCardModal: false,
+      showInitGameModal: true,
+      gameSize: 3,
       combatSystemLoc: 0,
       showDiscard: false,
       showTechnology: false,
@@ -439,12 +625,14 @@ export default {
           technology: [],
           hand: [],
           technology: [],
+          completedFirstTurn: false,
         },
         player2: {
           credits: 3,
           technology: [],
           hand: [],
           technology: [],
+          completedFirstTurn: false,
         },
       },
       activePlayer: "player1",
@@ -459,6 +647,7 @@ export default {
       },
       hoveredCard: {
         img: "",
+        backImg: "/ship.png",
       },
       systems: [],
       discard: [],
@@ -473,7 +662,12 @@ export default {
   },
   computed: {
     shouldBoardDisplay() {
-      return this.showBoard && !this.showDiscard && !this.showStack;
+      return (
+        this.showBoard &&
+        !this.showDiscard &&
+        !this.showStack &&
+        !this.showInitGameModal
+      );
     },
     activePlayerDevelopmentCount() {
       return this.systems
@@ -1047,16 +1241,12 @@ export default {
         system.player1.forEach((card) => {
           if (card.damage >= card.totalHp()) {
             this.destroy(card);
-          } else {
-            card.damage = 0;
           }
         });
 
         system.player2.forEach((card) => {
           if (card.damage >= card.totalHp()) {
             this.destroy(card);
-          } else {
-            card.damage = 0;
           }
         });
       });
@@ -1070,21 +1260,37 @@ export default {
         const invadingShips = system[this.activePlayer].filter(
           (ship) => ship.type === SHIP && ship.totalAttack() > 0
         );
+
+        const invadingCruiserCount = system[this.activePlayer].filter(
+          (ship) => ship.img === "Cruiser"
+        ).length;
+
         const defendingShips = system[this.nonActivePlayer].filter(
-          (ship) => ship.totalAttack() > 0
+          (ship) =>
+            [SHIP, STATION].includes(ship.type) && ship.totalAttack() > 0
         );
 
+        // Perform conquest only if no defenders
         if (
           system.card.controlledBy === this.nonActivePlayer &&
           invadingShips.length > 0 &&
           defendingShips.length === 0
         ) {
           system.card.developmentLevel -= invadingShips.length;
+        } else if (
+          system.card.controlledBy === this.nonActivePlayer &&
+          invadingCruiserCount > 0
+        ) {
+          // If standard conquest is not possible, perform it for all invading cruisers present
+          system.card.developmentLevel -= invadingCruiserCount;
+        }
 
-          if (system.card.developmentLevel <= 0) {
-            system.card.controlledBy = this.activePlayer;
-            system.card.developmentLevel = 1;
-          }
+        if (
+          system.card.controlledBy === this.nonActivePlayer &&
+          system.card.developmentLevel <= 0
+        ) {
+          system.card.controlledBy = this.activePlayer;
+          system.card.developmentLevel = 1;
         }
       });
 
@@ -1106,6 +1312,7 @@ export default {
           }
           card.bonusAttack = 0;
           card.bonusHp = 0;
+          card.damage = 0;
           card.effects = [];
         });
         system.player2.forEach((card) => {
@@ -1118,9 +1325,12 @@ export default {
           }
           card.bonusAttack = 0;
           card.bonusHp = 0;
+          card.damage = 0;
           card.effects = [];
         });
       });
+
+      this.players[this.activePlayer].completedFirstTurn = true;
 
       // Next player
       this.activePlayer = this.nextPlayer;
@@ -1137,12 +1347,16 @@ export default {
       if (systemCount <= 0) {
         alert("Game over!");
 
+        this.showBoard = false;
+        this.showInitGameModal = true;
         return;
       }
 
       // Gain credits
+      // if (this.players[this.activePlayer].completedFirstTurn) {
       this.players[this.activePlayer].credits +=
         this.activePlayerDevelopmentCount;
+      // }
 
       // Check for "At start of turn" effects
 
@@ -1201,42 +1415,10 @@ export default {
         this.activePlayerControlsScience ||
         this.activePlayerControlsStatecraft
       ) {
+        console.log("Should show the modal");
         this.showDrawCardModal = true;
       }
-      // Roll the new turn die
-      // this.drawCardFromDie().then(() => {
-      //   this.socket?.emit("state", JSON.stringify(this.fnContext));
-      // });
     },
-    // async drawCardFromDie() {
-    //   await this.rollDie();
-
-    //   let domain;
-
-    //   switch (this.dieRoll) {
-    //     case "industry":
-    //       domain = INDUSTRY;
-    //       break;
-    //     case "politics":
-    //       domain = STATECRAFT;
-    //       break;
-    //     case "science":
-    //       domain = SCIENCE;
-    //       break;
-    //   }
-
-    //   // If it came up with a domain, draw a card if player has matching system
-    //   if (domain) {
-    //     if (this.playerControlsDomain(this.activePlayer, domain)) {
-    //       console.log("Drawing card from die");
-    //       this.draw(this.activePlayer, domain);
-    //     } else {
-    //       console.log("No matching system");
-    //     }
-    //   } else {
-    //     console.log("No matching domain");
-    //   }
-    // },
     parseAndUpdateState(payload) {
       const {
         card,
@@ -1347,37 +1529,68 @@ export default {
         ...cardPayload,
       };
     },
+    initGame() {
+      this.players = {
+        player1: {
+          credits: 3,
+          technology: [],
+          hand: [],
+          technology: [],
+          completedFirstTurn: false,
+        },
+        player2: {
+          credits: 3,
+          technology: [],
+          hand: [],
+          technology: [],
+          completedFirstTurn: false,
+        },
+      };
+      this.activePlayer = "player1";
+      this.nextPlayer = "player2";
+      this.activePlayerHand = "player1";
+
+      this.decks = {
+        politics: new Deck(DECK_STATECRAFT),
+        industry: new Deck(DECK_INDUSTRY),
+        science: new Deck(DECK_SCIENCE),
+        system: new Deck(DECK_SYSTEM),
+      };
+
+      const systems = [];
+      const boardSize = this.gameSize * this.gameSize;
+      for (let i = 0; i < boardSize; i++) {
+        systems.push({
+          card:
+            i === 0 || i === boardSize - 1
+              ? {
+                  ...HOMEWORLD,
+                  loc: i,
+                  controlledBy: i === 0 ? "player2" : "player1",
+                  explored: false,
+                }
+              : { ...this.decks.system.draw(), loc: i, controlledBy: null },
+          player1: [],
+          player2: [],
+        });
+      }
+
+      systems[0].player2.push({ ...SCOUT, id: this.getNextId(), effects: [] });
+      systems[0].card.explored = true;
+      systems[boardSize - 1].player1.push({
+        ...SCOUT,
+        id: this.getNextId(),
+        effects: [],
+      });
+      systems[boardSize - 1].card.explored = true;
+
+      this.systems = systems;
+      this.showBoard = true;
+
+      // this.players.player1.credits++;
+    },
   },
   mounted() {
-    // document.addEventListener("click", playItem);
-
-    const systems = [];
-    for (let i = 0; i < 16; i++) {
-      systems.push({
-        card:
-          i === 0 || i === 15
-            ? {
-                ...HOMEWORLD,
-                loc: i,
-                controlledBy: i === 0 ? "player2" : "player1",
-                explored: false,
-              }
-            : { ...this.decks.system.draw(), loc: i, controlledBy: null },
-        player1: [],
-        player2: [],
-      });
-    }
-
-    systems[0].player2.push({ ...SCOUT, id: this.getNextId(), effects: [] });
-    systems[0].card.explored = true;
-    systems[15].player1.push({ ...SCOUT, id: this.getNextId(), effects: [] });
-    systems[15].card.explored = true;
-
-    this.systems = systems;
-    this.showBoard = true;
-
-    // this.players.player1.credits++;
-
     EventBus.$on("card:hover", (card) => {
       if (!this.showDiscard) this.hoveredCard = card;
     });
@@ -1386,27 +1599,27 @@ export default {
       if (loc !== "hover") this.toggleContextMenu(card, loc, event);
     });
 
-    this.socket = useSocket();
+    // this.socket = useSocket();
 
-    this.socket?.on("state", (payload) => {
-      this.parseAndUpdateState(payload);
-    });
+    // this.socket?.on("state", (payload) => {
+    //   this.parseAndUpdateState(payload);
+    // });
 
-    this.socket?.on("joined", (payload) => {
-      switch (payload.playerCount) {
-        case 1:
-          this.multiplayerSeat = "player1";
-          break;
-        case 2:
-          this.multiplayerSeat = "player2";
-          break;
-        default:
-          this.multiplayerSeat = null;
-          break;
-      }
-    });
+    // this.socket?.on("joined", (payload) => {
+    //   switch (payload.playerCount) {
+    //     case 1:
+    //       this.multiplayerSeat = "player1";
+    //       break;
+    //     case 2:
+    //       this.multiplayerSeat = "player2";
+    //       break;
+    //     default:
+    //       this.multiplayerSeat = null;
+    //       break;
+    //   }
+    // });
 
-    this.socket?.emit("join", location.hash);
+    // this.socket?.emit("join", location.hash);
 
     EventBus.$on("dropzone-dropped", () => {
       playItem();
@@ -1423,6 +1636,7 @@ export default {
     DamageDice,
     Dialog,
     DeckSelector,
+    InitGameModal,
   },
 };
 </script>

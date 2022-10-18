@@ -10,26 +10,18 @@ const props = defineProps({
     type: String,
     default: "md",
   },
-  buttonClass: {
-    type: String,
-    default: "",
-  },
-  dialogClass: {
-    type: String,
-    default: "",
-  },
   hideButton: {
     type: Boolean,
     default: false,
   },
 });
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(["update:modelValue"]);
 
 const dialog = ref();
 
 function close() {
-  emit('update:modelValue', false)
+  emit("update:modelValue", false);
 }
 
 watchEffect(() => {
@@ -49,7 +41,7 @@ watchEffect(() => {
       <div class="flex-grow">
         <h5><slot name="header"></slot></h5>
       </div>
-      <div class="flex-shrink">
+      <div class="flex-shrink" :class="{ hidden: hideButton }">
         <button
           @click="close"
           aria-label="close"
