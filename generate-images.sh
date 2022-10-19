@@ -43,7 +43,7 @@ cp cardlist-planets.csv ./public/cards/cardlist-planets.csv
 
 npm run rulebook:gen
 
-gsc -dNOPAUSE -sDEVICE=png16m -r256 -sOutputFile=tgc/rules/page%d.png rulebook/rulebook.pdf -c quit;
+gsc -dNOPAUSE -sDEVICE=png16m -r256 -sOutputFile=tgc/rules/page%02d.png rulebook/rulebook.pdf -c quit;
 
 PAGE=1
 
