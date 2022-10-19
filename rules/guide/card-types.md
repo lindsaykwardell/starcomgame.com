@@ -20,11 +20,13 @@ You can only control a number of ships equal to the total number of developments
 
 Stations act just like ships, but cannot move between systems. Stations can be built in any system you control. You may only build a number of stations equal to the number of developments in that system.
 
+If a station with no attack remains in a system after it has been conquered by another player, that player gains control of it.
+
 ## System
 
 <img class="card system" style="float: left; border-radius: 15px; margin: 15px; overflow: hidden;" src="https://www.starcomgame.com/cards/Homeworld-thumb.webp" alt="Homeworld" />
 
-Systems are the backbone of your empire. They provide resources to build ships and play other cards. Systems also have a domain (see Domains).
+Systems are the backbone of your empire. They provide resources to build ships and play other cards. Systems also have a domain (see Domains) and a maximum development number. This number, located in the top right of the card, represents the total number of development counters that can be placed on the system at any time.
 
 <div class="page-break"></div>
 
