@@ -8,4 +8,4 @@ Everything you need comes with the game - three Domain decks of 30 cards each, o
 
 ## How to Win
 
-The goal of Star Commander is to dominate known space. To achieve that, you must conquer the homeworld of each opponent. When your homeworld is no longer under your control, you lose. When no other players remain, you win!
+As the ruler of an interstellar nation, your goal is to expand your influence and defeat your opponents. The game ends when either a player's Homeworld is captured, or one of the Domain decks has run out of cards. Players then count their total developments. Whoever has the most developments wins!
