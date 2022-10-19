@@ -45,9 +45,9 @@ mv ./tmp ./public/cards
 cp cardlist-main.csv ./public/cards/cardlist-main.csv
 cp cardlist-planets.csv ./public/cards/cardlist-planets.csv
 
-npm run rules:pdf
+npm run rulebook:gen
 
-gsc -dNOPAUSE -sDEVICE=png16m -r256 -sOutputFile=tgc/rules/page%02d.png rules/.vuepress/public/star_commander_rulebook.pdf -c quit;
+gsc -dNOPAUSE -sDEVICE=png16m -r256 -sOutputFile=tgc/rules/page%02d.png rulebook/rulebook.pdf -c quit;
 
 sips --resampleHeightWidth 2475 1575 tgc/rules/*.png
 
