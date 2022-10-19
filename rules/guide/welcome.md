@@ -16,27 +16,27 @@ This game includes:
 
 <div style="display: flex; gap: 0.75rem;justify-content: space-between;">
 
-<div style="flex: 1 1 0%; text-align: center;" class="italic text-xs">
+<div style="flex: 1 1 0%; text-align: center;" class="italic text-[10px]">
   <img src="https://starcomgame.com/industry.png" style="border-radius: 5px" />
   Industry
 </div>
 
-<div style="flex: 1 1 0%; text-align: center;" class="italic text-xs">
+<div style="flex: 1 1 0%; text-align: center;" class="italic text-[10px]">
   <img src="https://starcomgame.com/statecraft.png" style="border-radius: 5px" />
   Statecraft
 </div>
 
-<div style="flex: 1 1 0%; text-align: center;" class="italic text-xs">
+<div style="flex: 1 1 0%; text-align: center;" class="italic text-[10px]">
   <img src="https://starcomgame.com/science.png" style="border-radius: 5px" />
   Science
 </div>
 
-<div style="flex: 1 1 0%; text-align: center;" class="italic text-xs">
+<div style="flex: 1 1 0%; text-align: center;" class="italic text-[10px]">
   <img src="https://starcomgame.com/planet.png" style="border-radius: 5px" />
   Systems
 </div>
 
-<div style="flex: 1 1 0%; text-align: center;" class="italic text-xs">
+<div style="flex: 1 1 0%; text-align: center;" class="italic text-[10px]">
   <img src="https://starcomgame.com/ship.png" style="border-radius: 5px" />
   Ships
 </div>

@@ -9,10 +9,10 @@ toPdf
       width: "5in",
       height: "8in",
       margin: {
-        left: "0.5in",
-        right: "0.5in",
-        top: "0.5in",
-        bottom: "0.5in",
+        left: "0.65in",
+        right: "0.65in",
+        top: "0.65in",
+        bottom: "0.65in",
       },
     }
   )
