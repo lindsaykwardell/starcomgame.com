@@ -2,7 +2,7 @@ import { defineUserConfig, defaultTheme } from "vuepress";
 // const { path } = require("@vuepress/utils");
 import { searchPlugin } from "@vuepress/plugin-search";
 import { registerComponentsPlugin } from "@vuepress/plugin-register-components";
-import { path } from '@vuepress/utils'
+import { path } from "@vuepress/utils";
 
 export default defineUserConfig({
   lang: "en-US",
@@ -56,10 +56,11 @@ export default defineUserConfig({
             "/play/command.md",
             "/play/combat.md",
             "/play/end.md",
+            "/play/game-over.md",
           ],
         },
         "/etc/additional-rules.md",
-        "/etc/faq.md",
+        // "/etc/faq.md",
       ],
     },
     navbar: [

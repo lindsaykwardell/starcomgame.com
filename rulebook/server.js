@@ -46,6 +46,7 @@ async function createServer() {
         path.join(__dirname, "../rules/play/combat.md")
       );
       const end = fs.readFileSync(path.join(__dirname, "../rules/play/end.md"));
+      const gameOver = fs.readFileSync(path.join(__dirname, "../rules/play/game-over.md"));
       const additionalRules = fs.readFileSync(
         path.join(__dirname, "../rules/etc/additional-rules.md")
       );
@@ -62,6 +63,7 @@ async function createServer() {
           command,
           combat,
           end,
+          gameOver,
           additionalRules,
         ].join("\n")
       );

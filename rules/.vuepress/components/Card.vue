@@ -22,7 +22,7 @@ export default {
 <style scoped>
 .card {
   float: v-bind(float);
-  border-radius: 15px;
-  margin: 15px;
+  border-radius: 5px;
+  margin: 10px;
 }
 </style>

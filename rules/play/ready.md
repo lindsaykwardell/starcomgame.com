@@ -10,6 +10,8 @@ Gain 1 credit for each development you control in systems that are not under sie
 
 Draw a card for one of the domains you control. Draw any additional cards as stated on other cards you control. If you already have five cards in your hand, you must either discard a card or skip drawing a card.
 
+If you draw the last card in a deck, the game ends. See [Game End](/play/game-over.html).
+
 ## Perform Start of Turn Actions
 
 Perform any other actions on cards you control that take place at the start of the turn.

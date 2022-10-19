@@ -1,5 +1,7 @@
 # Combat Phase
 
+*Do these in order for each system*
+
 ## Initiate Combat
 
 For each system where two or more players control vessels, each player, starting with the active player, decides whether to initiate combat. If each player declines, then combat is concluded in that system for the turn. If there are multiple systems where combat is possible, the active player chooses the order to resolve combat.

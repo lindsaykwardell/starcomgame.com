@@ -4,7 +4,7 @@ There are five card types in the game. Throughout play, you will be interacting 
 
 ## Ship
 
-<img class="card" style="float: left; border-radius: 15px; margin: 15px; overflow: hidden;" src="https://www.starcomgame.com/cards/Frigate-thumb.webp" alt="Frigate" />
+<img class="card" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Frigate-thumb.webp" alt="Frigate" />
 
 There are four ship types - Fighter, Small, Medium, and Large. Each has a cost, attack, hit points, and speed. Some ships have other abilities written on them. Ships are the only cards that can move between systems.
 
@@ -16,7 +16,7 @@ You can only control a number of ships equal to the total number of developments
 
 ## Station
 
-<img class="card" style="float: right; border-radius: 15px; margin: 15px; overflow: hidden;" src="https://www.starcomgame.com/cards/Refinery-thumb.webp" alt="Refinery" />
+<img class="card" style="float: right; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Refinery-thumb.webp" alt="Refinery" />
 
 Stations act just like ships, but cannot move between systems. Stations can be built in any system you control. You may only build a number of stations equal to the number of developments in that system.
 
@@ -24,7 +24,7 @@ If a station with no attack remains in a system after it has been conquered by a
 
 ## System
 
-<img class="card system" style="float: left; border-radius: 15px; margin: 15px; overflow: hidden;" src="https://www.starcomgame.com/cards/Homeworld-thumb.webp" alt="Homeworld" />
+<img class="card system" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Homeworld-thumb.webp" alt="Homeworld" />
 
 Systems are the backbone of your empire. They provide resources to build ships and play other cards. Systems also have a domain (see Domains) and a maximum development number. This number, located in the top right of the card, represents the total number of development counters that can be placed on the system at any time.
 
@@ -32,16 +32,17 @@ Systems are the backbone of your empire. They provide resources to build ships a
 
 ## Technology
 
-<img class="card" style="float: right; border-radius: 15px; margin: 15px; overflow: hidden;" src="https://www.starcomgame.com/cards/Enhanced_Jump_Drive-thumb.webp" alt="Enhanced_Jump_Drive" />
+<img class="card" style="float: right; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Enhanced_Jump_Drive-thumb.webp" alt="Enhanced_Jump_Drive" />
 
-Technology cards allow for additional, long-lasting abilities. Technology cards are placed in the Technology row closest to the player.
+Technology cards allow for additional, long-lasting abilities. Technology cards are placed in the Technology row closest to the player. 
 
+Some technologies provide static abilities, like increasing ship stats or drawing additional cards each turn, while others have abilities that can be activated when needed.
 
 ## Command
 
-<img class="card" style="float: left; border-radius: 15px; margin: 15px; overflow: hidden;" src="https://www.starcomgame.com/cards/Spy_Network-thumb.webp" alt="Spy_Network" />
+<img class="card" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Spy_Network-thumb.webp" alt="Spy_Network" />
 
-Commands are cards that affect gameplay, then go to the discard pile. You play them from your hand onto the board, then move them to the discard pile.
+Commands are cards that affect gameplay, then go to the discard pile. You play them from your hand onto the board, then move them to the discard pile. Commands can be played on any player's turn, but if it is not your turn they can only be played as a response (see [Responses](/etc/additional-rules.html#responses)).
 
 <style>
   h2, footer {
