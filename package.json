@@ -15,7 +15,7 @@
     "rulebook:serve:watch": "nodemon -w rules -w rulebook -e js,md,html,css rulebook/server.js",
     "rulebook:pdf:watch": "nodemon -w rules -w rulebook -e js,md,html,css rulebook/pdf.js",
     "rulebook:run": "start-server-and-test rulebook:serve:watch http://localhost:3000 rulebook:pdf:watch",
-    "rulebook:css": "postcss ./rulebook/input.postcss -o ./rulebook/style.css -w",
+    "rulebook:css": "postcss ./rulebook/input.postcss -o ./rulebook/style.css",
     "rulebook:serve": "node rulebook/server.js",
     "rulebook:pdf": "node rulebook/pdf.js",
     "rulebook:gen": "npm run rulebook:css && start-server-and-test rulebook:serve http://localhost:3000 rulebook:pdf",
