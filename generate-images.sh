@@ -33,10 +33,6 @@ cp public/planet.png tgc/back/planet.png
 cp public/science.png tgc/back/science.png
 cp public/ship.png tgc/back/ship.png
 cp public/statecraft.png tgc/back/statecraft.png
-cp public/frontcover.png tgc/rules/0.png
-cp public/backcover.png tgc/rules/z.png
-# cp public/blankpage.png tgc/rules/00.png
-cp public/blankpage.png tgc/rules/y.png
 
 sips --resampleHeightWidth 1125 825 tgc/back/*.png
 
@@ -47,7 +43,23 @@ cp cardlist-planets.csv ./public/cards/cardlist-planets.csv
 
 npm run rulebook:gen
 
-gsc -dNOPAUSE -sDEVICE=png16m -r256 -sOutputFile=tgc/rules/page%02d.png rulebook/rulebook.pdf -c quit;
+gsc -dNOPAUSE -sDEVICE=png16m -r256 -sOutputFile=tgc/rules/page%d.png rulebook/rulebook.pdf -c quit;
+
+PAGE=1
+
+sips --resampleHeightWidth 2475 1575 tgc/rules/*.png
+
+for f in ./tgc/rules/*.png; 
+do 
+  echo "Processing $f file..."; 
+  magick convert $f ./public/numbered/page"$PAGE".png -flatten $f
+  PAGE=$((PAGE+1))
+done
+
+cp public/frontcover.png tgc/rules/0.png
+cp public/backcover.png tgc/rules/z.png
+# cp public/blankpage.png tgc/rules/00.png
+cp public/blankpage.png tgc/rules/y.png
 
 sips --resampleHeightWidth 2475 1575 tgc/rules/*.png
 
