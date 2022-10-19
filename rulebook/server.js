@@ -54,9 +54,9 @@ async function createServer() {
       const markdown = md.render(
         [
           welcome,
-          playArea,
           cardTypes,
           domains,
+          playArea,
           overview,
           ready,
           command,

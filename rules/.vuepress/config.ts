@@ -43,9 +43,9 @@ export default defineUserConfig({
           text: "Getting Started",
           children: [
             "/guide/welcome.md",
-            "/guide/play-area.md",
             "/guide/card-types.md",
             "/guide/domains.md",
+            "/guide/play-area.md",
           ],
         },
         {
