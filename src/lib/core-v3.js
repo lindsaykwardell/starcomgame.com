@@ -343,13 +343,13 @@ export const CARD_LIST = [
         systems.forEach((system) => {
           if (system.card.developmentLevel > 0) {
             menu.push({
-              label: `Gain ${system.card.developmentLevel * 2} (${
+              label: `Gain ${system.card.developmentLevel} (${
                 system.card.img
               })}`,
               action: `step:0`,
               stepAction: () => {
                 players[activePlayer].credits +=
-                  system.card.developmentLevel * 2;
+                  system.card.developmentLevel;
               },
             });
           }
@@ -380,7 +380,9 @@ export const CARD_LIST = [
             system[activePlayer].forEach((card) => {
               if (card.totalAttack() > 0) {
                 menu.push({
-                  label: `Choose ${card.img} (ATK: ${card.totalAttack()}) in ${system.card.img}`,
+                  label: `Choose ${card.img} (ATK: ${card.totalAttack()}) in ${
+                    system.card.img
+                  }`,
                   action: `step:${menu.length}`,
                   stepAction: () => {
                     return { chosenCard: card, chosenSystem: system };
@@ -431,7 +433,9 @@ export const CARD_LIST = [
           system[activePlayer].forEach((card) => {
             if (card.totalAttack() > 0) {
               menu.push({
-                label: `Choose ${card.img} (ATK: ${card.totalAttack()}) in ${system.card.img}`,
+                label: `Choose ${card.img} (ATK: ${card.totalAttack()}) in ${
+                  system.card.img
+                }`,
                 action: `step:${menu.length}`,
                 stepAction: () => {
                   return { chosenCard: card, chosenSystem: system };
@@ -444,21 +448,15 @@ export const CARD_LIST = [
       },
       (ctx) => {
         const { chosenCard, chosenSystem, nonActivePlayer } = ctx;
-        return [
-          {
-            label: `Deal ${chosenCard.totalAttack()} damage to all vessels in ${
-              chosenSystem.card.img
-            }`,
-            action: "step:0",
-            stepAction: () => {
-              const targets = chosenSystem[nonActivePlayer];
-
-              targets.forEach((target) => {
-                target.damage += chosenCard.totalAttack();
-              });
-            },
+        return chosenSystem[nonActivePlayer].map((ship) => ({
+          label: `Deal ${chosenCard.totalAttack()} to ${ship.img} (${
+            ship.totalHp() - ship.damage
+          }/${ship.totalHp()})`,
+          action: "step:0",
+          stepAction: () => {
+            ship.damage += chosenCard.totalAttack();
           },
-        ];
+        }));
       },
     ],
   },
@@ -482,7 +480,9 @@ export const CARD_LIST = [
         systems.forEach((system) => {
           system[activePlayer].forEach((card, index) => {
             menu.push({
-              label: `Choose ${card.img} (HP: ${card.totalHp()}) in ${system.card.img}`,
+              label: `Choose ${card.img} (HP: ${card.totalHp()}) in ${
+                system.card.img
+              }`,
               action: `step:${index}`,
               stepAction: () => ({ chosenCard: card, chosenSystem: system }),
             });
@@ -578,7 +578,9 @@ export const CARD_LIST = [
         systems.forEach((system) => {
           system[activePlayer].forEach((card, index) => {
             menu.push({
-              label: `Choose ${card.img} (Attack: ${card.totalAttack()}) in ${system.card.img}`,
+              label: `Choose ${card.img} (Attack: ${card.totalAttack()}) in ${
+                system.card.img
+              }`,
               action: `step:${index}`,
               stepAction: () => {
                 card.bonusAttack += 2;
@@ -639,7 +641,9 @@ export const CARD_LIST = [
         systems.forEach((system) => {
           system[activePlayer].forEach((card, index) => {
             menu.push({
-              label: `Choose ${card.img} (Attack: ${card.totalAttack()}) in ${system.card.img}`,
+              label: `Choose ${card.img} (Attack: ${card.totalAttack()}) in ${
+                system.card.img
+              }`,
               action: `step:${index}`,
               stepAction: () => {
                 return { chosenCard: card };
@@ -758,7 +762,7 @@ export const CARD_LIST = [
     },
     onTurnStart: ({ system }) => {
       if (
-        system.card.totalMaxDevelopmentLevel() < system.card.developmentLevel
+        system.card.totalMaxDevelopmentLevel() > system.card.developmentLevel
       ) {
         system.card.developmentLevel++;
       }
@@ -1030,7 +1034,7 @@ export const CARD_LIST = [
   },
   {
     id: 22,
-    img: "Explore_The_Unknown",
+    img: "Jump_Drive_Detonation",
     type: COMMAND,
     domain: SCIENCE,
     deck: SCIENCE,
@@ -1039,9 +1043,6 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
-    onResolve() {
-      alert("Draw two cards.");
-    },
   },
   {
     id: 23,
