@@ -306,7 +306,7 @@ export const CARD_LIST = [
     damage: 0,
     count: 4,
     cost: 2,
-    hp: 3,
+    hp: 2,
     bonusHp: 0,
     totalHp() {
       return this.hp + this.bonusHp;
