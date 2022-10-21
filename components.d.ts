@@ -8,13 +8,16 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BlogPostCard: typeof import('./src/components/BlogPostCard.vue')['default']
+    Board: typeof import('./src/components/Board/Board.vue')['default']
     Card: typeof import('./src/components/Card/Card.vue')['default']
     CardSearch: typeof import('./src/components/CardSearch.vue')['default']
     DamageDice: typeof import('./src/components/Dice/DamageDice.vue')['default']
+    DeckSelector: typeof import('./src/components/DeckSelector.vue')['default']
     Dialog: typeof import('./src/components/Dialog/Dialog.vue')['default']
     DropZone: typeof import('./src/components/DropZone/DropZone.vue')['default']
     Game: typeof import('./src/components/Game.vue')['default']
     Img: typeof import('./src/components/Img.vue')['default']
+    InitGameModal: typeof import('./src/components/InitGameModal.vue')['default']
     Island: typeof import('./node_modules/iles/dist/client/app/components/Island.vue')['default']
     LatestPost: typeof import('./src/components/LatestPost.vue')['default']
     Prose: typeof import('./src/components/Prose.vue')['default']

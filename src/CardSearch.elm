@@ -2,6 +2,7 @@ port module CardSearch exposing (main)
 
 import Browser
 import Csv.Decode as Decode exposing (Decoder)
+import Debounce
 import Html exposing (..)
 import Html.Attributes exposing (alt, attribute, class, src, title, value)
 import Html.Events exposing (onClick, onInput)
@@ -13,6 +14,7 @@ type alias Model =
     { cardList : List Card
     , searchTerm : String
     , selectedCard : Maybe String
+    , debounce : Debounce.Debounce String
     }
 
 
@@ -165,6 +167,7 @@ init flags =
     ( { cardList = []
       , searchTerm = flags.searchTerm
       , selectedCard = flags.selectedCard
+      , debounce = Debounce.init
       }
     , Cmd.batch [ fetchMainCsv, fetchPlanetCsv ]
     )
@@ -378,11 +381,18 @@ type Msg
     | ParseMainCsv (Result Http.Error String)
     | ParsePlanetCsv (Result Http.Error String)
     | UpdateSearchTerm String
+    | DebounceMsg Debounce.Msg
     | SelectCard Card
     | ReturnToCardList
 
 
-update : Msg -> Model -> ( Model, Cmd msg )
+debounceConfig =
+    { strategy = Debounce.later (1 * 1000)
+    , transform = DebounceMsg
+    }
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         NoOp ->
@@ -411,7 +421,24 @@ update msg model =
             ( model, Cmd.none )
 
         UpdateSearchTerm searchTerm ->
-            ( { model | searchTerm = searchTerm }, setSearchTerm searchTerm )
+            let
+                ( debounce, cmd ) =
+                    Debounce.push debounceConfig searchTerm model.debounce
+            in
+            ( { model | searchTerm = searchTerm, debounce = debounce }, cmd )
+
+        DebounceMsg msg_ ->
+            let
+                ( debounce, cmd ) =
+                    Debounce.update
+                        debounceConfig
+                        (Debounce.takeLast setSearchTerm)
+                        msg_
+                        model.debounce
+            in
+            ( { model | debounce = debounce }
+            , cmd
+            )
 
         SelectCard card ->
             ( { model | selectedCard = Just <| String.replace " " "_" card.name }, setSelectedCard <| Just (String.replace " " "_" card.name) )
@@ -627,11 +654,15 @@ main =
                                     Nothing ->
                                         UpdateSearchTerm value
                         )
+                    , updateSearchTerm UpdateSearchTerm
                     ]
         }
 
 
 port updateSelectedCard : (String -> msg) -> Sub msg
+
+
+port updateSearchTerm : (String -> msg) -> Sub msg
 
 
 port setSearchTerm : String -> Cmd msg
