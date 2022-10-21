@@ -2,10 +2,8 @@
 import "../assets/index.css";
 
 useHead({
-  link: [
-    { rel: 'icon', href: 'favicon.png'}
-  ]
-})
+  link: [{ rel: "icon", href: "favicon.png" }],
+});
 </script>
 
 <template>
@@ -22,7 +20,9 @@ useHead({
         >Star Commander</a
       >
     </div>
-    <nav class="flex flex-col md:flex-row gap-3 md:gap-10 justify-center m-auto">
+    <nav
+      class="flex flex-col md:flex-row gap-3 md:gap-10 justify-center m-auto"
+    >
       <router-link to="/" class="flex items-center gap-1">
         <img src="@/assets/starcom-logo.png" class="w-8" />
         Home
@@ -48,7 +48,7 @@ useHead({
   <main class="flex flex-col items-center">
     <slot />
   </main>
-  <footer class="w-5/6 md:w-[450px] m-auto flex flex-col gap-4 my-12">
+  <footer class="w-5/6 md:w-[450px] m-auto flex flex-col justify-center items-center gap-4 my-12">
     <a href="/">
       <img
         src="@/assets/starcom-logo.png"
@@ -56,7 +56,17 @@ useHead({
         alt="Star Commander"
       />
     </a>
-    <p class="text-sm text-center pb-3">Copyright © {{new Date().getFullYear()}} Lindsay Wardell</p>
+    <p class="text-sm text-center pb-3">
+      Copyright © {{ new Date().getFullYear() }} Lindsay Wardell
+    </p>
+    <a href="https://ko-fi.com/F1F8FU9C3" target="_blank"
+      ><img
+        height="36"
+        style="border: 0px; height: 36px"
+        src="https://cdn.ko-fi.com/cdn/kofi2.png?v=3"
+        border="0"
+        alt="Buy Me a Coffee at ko-fi.com"
+    /></a>
   </footer>
 </template>
 
