@@ -3,6 +3,13 @@ import "../assets/index.css";
 
 useHead({
   link: [{ rel: "icon", href: "favicon.png" }],
+  script: [
+    {
+      "data-goatcounter": "https://starcomgame.goatcounter.com/count",
+      async: true,
+      src: "//gc.zgo.at/count.js",
+    },
+  ],
 });
 </script>
 
@@ -48,7 +55,9 @@ useHead({
   <main class="flex flex-col items-center">
     <slot />
   </main>
-  <footer class="w-5/6 md:w-[450px] m-auto flex flex-col justify-center items-center gap-4 my-12">
+  <footer
+    class="w-5/6 md:w-[450px] m-auto flex flex-col justify-center items-center gap-4 my-12"
+  >
     <a href="/">
       <img
         src="@/assets/starcom-logo.png"
