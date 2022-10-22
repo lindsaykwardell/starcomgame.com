@@ -58,24 +58,6 @@
             />
           </Dialog>
 
-          <!-- <Dialog :show="showDiscard" @toggle="toggleDiscard">
-            <template v-slot:button
-              ><h6 class="text-white">
-                Discard ({{ discard.length }})
-              </h6></template
-            >
-            <template v-slot:header>All Discarded Cards</template>
-            <p v-if="discard.length <= 0">
-              No cards have been placed in discard yet.
-            </p>
-            <Card
-              v-for="card in discard"
-              :key="card.id"
-              :card="card"
-              class="inline lg"
-            />
-          </Dialog> -->
-          <!-- <Card :card="discard[0]" class="m-auto" /> -->
           <!-- <Dialog :show="showStack" @toggle="toggleStack">
             <template v-slot:button
               ><h4 class="text-white">
@@ -496,9 +478,6 @@
             {{ multiplayerSeat === "player1" ? "Player 1" : "Player 2" }}
           </div>
         </div>
-        <!-- <button class="d20 text-black" @click="drawCardFromDie">
-          <font-awesome size="4x" :icon="['fa', 'dice-d20']" :class="dieRoll" />
-        </button> -->
       </div>
       <div class="hand" :class="activePlayerHand" v-if="shouldBoardDisplay">
         <DropZone
@@ -544,9 +523,7 @@ import DamageDice from "@/components/Dice/DamageDice.vue";
 import Dialog from "@/components/Dialog/Dialog.vue";
 import DeckSelector from "@/components/DeckSelector.vue";
 import InitGameModal from "@/components/InitGameModal.vue";
-// import { clickout } from "vuetensils/src/directives";
 
-import dieRollMp3 from "@/assets/audio/dieroll.mp3";
 import drawCardMp3 from "@/assets/audio/draw-card.mp3";
 import itemMp3 from "@/assets/audio/item.mp3";
 import useSocket from "@/lib/useSocket";
@@ -608,14 +585,12 @@ export default {
   data() {
     return {
       nextId: 0,
-      dieValue: 0,
       showBoard: false,
       showCombat: false,
       showDrawCardModal: false,
       showInitGameModal: true,
       gameSize: 3,
       combatSystemLoc: 0,
-      showDiscard: false,
       showTechnology: false,
       showStack: false,
       showContextMenu: false,
@@ -662,12 +637,7 @@ export default {
   },
   computed: {
     shouldBoardDisplay() {
-      return (
-        this.showBoard &&
-        !this.showDiscard &&
-        !this.showStack &&
-        !this.showInitGameModal
-      );
+      return this.showBoard && !this.showStack && !this.showInitGameModal;
     },
     activePlayerDevelopmentCount() {
       return this.systems
@@ -686,9 +656,6 @@ export default {
         this.players[this.activePlayerHand].hand = val;
       },
     },
-    technology() {
-      return this.players[this.activePlayer].technology;
-    },
     player1Technology() {
       return this.players.player1.technology;
     },
@@ -697,23 +664,6 @@ export default {
     },
     nonActivePlayer() {
       return this.activePlayer === "player1" ? "player2" : "player1";
-    },
-    dieRoll() {
-      switch (this.dieValue) {
-        case null:
-          return "animate-spin";
-        case 1:
-        case 2:
-          return "industry";
-        case 3:
-        case 4:
-          return "politics";
-        case 5:
-        case 6:
-          return "science";
-        default:
-          return "";
-      }
     },
     currentContextMenu() {
       if (
@@ -792,7 +742,6 @@ export default {
         nextId: this.nextId,
         showCombat: this.showCombat,
         combatSystemLoc: this.combatSystemLoc,
-        dieValue: this.dieValue,
         contextLoc: this.contextLoc,
         decks: this.decks,
       };
@@ -820,38 +769,6 @@ export default {
     },
   },
   methods: {
-    rollDie() {
-      return new Promise((resolve) => {
-        const onPlayDone = () => {
-          audio.removeEventListener("ended", onPlayDone);
-          this.dieValue = Math.floor(Math.random() * 6) + 1;
-          resolve();
-        };
-
-        this.dieValue = null;
-
-        audio.addEventListener("ended", onPlayDone);
-
-        audio.src = dieRollMp3;
-        audio.play();
-      });
-    },
-    playerControlsDomain(player, domain) {
-      for (const system of this.systems) {
-        if (
-          system.card.controlledBy === player &&
-          system.card.domain === domain
-        ) {
-          return true;
-        }
-      }
-
-      return false;
-    },
-    toggleDiscard(val) {
-      this.showDiscard = val;
-      this.showBoard = !val;
-    },
     toggleStack(val) {
       this.showStack = val;
       this.showBoard = !val;
@@ -1431,7 +1348,6 @@ export default {
         nextId,
         showCombat,
         combatSystemLoc,
-        dieValue,
         contextLoc,
         decks,
       } = JSON.parse(payload);
@@ -1475,7 +1391,6 @@ export default {
         this.nextId = parseInt(nextId, 10);
         this.showCombat = showCombat;
         this.combatSystemLoc = combatSystemLoc;
-        this.dieValue = dieValue;
         this.contextLoc = contextLoc;
         this.decks = {
           politics: new Deck(decks.politics.deck.map(this.hydrateCard), true),
@@ -1486,26 +1401,11 @@ export default {
       };
 
       // Audio effects
-      const dieRolled = this.dieValue !== dieValue;
       const cardDrawn =
         this.players.player1.hand.length > players.player1.hand.length ||
         this.players.player2.hand.length > players.player2.hand.length;
 
-      if (dieRolled) {
-        this.dieValue = null;
-        audio.src = dieRollMp3;
-        audio.play();
-
-        const interval = setInterval(() => {
-          if (audio.paused) {
-            if (cardDrawn) {
-              playCard();
-            }
-            performUpdate();
-            clearInterval(interval);
-          }
-        }, 100);
-      } else if (cardDrawn) {
+      if (cardDrawn) {
         playCard();
         performUpdate();
       } else {
@@ -1592,7 +1492,7 @@ export default {
   },
   mounted() {
     EventBus.$on("card:hover", (card) => {
-      if (!this.showDiscard) this.hoveredCard = card;
+      this.hoveredCard = card;
     });
 
     EventBus.$on("card:context", ({ card, loc, event }) => {
