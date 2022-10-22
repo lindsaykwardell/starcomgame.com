@@ -870,9 +870,18 @@ export default {
         case "build":
           const card = { ...CARD_LIST.find((c) => c.id == keys[1]) };
           if (card) {
-            const newcard = { ...card, id: this.getNextId(), effects: [] };
-            this.systems[this.contextLoc][this.activePlayer] = [
-              ...this.systems[this.contextLoc][this.activePlayer],
+            const newcard = {
+              ...card,
+              id: this.getNextId(),
+              effects: [],
+              controlledBy: this.activePlayer,
+            };
+            // this.systems[this.contextLoc][this.activePlayer] = [
+            //   ...this.systems[this.contextLoc][this.activePlayer],
+            //   newcard,
+            // ];
+            this.systems[this.contextLoc].vessels = [
+              ...this.systems[this.contextLoc].vessels,
               newcard,
             ];
             if (option.cost) {
@@ -899,12 +908,13 @@ export default {
             });
           }
 
-          this.systems[keys[1]][this.activePlayer] = [
-            ...this.systems[keys[1]][this.activePlayer],
+          this.systems[keys[1]].vessels = [
+            ...this.systems[keys[1]].vessels,
             {
               ...this.contextCard,
               contextMenu: [...DAMAGE_CONTEXT_MENU],
               effects: [],
+              controlledBy: this.activePlayer,
             },
           ];
 
@@ -916,8 +926,6 @@ export default {
           break;
         case "develop":
           this.contextCard.controlledBy = this.activePlayer;
-
-          console.log(this.contextCard.totalMaxDevelopmentLevel());
 
           if (
             this.contextCard.developmentLevel <
@@ -1111,26 +1119,14 @@ export default {
     },
     assignCombatDamage(attackingCard, targetId) {
       attackingCard.damageAssignedTo = targetId;
-      this.systems[this.combatSystemLoc].player1.forEach((card) => {
-        if (card.id === targetId) {
-          card.damage += attackingCard.totalAttack();
-        }
-      });
-
-      this.systems[this.combatSystemLoc].player2.forEach((card) => {
+      this.systems[this.combatSystemLoc].vessels.forEach((card) => {
         if (card.id === targetId) {
           card.damage += attackingCard.totalAttack();
         }
       });
     },
     unassignCombatDamage(attackingCard) {
-      this.systems[this.combatSystemLoc].player1.forEach((card) => {
-        if (card.id === attackingCard.damageAssignedTo) {
-          card.damage -= attackingCard.totalAttack();
-        }
-      });
-
-      this.systems[this.combatSystemLoc].player2.forEach((card) => {
+      this.systems[this.combatSystemLoc].vessels.forEach((card) => {
         if (card.id === attackingCard.damageAssignedTo) {
           card.damage -= attackingCard.totalAttack();
         }
@@ -1141,11 +1137,7 @@ export default {
     endCombat() {
       this.showCombat = false;
 
-      this.systems[this.combatSystemLoc].player1.forEach((card) => {
-        card.damageAssignedTo = undefined;
-      });
-
-      this.systems[this.combatSystemLoc].player2.forEach((card) => {
+      this.systems[this.combatSystemLoc].vessels.forEach((card) => {
         card.damageAssignedTo = undefined;
       });
 
@@ -1155,13 +1147,7 @@ export default {
     },
     cleanUpDestroyedShips() {
       this.systems.forEach((system) => {
-        system.player1.forEach((card) => {
-          if (card.damage >= card.totalHp()) {
-            this.destroy(card);
-          }
-        });
-
-        system.player2.forEach((card) => {
+        system.vessels.forEach((card) => {
           if (card.damage >= card.totalHp()) {
             this.destroy(card);
           }
@@ -1174,17 +1160,22 @@ export default {
 
       // Conquest
       this.systems.forEach((system) => {
-        const invadingShips = system[this.activePlayer].filter(
-          (ship) => ship.type === SHIP && ship.totalAttack() > 0
+        const invadingShips = system.vessels.filter(
+          (ship) =>
+            ship.controlledBy === this.activePlayer &&
+            ship.type === SHIP &&
+            ship.totalAttack() > 0
         );
 
-        const invadingCruiserCount = system[this.activePlayer].filter(
+        const invadingCruiserCount = invadingShips.filter(
           (ship) => ship.img === "Cruiser"
         ).length;
 
-        const defendingShips = system[this.nonActivePlayer].filter(
+        const defendingShips = system.vessels.filter(
           (ship) =>
-            [SHIP, STATION].includes(ship.type) && ship.totalAttack() > 0
+            ship.controlledBy === this.nonActivePlayer &&
+            [SHIP, STATION].includes(ship.type) &&
+            ship.totalAttack() > 0
         );
 
         // Perform conquest only if no defenders
@@ -1219,20 +1210,7 @@ export default {
         ) {
           system.card.performedPerTurnAction = false;
         }
-        system.player1.forEach((card) => {
-          if (card.onTurnEnd) {
-            card.onTurnEnd({
-              ...this.fnContext,
-              card,
-              system,
-            });
-          }
-          card.bonusAttack = 0;
-          card.bonusHp = 0;
-          card.damage = 0;
-          card.effects = [];
-        });
-        system.player2.forEach((card) => {
+        system.vessels.forEach((card) => {
           if (card.onTurnEnd) {
             card.onTurnEnd({
               ...this.fnContext,
@@ -1315,8 +1293,10 @@ export default {
             system: system,
           });
         }
-        system[this.activePlayer].forEach((card) => {
-          if (card.onTurnStart) {
+
+        // Trigger start of turn effects for active player vessels
+        system.vessels.forEach((card) => {
+          if (card.controlledBy === this.activePlayer && card.onTurnStart) {
             card.onTurnStart({
               ...this.fnContext,
               card: card,
@@ -1332,7 +1312,6 @@ export default {
         this.activePlayerControlsScience ||
         this.activePlayerControlsStatecraft
       ) {
-        console.log("Should show the modal");
         this.showDrawCardModal = true;
       }
     },
@@ -1357,8 +1336,7 @@ export default {
         this.systems = systems.map((system) => {
           return {
             card: this.hydrateCard(system.card),
-            player1: system.player1.map((card) => this.hydrateCard(card)),
-            player2: system.player2.map((card) => this.hydrateCard(card)),
+            vessels: system.vessels.map((card) => this.hydrateCard(card)),
           };
         });
         this.activePlayer = activePlayer;
@@ -1385,9 +1363,7 @@ export default {
           hand: players.player2.hand.map((card) => this.hydrateCard(card)),
         };
         this.discard = discard.map((card) => this.hydrateCard(card));
-        console.log("THE STACK");
         this.stack = stack.map((card) => this.hydrateCard(card));
-        console.log("END THE STACK");
         this.nextId = parseInt(nextId, 10);
         this.showCombat = showCombat;
         this.combatSystemLoc = combatSystemLoc;
@@ -1415,7 +1391,6 @@ export default {
     },
     hydrateCard(cardPayload) {
       if (!cardPayload) throw Error("No payload to hydrate!");
-      console.log(cardPayload);
       const cardTemplate = CARD_LIST.find((c) => c.img === cardPayload.img);
 
       if (!cardTemplate) throw Error("No card template found");
@@ -1470,24 +1445,27 @@ export default {
                   explored: false,
                 }
               : { ...this.decks.system.draw(), loc: i, controlledBy: null },
-          player1: [],
-          player2: [],
+          vessels: [],
         });
       }
 
-      systems[0].player2.push({ ...SCOUT, id: this.getNextId(), effects: [] });
-      systems[0].card.explored = true;
-      systems[boardSize - 1].player1.push({
+      systems[0].vessels.push({
         ...SCOUT,
         id: this.getNextId(),
         effects: [],
+        controlledBy: "player2",
+      });
+      systems[0].card.explored = true;
+      systems[boardSize - 1].vessels.push({
+        ...SCOUT,
+        id: this.getNextId(),
+        effects: [],
+        controlledBy: "player1",
       });
       systems[boardSize - 1].card.explored = true;
 
       this.systems = systems;
       this.showBoard = true;
-
-      // this.players.player1.credits++;
     },
   },
   mounted() {

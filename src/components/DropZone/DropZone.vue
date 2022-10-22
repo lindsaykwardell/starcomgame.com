@@ -10,7 +10,7 @@
     @end="dropped"
   >
     <template #item="item">
-      <div>
+      <div v-if="!player || item?.element.controlledBy === player">
         <div class="relative">
           <Card
             :class="cardClass"
@@ -48,6 +48,10 @@ export default {
     group: {
       type: String,
       default: "default",
+    },
+    player: {
+      type: String,
+      required: false
     },
     cardClass: {
       type: String,

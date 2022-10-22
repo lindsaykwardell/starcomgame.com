@@ -3,10 +3,10 @@
     <DropZone
       class="dropzone top"
       :class="combat ? 'combat' : ''"
-      x:cardClass="player2.length > 5 ? 'xs' : 'sm'"
       :cardClass="combat ? '' : 'xs'"
-      :list.sync="player2"
+      :list.sync="vessels"
       :group="`player2-${group}`"
+      player="player2"
       :loc="system.card.loc"
       :combat="combat"
       :showEffects="showEffects"
@@ -29,10 +29,10 @@
     </div>
     <DropZone
       class="dropzone bottom"
-      x:cardClass="player1.length > 5 ? 'xs' : 'sm'"
       :cardClass="combat ? (player1.length > 5 ? 'sm' : '') : 'xs'"
-      :list.sync="player1"
+      :list.sync="vessels"
       :group="`player1-${group}`"
+      player="player1"
       :loc="system.card.loc"
       :combat="combat"
       :showEffects="showEffects"
@@ -72,20 +72,15 @@ export default {
         this.$emit("update:system", system);
       },
     },
-    player1: {
+    vessels: {
       get() {
-        return this.system.player1;
+        return this.system.vessels;
       },
-      set(player1) {
-        this._system = { ...this.system, player1 };
-      },
-    },
-    player2: {
-      get() {
-        return this.system.player2;
-      },
-      set(player2) {
-        this._system = { ...this.system, player2 };
+      set(vessels) {
+        this._system = {
+          ...this.system,
+          vessels,
+        };
       },
     },
     firstDie() {
@@ -131,10 +126,7 @@ export default {
     system: {
       deep: true,
       handler() {
-        if (
-          !this.system.card.explored &&
-          (this.system.player1.length > 0 || this.system.player2.length > 0)
-        ) {
+        if (!this.system.card.explored && this.system.vessels.length > 0) {
           this.$emit("explored", this.system.card);
         }
       },
