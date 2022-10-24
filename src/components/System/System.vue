@@ -3,7 +3,7 @@
     <DropZone
       class="dropzone top"
       :class="combat ? 'combat' : ''"
-      :cardClass="combat ? '' : 'xs'"
+      :cardClass="combat ? 'sm' : 'xs'"
       :list.sync="vessels"
       :group="`player2-${group}`"
       player="player2"
@@ -15,7 +15,7 @@
       <DropZone
         class="dropzone left"
         :class="combat ? 'combat' : ''"
-        :cardClass="combat ? '' : 'xs'"
+        :cardClass="combat ? 'sm' : 'xs'"
         :list.sync="vessels"
         :group="`player3-${group}`"
         player="player3"
@@ -42,7 +42,7 @@
       <DropZone
         class="dropzone right"
         :class="combat ? 'combat' : ''"
-        :cardClass="combat ? '' : 'xs'"
+        :cardClass="combat ? 'sm' : 'xs'"
         :list.sync="vessels"
         :group="`player4-${group}`"
         player="player4"
@@ -54,7 +54,7 @@
     <DropZone
       class="dropzone bottom"
       :class="combat ? 'combat' : ''"
-      :cardClass="combat ? '' : 'xs'"
+      :cardClass="combat ? 'sm' : 'xs'"
       :list.sync="vessels"
       :group="`player1-${group}`"
       player="player1"
@@ -192,7 +192,7 @@ export default {
 
   &.top {
     top: -45px;
-    min-width: 140px;
+    width: 140px;
 
     &.combat {
       top: -275px;
@@ -203,12 +203,14 @@ export default {
   &.left {
     left: -70px;
     top: 35px;
-    min-width: 100px;
+    width: 100px;
     transform: rotate(90deg);
 
     &.combat {
-      /* width: 100vh; */
-      left: -430px;
+      width: 400px;
+      display: flex;
+      flex-wrap: wrap;
+      left: -220px;
       top: 90px;
     }
   }
@@ -217,20 +219,22 @@ export default {
     left: 105px;
     top: 35px;
     /* width: 300px; */
-    min-width: 100px;
+    width: 100px;
     transform: rotate(-90deg);
 
     &.combat {
-      /* width: 100vh; */
-      /* left: -160px; */
-      right: -890px;
+      width: 400px;
+      display: flex;
+      flex-wrap: wrap;
+      left: 120px;
+      /* right: -890px; */
       top: 90px;
     }
   }
 
   &.bottom {
     bottom: -25px;
-    min-width: 140px;
+    width: 140px;
     padding-bottom: 1rem;
 
     &.combat {
