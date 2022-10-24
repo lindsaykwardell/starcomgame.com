@@ -1841,7 +1841,7 @@ export const DECK_SCIENCE = CARD_LIST.filter(
 export const DECK_SYSTEM = CARD_LIST.filter(
   (card) => card.deck === SYSTEM
 ).reduce((deck, card) => {
-  card.backImg = "/planet.png";
+  card.backImg = "/planet-horizontal.png";
   const list = [...deck];
   for (let i = 0; i < card.count; i++) {
     list.push({ ...card });
