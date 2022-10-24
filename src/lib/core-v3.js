@@ -861,15 +861,19 @@ export const CARD_LIST = [
         let menu = [];
 
         systems.forEach((system) => {
-          shipsNotControlledBy(system, activePlayer).forEach((card, index) => {
-            menu.push({
-              label: `Destroy ${card.img} in ${system.card.img}`,
-              action: `step:${index}`,
-              stepAction: () => {
-                card.damage = 1000;
-              },
-            });
-          });
+          if (shipsControlledBy(system, activePlayer).length) {
+            shipsNotControlledBy(system, activePlayer).forEach(
+              (card, index) => {
+                menu.push({
+                  label: `Destroy ${card.img} in ${system.card.img}`,
+                  action: `step:${index}`,
+                  stepAction: () => {
+                    card.damage = 1000;
+                  },
+                });
+              }
+            );
+          }
         });
 
         return menu;
