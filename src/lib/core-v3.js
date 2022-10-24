@@ -728,8 +728,8 @@ export const CARD_LIST = [
     deck: STATECRAFT,
     damage: 0,
     count: 4,
-    cost: 6,
-    hp: 12,
+    cost: 5,
+    hp: 5,
     bonusHp: 0,
     totalHp() {
       return this.hp + this.bonusHp;
