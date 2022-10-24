@@ -5,9 +5,15 @@ import Dialog from "./Dialog/Dialog.vue";
 const props = defineProps({
   modelValue: Boolean,
   gameSize: Number,
+  playerCount: Number,
 });
 
-const emit = defineEmits(["update:modelValue", "update:gameSize", "startGame"]);
+const emit = defineEmits([
+  "update:modelValue",
+  "update:gameSize",
+  "update:playerCount",
+  "startGame",
+]);
 
 const open = computed({
   get() {
@@ -27,6 +33,15 @@ const gameSize = computed({
   },
 });
 
+const playerCount = computed({
+  get() {
+    return props.playerCount;
+  },
+  set(val) {
+    emit("update:playerCount", val);
+  },
+});
+
 function startGame() {
   open.value = false;
   emit("startGame");
@@ -41,9 +56,16 @@ function startGame() {
 
     <fieldset>
       <legend>Game Size</legend>
-      <label> <input type="radio" v-model="gameSize" :value="3" /> 3x3 </label>
-      <label> <input type="radio" v-model="gameSize" :value="4" /> 4x4 </label>
-      <label> <input type="radio" v-model="gameSize" :value="5" /> 5x5 </label>
+      <label class="px-2"> <input type="radio" v-model="gameSize" :value="3" /> 3x3 </label>
+      <label class="px-2"> <input type="radio" v-model="gameSize" :value="4" /> 4x4 </label>
+      <label class="px-2"> <input type="radio" v-model="gameSize" :value="5" /> 5x5 </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Player Count</legend>
+      <label class="px-2"> <input type="radio" v-model="playerCount" :value="2" /> 2 </label>
+      <label class="px-2"> <input type="radio" v-model="playerCount" :value="3" /> 3 </label>
+      <label class="px-2"> <input type="radio" v-model="playerCount" :value="4" /> 4 </label>
     </fieldset>
 
     <button

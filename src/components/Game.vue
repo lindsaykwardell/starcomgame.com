@@ -2,6 +2,7 @@
   <InitGameModal
     v-model="showInitGameModal"
     v-model:gameSize="gameSize"
+    v-model:playerCount="playerCount"
     @startGame="initGame"
   />
   <div class="flex">
@@ -297,28 +298,13 @@ export default {
       showDrawCardModal: false,
       showInitGameModal: true,
       gameSize: 3,
+      playerCount: 2,
       combatSystemLoc: 0,
       showTechnology: false,
       showStack: false,
       showContextMenu: false,
-      players: {
-        player1: {
-          credits: 3,
-          technology: [],
-          hand: [],
-          technology: [],
-          completedFirstTurn: false,
-        },
-        player2: {
-          credits: 3,
-          technology: [],
-          hand: [],
-          technology: [],
-          completedFirstTurn: false,
-        },
-      },
+      players: {},
       activePlayer: "player1",
-      nextPlayer: "player2",
       activePlayerHand: "player1",
       multiplayerSeat: null,
       contextCard: null,
@@ -343,6 +329,16 @@ export default {
     };
   },
   computed: {
+    nextPlayer() {
+      const currentPlayerNumber = +this.activePlayer?.replace("player", "");
+      const potentialNextPlayer = "player" + (currentPlayerNumber + 1);
+
+      if (!this.players[potentialNextPlayer]) {
+        return "player1";
+      } else {
+        return potentialNextPlayer;
+      }
+    },
     shouldBoardDisplay() {
       return this.showBoard && !this.showStack && !this.showInitGameModal;
     },
@@ -371,6 +367,9 @@ export default {
     },
     nonActivePlayer() {
       return this.activePlayer === "player1" ? "player2" : "player1";
+    },
+    nonActivePlayers() {
+      return Object.keys(this.players).filter((p) => p !== this.activePlayer);
     },
     currentContextMenu() {
       if (
@@ -937,7 +936,6 @@ export default {
       // Next player
       this.activePlayer = this.nextPlayer;
       this.activePlayerHand = this.nextPlayer;
-      this.nextPlayer = this.nextPlayer === "player1" ? "player2" : "player1";
 
       // Validate the now-active player didn't lose last turn.
       const systemCount = this.systems.filter(
@@ -1027,7 +1025,6 @@ export default {
         card,
         systems,
         activePlayer,
-        nextPlayer,
         players,
         discard,
         stack,
@@ -1047,7 +1044,6 @@ export default {
           };
         });
         this.activePlayer = activePlayer;
-        this.nextPlayer = nextPlayer;
         if (
           this.players.player1.hand.length > players.player1.hand.length ||
           this.players.player2.hand.length > players.player2.hand.length
@@ -1120,17 +1116,34 @@ export default {
           technology: [],
           completedFirstTurn: false,
         },
-        player2: {
+        // player2: {
+        //   credits: 3,
+        //   technology: [],
+        //   hand: [],
+        //   technology: [],
+        //   completedFirstTurn: false,
+        // },
+      };
+
+      for (let i = 1; i <= this.playerCount; i++) {
+        this.players["player" + i] = {
           credits: 3,
           technology: [],
           hand: [],
           technology: [],
           completedFirstTurn: false,
-        },
-      };
-      this.activePlayer = "player1";
-      this.nextPlayer = "player2";
-      this.activePlayerHand = "player1";
+        };
+      }
+
+      // Determine first player
+      let firstPlayer = Math.ceil(Math.random() * this.playerCount);
+
+      if (!this.players["player" + firstPlayer]) {
+        firstPlayer = 1;
+      }
+
+      this.activePlayer = "player" + firstPlayer;
+      this.activePlayerHand = "player" + firstPlayer;
 
       this.decks = {
         politics: new Deck(DECK_STATECRAFT),
