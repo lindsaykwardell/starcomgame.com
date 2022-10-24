@@ -1424,9 +1424,10 @@ export default {
 }
 
 .context-menu {
-  @apply bg-gray-900 text-white rounded;
+  @apply bg-gray-900 text-white rounded overflow-auto;
   position: absolute;
   width: 200px;
+  max-height: 350px;
 }
 
 .next-turn-button {
