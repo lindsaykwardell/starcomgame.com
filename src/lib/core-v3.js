@@ -57,12 +57,8 @@ function shipsControlledBy(system, player) {
   return system.vessels.filter((v) => v.controlledBy === player);
 }
 
-function player1Ships(system) {
-  return shipsControlledBy(system, "player1");
-}
-
-function player2Ships(system) {
-  return shipsControlledBy(system, "player2");
+function shipsNotControlledBy(system, player) {
+  return system.vessels.filter((v) => v.controlledBy !== player);
 }
 
 const SYSTEM_CONTEXT_MENU = [
@@ -288,8 +284,7 @@ export const generateCombatContextMenu = ({ card, system, players }) => {
     condition: ({ card, system, activePlayer, players }) =>
       card.totalAttack() > 0 && !card.damageAssignedTo,
   });
-  let opponent = card.controlledBy === "player1" ? "player2" : "player1";
-  shipsControlledBy(system, opponent).forEach((c) => {
+  shipsNotControlledBy(system, card.controlledBy).forEach((c) => {
     menu.unshift({
       action: `assign-damage:${c.id}`,
       label: `Attack ${c.img} (${c.totalHp() - c.damage}/${c.totalHp()})`,
@@ -452,8 +447,8 @@ export const CARD_LIST = [
         return menu;
       },
       (ctx) => {
-        const { chosenCard, chosenSystem, nonActivePlayer } = ctx;
-        return shipsControlledBy(chosenSystem, nonActivePlayer).map((ship) => ({
+        const { chosenCard, chosenSystem, activePlayer } = ctx;
+        return shipsNotControlledBy(chosenSystem, activePlayer).map((ship) => ({
           label: `Deal ${chosenCard.totalAttack()} to ${ship.img} (${
             ship.totalHp() - ship.damage
           }/${ship.totalHp()})`,
@@ -495,10 +490,10 @@ export const CARD_LIST = [
         });
         return menu;
       },
-      ({ chosenCard, chosenSystem, nonActivePlayer }) => {
+      ({ chosenCard, chosenSystem, activePlayer }) => {
         // Select a ship the non active player controls, and add it to step context
         let menu = [];
-        shipsControlledBy(chosenSystem, nonActivePlayer).forEach(
+        shipsNotControlledBy(chosenSystem, activePlayer).forEach(
           (card, index) => {
             menu.push({
               label: `Target ${card.img} (HP: ${card.totalHp() - card.damage})`,
@@ -862,11 +857,11 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, nonActivePlayer }) => {
+      ({ systems, activePlayer }) => {
         let menu = [];
 
         systems.forEach((system) => {
-          shipsControlledBy(system, nonActivePlayer).forEach((card, index) => {
+          shipsNotControlledBy(system, activePlayer).forEach((card, index) => {
             menu.push({
               label: `Destroy ${card.img} in ${system.card.img}`,
               action: `step:${index}`,
@@ -1774,7 +1769,7 @@ export const CARD_LIST = [
     type: SYSTEM,
     domain: null,
     deck: SYSTEM,
-    count: 4,
+    count: 0,
     developmentLevel: 0,
     maxDevelopmentLevel: 1,
     bonusDevelopmentLevel: 0,

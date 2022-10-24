@@ -172,9 +172,15 @@
         </template>
         <button
           class="next-turn-button"
-          @click="showCombat ? endCombat() : nextTurn()"
+          @click="
+            showCombat
+              ? endCombat()
+              : gameOver
+              ? (this.showInitGameModal = true)
+              : nextTurn()
+          "
         >
-          {{ showCombat ? "End Combat" : "Pass Turn" }}
+          {{ showCombat ? "End Combat" : gameOver ? "New Game" : "Pass Turn" }}
         </button>
         <div class="active-player-stats flex items-center gap-4">
           <button
@@ -186,24 +192,10 @@
             "
             @click="activePlayerHand = 'player1'"
           >
-            <em>Player 1</em><br />
-            <hr />
+            <!-- <em>Player 1</em><br /> -->
+            <!-- <hr /> -->
             Credits: {{ players.player1.credits }}<br />
             Developments: {{ getPlayerDevelopmentCount("player1") }}
-          </button>
-          <button
-            class="flex-1 p-1 rounded-lg duration-200 whitespace-nowrap text-left border border-transparent"
-            :class="
-              activePlayer === 'player2'
-                ? 'bg-blue-400 shadow-lg border-white'
-                : 'bg-blue-900'
-            "
-            @click="activePlayerHand = 'player2'"
-          >
-            <em>Player 2</em><br />
-            <hr />
-            Credits: {{ players.player2.credits }}<br />
-            Developments: {{ getPlayerDevelopmentCount("player2") }}
           </button>
           <button
             v-if="players.player3"
@@ -215,10 +207,24 @@
             "
             @click="activePlayerHand = 'player3'"
           >
-            <em>Player 3</em><br />
-            <hr />
+            <!-- <em>Player 3</em><br /> -->
+            <!-- <hr /> -->
             Credits: {{ players.player3.credits }}<br />
             Developments: {{ getPlayerDevelopmentCount("player3") }}
+          </button>
+          <button
+            class="flex-1 p-1 rounded-lg duration-200 whitespace-nowrap text-left border border-transparent"
+            :class="
+              activePlayer === 'player2'
+                ? 'bg-blue-400 shadow-lg border-white'
+                : 'bg-blue-900'
+            "
+            @click="activePlayerHand = 'player2'"
+          >
+            <!-- <em>Player 2</em><br /> -->
+            <!-- <hr /> -->
+            Credits: {{ players.player2.credits }}<br />
+            Developments: {{ getPlayerDevelopmentCount("player2") }}
           </button>
           <button
             v-if="players.player4"
@@ -230,8 +236,8 @@
             "
             @click="activePlayerHand = 'player4'"
           >
-            <em>Player 4</em><br />
-            <hr />
+            <!-- <em>Player 4</em><br /> -->
+            <!-- <hr /> -->
             Credits: {{ players.player4.credits }}<br />
             Developments: {{ getPlayerDevelopmentCount("player4") }}
           </button>
@@ -357,6 +363,7 @@ export default {
       showCombat: false,
       showDrawCardModal: false,
       showInitGameModal: true,
+      gameOver: false,
       gameSize: 3,
       playerCount: 2,
       combatSystemLoc: 0,
@@ -413,14 +420,6 @@ export default {
             case "player4":
               return "player1";
           }
-        // const currentPlayerNumber = +this.activePlayer?.replace("player", "");
-        // const potentialNextPlayer = "player" + (currentPlayerNumber + 1);
-
-        // if (!this.players[potentialNextPlayer]) {
-        //   return "player1";
-        // } else {
-        //   return potentialNextPlayer;
-        // }
       }
     },
     shouldBoardDisplay() {
@@ -454,9 +453,6 @@ export default {
     },
     player4Technology() {
       return this.players.player4?.technology;
-    },
-    nonActivePlayer() {
-      return this.activePlayer === "player1" ? "player2" : "player1";
     },
     nonActivePlayers() {
       return Object.keys(this.players).filter((p) => p !== this.activePlayer);
@@ -529,7 +525,7 @@ export default {
         card: this.contextCard,
         systems: this.systems,
         activePlayer: this.activePlayer,
-        nonActivePlayer: this.nonActivePlayer,
+        nonActivePlayers: this.nonActivePlayers,
         nextPlayer: this.nextPlayer,
         players: this.players,
         discard: this.discard,
@@ -965,20 +961,22 @@ export default {
 
         const defendingShips = system.vessels.filter(
           (ship) =>
-            ship.controlledBy === this.nonActivePlayer &&
+            ship.controlledBy === system.card.controlledBy &&
             [SHIP, STATION].includes(ship.type) &&
             ship.totalAttack() > 0
         );
 
         // Perform conquest only if no defenders
         if (
-          system.card.controlledBy === this.nonActivePlayer &&
+          system.card.controlledBy &&
+          system.card.controlledBy !== this.activePlayer &&
           invadingShips.length > 0 &&
           defendingShips.length === 0
         ) {
           system.card.developmentLevel -= invadingShips.length;
         } else if (
-          system.card.controlledBy === this.nonActivePlayer &&
+          system.card.controlledBy &&
+          system.card.controlledBy !== this.activePlayer &&
           invadingCruiserCount > 0
         ) {
           // If standard conquest is not possible, perform it for all invading cruisers present
@@ -986,7 +984,8 @@ export default {
         }
 
         if (
-          system.card.controlledBy === this.nonActivePlayer &&
+          system.card.controlledBy &&
+          system.card.controlledBy !== this.activePlayer &&
           system.card.developmentLevel <= 0
         ) {
           system.card.controlledBy = this.activePlayer;
@@ -1023,21 +1022,6 @@ export default {
       this.activePlayerHand = this.nextPlayer;
       this.activePlayer = this.nextPlayer;
 
-      // Validate the now-active player didn't lose last turn.
-      const systemCount = this.systems.filter(
-        (system) =>
-          system.card.controlledBy === this.activePlayer &&
-          CAPITAL_PLANET_NAME_LIST.includes(system.card.img)
-      ).length;
-
-      if (systemCount <= 0) {
-        alert("Game over!");
-
-        this.showBoard = false;
-        this.showInitGameModal = true;
-        return;
-      }
-
       // Gain credits
       // if (this.players[this.activePlayer].completedFirstTurn) {
       this.players[this.activePlayer].credits +=
@@ -1063,15 +1047,17 @@ export default {
         }
       });
 
-      this.players[this.nonActivePlayer].technology.forEach((technology) => {
-        if (technology.onEachTurnStart) {
-          technology.onEachTurnStart({
-            ...this.fnContext,
-            card: technology,
-            player: this.nonActivePlayer,
-          });
-        }
-      });
+      for (const nonActivePlayer of this.nonActivePlayers) {
+        this.players[nonActivePlayer].technology.forEach((technology) => {
+          if (technology.onEachTurnStart) {
+            technology.onEachTurnStart({
+              ...this.fnContext,
+              card: technology,
+              player: nonActivePlayer,
+            });
+          }
+        });
+      }
 
       this.systems.forEach((system) => {
         if (
@@ -1097,6 +1083,19 @@ export default {
         });
       });
 
+      // Validate that a player didn't lose last turn.
+      const didGameEnd = this.checkGameEndConditions();
+
+      if (didGameEnd) {
+        alert("Game over!");
+
+        this.gameOver = true;
+
+        // this.showBoard = false;
+        // this.showInitGameModal = true;
+        return;
+      }
+
       // Show the draw a card dialog.
       if (
         this.activePlayerControlsIndustry ||
@@ -1105,6 +1104,24 @@ export default {
       ) {
         this.showDrawCardModal = true;
       }
+    },
+    checkGameEndConditions() {
+      // Do players still control their homeworlds?
+      const multipleHomeworldsDetected = Object.keys(this.players).reduce(
+        (val, player) =>
+          val ||
+          this.systems.filter(
+            (s) => s.card.controlledBy === player && s.card.img === "Homeworld"
+          ).length > 1,
+        false
+      );
+      // Did a deck run out of cards?
+      const domainDeckIsEmpty =
+        this.decks.industry.remaining <= 0 ||
+        this.decks.politics.remaining <= 0 ||
+        this.decks.science.remaining <= 0;
+
+      return multipleHomeworldsDetected || domainDeckIsEmpty;
     },
     parseAndUpdateState(payload) {
       const {
@@ -1132,7 +1149,9 @@ export default {
         this.activePlayer = activePlayer;
         if (
           this.players.player1.hand.length > players.player1.hand.length ||
-          this.players.player2.hand.length > players.player2.hand.length
+          this.players.player2.hand.length > players.player2.hand.length ||
+          this.players.player3?.hand.length > players.player3?.hand.length ||
+          this.players.player4?.hand.length > players.player4?.hand.length
         ) {
           audio.src = drawCardMp3;
           audio.play();
@@ -1151,6 +1170,24 @@ export default {
           ),
           hand: players.player2.hand.map((card) => this.hydrateCard(card)),
         };
+        if (players.player3) {
+          this.players.player3 = {
+            ...players.player3,
+            technology: players.player3.technology.map((card) =>
+              this.hydrateCard(card)
+            ),
+            hand: players.player3.hand.map((card) => this.hydrateCard(card)),
+          };
+        }
+        if (players.player4) {
+          this.players.player4 = {
+            ...players.player4,
+            technology: players.player4.technology.map((card) =>
+              this.hydrateCard(card)
+            ),
+            hand: players.player4.hand.map((card) => this.hydrateCard(card)),
+          };
+        }
         this.discard = discard.map((card) => this.hydrateCard(card));
         this.stack = stack.map((card) => this.hydrateCard(card));
         this.nextId = parseInt(nextId, 10);
@@ -1168,7 +1205,9 @@ export default {
       // Audio effects
       const cardDrawn =
         this.players.player1.hand.length > players.player1.hand.length ||
-        this.players.player2.hand.length > players.player2.hand.length;
+        this.players.player2.hand.length > players.player2.hand.length ||
+        this.players.player3?.hand.length > players.player3?.hand.length ||
+        this.players.player4?.hand.length > players.player4?.hand.length;
 
       if (cardDrawn) {
         playCard();
@@ -1225,37 +1264,10 @@ export default {
 
       const systems = [];
       const boardSize = this.gameSize * this.gameSize;
-      for (let i = 0; i < boardSize; i++) {
-        systems.push({
-          card:
-            i === 0 || i === boardSize - 1
-              ? {
-                  ...HOMEWORLD,
-                  loc: i,
-                  controlledBy: i === 0 ? "player2" : "player1",
-                  explored: true,
-                }
-              : { ...this.decks.system.draw(), loc: i, controlledBy: null },
-          vessels: [],
-        });
-      }
 
-      systems[0].vessels.push({
-        ...SCOUT,
-        id: this.getNextId(),
-        effects: [],
-        controlledBy: "player2",
-      });
-      systems[boardSize - 1].vessels.push({
-        ...SCOUT,
-        id: this.getNextId(),
-        effects: [],
-        controlledBy: "player1",
-      });
+      const startingLocations = { 0: "player2", [boardSize - 1]: "player1" };
 
-      // Player 3 starts on the left
       if (this.playerCount >= 3) {
-        let system;
         let loc;
         if (this.gameSize === 3) {
           loc = 3;
@@ -1264,26 +1276,11 @@ export default {
         } else if (this.gameSize === 5) {
           loc = 10;
         }
-        system = systems[loc];
 
-        system.card = {
-          ...HOMEWORLD,
-          loc,
-          controlledBy: "player3",
-          explored: true,
-        };
-
-        system.vessels.push({
-          ...SCOUT,
-          id: this.getNextId(),
-          effects: [],
-          controlledBy: "player3",
-        });
+        startingLocations[loc] = "player3";
       }
 
-      // Player 4 starts on the right
       if (this.playerCount === 4) {
-        let system;
         let loc;
         if (this.gameSize === 3) {
           loc = 5;
@@ -1292,25 +1289,37 @@ export default {
         } else if (this.gameSize === 5) {
           loc = 14;
         }
-        system = systems[loc];
+        startingLocations[loc] = "player4";
+      }
 
-        system.card = {
-          ...HOMEWORLD,
-          loc,
-          controlledBy: "player4",
-          explored: true,
-        };
+      for (let i = 0; i < boardSize; i++) {
+        systems.push({
+          card: Object.keys(startingLocations)
+            .map((l) => +l)
+            .includes(i)
+            ? {
+                ...HOMEWORLD,
+                loc: i,
+                controlledBy: startingLocations[i],
+                explored: true,
+              }
+            : { ...this.decks.system.draw(), loc: i, controlledBy: null },
+          vessels: [],
+        });
+      }
 
-        system.vessels.push({
+      for (const loc of Object.keys(startingLocations)) {
+        systems[loc].vessels.push({
           ...SCOUT,
           id: this.getNextId(),
           effects: [],
-          controlledBy: "player4",
+          controlledBy: startingLocations[loc],
         });
       }
 
       this.systems = systems;
       this.showBoard = true;
+      this.gameOver = false;
     },
   },
   mounted() {
@@ -1364,7 +1373,7 @@ export default {
 
 <style lang="pcss">
 .board {
-  padding: 1rem;
+  padding: 1rem 3rem;
   background: url("/board.jpg");
   height: calc(100vh - 245px);
   overflow: scroll;
