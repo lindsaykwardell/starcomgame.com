@@ -159,6 +159,7 @@
           :gameSize="gameSize"
           :systems="systems"
           :onExplore="onExplore"
+          :onScroll="onClickout"
         />
         <template v-else>
           <div class="flex justify-around items-center board-height">
@@ -634,8 +635,12 @@ export default {
 
       this.contextCoordinates = {
         top: `${event.clientY}px`,
-        left: `${event.clientX}px`,
       };
+      if (event.clientX + 200 >= document.body.scrollWidth) {
+        this.contextCoordinates.left = `${event.clientX - 200}px`;
+      } else {
+        this.contextCoordinates.left = `${event.clientX}px`;
+      }
       this.showContextMenu = true;
       this.contextCard = card;
       this.contextLoc = loc;
@@ -1421,7 +1426,7 @@ export default {
 .context-menu {
   @apply bg-gray-900 text-white rounded;
   position: absolute;
-  border: 1px solid white;
+  width: 200px;
 }
 
 .next-turn-button {

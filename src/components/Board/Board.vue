@@ -1,10 +1,22 @@
 <script setup>
-import System from "@/components/System/System.vue"
+import { onMounted, onBeforeUnmount } from "vue";
+import System from "@/components/System/System.vue";
 
-defineProps({
+const props = defineProps({
   gameSize: Number,
   systems: Array,
-  onExplore: Function
+  onExplore: Function,
+  onScroll: Function,
+});
+
+onMounted(() => {
+  document.querySelector(".board").addEventListener("scroll", props.onScroll);
+});
+
+onBeforeUnmount(() => {
+  document
+    .querySelector(".board")
+    .removeEventListener("scroll", props.onScroll);
 });
 </script>
 
