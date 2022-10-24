@@ -53,6 +53,7 @@
     </div>
     <DropZone
       class="dropzone bottom"
+      :class="combat ? 'combat' : ''"
       :cardClass="combat ? '' : 'xs'"
       :list.sync="vessels"
       :group="`player1-${group}`"
@@ -187,47 +188,53 @@ export default {
 .dropzone {
   position: absolute;
   height: 25px;
-  width: 30vw;
+  /* width: 30vw; */
 
   &.top {
     top: -45px;
+    min-width: 140px;
 
     &.combat {
-      top: -175px;
+      top: -275px;
       width: 100vw;
     }
   }
 
   &.left {
-    left: -165px;
+    left: -70px;
     top: 35px;
-    width: 300px;
+    min-width: 100px;
     transform: rotate(90deg);
 
     &.combat {
-      width: 100vh;
-      left: -490px;
+      /* width: 100vh; */
+      left: -430px;
       top: 90px;
     }
   }
 
   &.right {
-    left: 5px;
+    left: 105px;
     top: 35px;
-    width: 300px;
+    /* width: 300px; */
+    min-width: 100px;
     transform: rotate(-90deg);
 
     &.combat {
-      width: 100vh;
-      left: -160px;
+      /* width: 100vh; */
+      /* left: -160px; */
+      right: -890px;
       top: 90px;
     }
   }
 
   &.bottom {
     bottom: -25px;
+    min-width: 140px;
+    padding-bottom: 1rem;
 
     &.combat {
+      bottom: -100px;
       width: 100vw;
     }
   }
@@ -238,7 +245,7 @@ export default {
   padding: 5px;
   background: white;
   position: absolute;
-  top: 20px;
+  bottom: 20px;
   left: 10px;
 }
 </style>

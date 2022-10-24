@@ -108,7 +108,7 @@
       <div v-if="shouldBoardDisplay" class="board relative overflow-y-scroll">
         <div
           v-if="player1Technology.length"
-          class="fixed bottom-[260px] bg-red-300/25 p-1 rounded-lg flex gap-1"
+          class="fixed bottom-[260px] left-[310px] bg-red-300/25 p-1 rounded-lg flex gap-1"
         >
           <Card
             v-for="card in player1Technology"
@@ -132,7 +132,7 @@
         </div>
         <div
           v-if="player3Technology?.length"
-          class="fixed top-1 bg-green-300/25 p-1 rounded-lg flex gap-1"
+          class="fixed top-1 left-[310px] bg-green-300/25 p-1 rounded-lg flex gap-1"
         >
           <Card
             v-for="card in player3Technology"
