@@ -11,25 +11,49 @@
       :combat="combat"
       :showEffects="showEffects"
     />
-    <div class="relative">
-      <Card
-        :class="combat ? 'horizontal-lg' : 'horizontal'"
-        :card="system.card"
+    <div class="flex">
+      <DropZone
+        class="dropzone left"
+        :class="combat ? 'combat' : ''"
+        :cardClass="combat ? '' : 'xs'"
+        :list.sync="vessels"
+        :group="`player3-${group}`"
+        player="player3"
+        :loc="system.card.loc"
+        :combat="combat"
         :showEffects="showEffects"
       />
-      <div v-if="system.card.developmentLevel > 0" class="development-die">
-        <font-awesome size="2x" :icon="['fa', firstDie]" :class="dieColor" />
-        <font-awesome
-          v-if="system.card.developmentLevel > 6"
-          size="2x"
-          :icon="['fa', secondDie]"
-          :class="dieColor"
+      <div class="relative">
+        <Card
+          :class="combat ? 'horizontal-lg' : 'horizontal'"
+          :card="system.card"
+          :showEffects="showEffects"
         />
+        <div v-if="system.card.developmentLevel > 0" class="development-die">
+          <font-awesome size="2x" :icon="['fa', firstDie]" :class="dieColor" />
+          <font-awesome
+            v-if="system.card.developmentLevel > 6"
+            size="2x"
+            :icon="['fa', secondDie]"
+            :class="dieColor"
+          />
+        </div>
       </div>
+      <DropZone
+        class="dropzone right"
+        :class="combat ? 'combat' : ''"
+        :cardClass="combat ? '' : 'xs'"
+        :list.sync="vessels"
+        :group="`player4-${group}`"
+        player="player4"
+        :loc="system.card.loc"
+        :combat="combat"
+        :showEffects="showEffects"
+      />
     </div>
     <DropZone
       class="dropzone bottom"
-      :cardClass="combat ? (player1.length > 5 ? 'sm' : '') : 'xs'"
+      :cardClass="combat ? '' : 'xs'"
       :list.sync="vessels"
       :group="`player1-${group}`"
       player="player1"
@@ -118,8 +142,18 @@ export default {
       }
     },
     dieColor() {
-      if (this.system.card.controlledBy === "player1") return "text-red-400";
-      else return "text-blue-400";
+      // if (this.system.card.controlledBy === "player1") return "text-red-400";
+      // else return "text-blue-400";
+      switch (this.system.card.controlledBy) {
+        case "player1":
+          return "text-red-400";
+        case "player2":
+          return "text-blue-400";
+        case "player3":
+          return "text-green-400";
+        case "player4":
+          return "text-yellow-400";
+      }
     },
   },
   watch: {
@@ -160,15 +194,42 @@ export default {
 
     &.combat {
       top: -175px;
+      width: 100vw;
+    }
+  }
+
+  &.left {
+    left: -165px;
+    top: 35px;
+    width: 300px;
+    transform: rotate(90deg);
+
+    &.combat {
+      width: 100vh;
+      left: -490px;
+      top: 90px;
+    }
+  }
+
+  &.right {
+    left: 5px;
+    top: 35px;
+    width: 300px;
+    transform: rotate(-90deg);
+
+    &.combat {
+      width: 100vh;
+      left: -160px;
+      top: 90px;
     }
   }
 
   &.bottom {
     bottom: -25px;
-  }
 
-  &.combat {
-    width: 100vw;
+    &.combat {
+      width: 100vw;
+    }
   }
 }
 

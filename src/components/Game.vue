@@ -106,7 +106,22 @@
     </div>
     <div class="flex-grow bg-black h-screen">
       <div v-if="shouldBoardDisplay" class="board relative overflow-y-scroll">
-        <div class="fixed top-1 bg-blue-300/25 p-1 rounded-lg flex gap-1">
+        <div
+          v-if="player1Technology.length"
+          class="fixed bottom-[260px] bg-red-300/25 p-1 rounded-lg flex gap-1"
+        >
+          <Card
+            v-for="card in player1Technology"
+            :key="card.id"
+            :card="card"
+            class="xs"
+            loc="tech"
+          />
+        </div>
+        <div
+          v-if="player2Technology.length"
+          class="fixed top-1 right-1 bg-blue-300/25 p-1 rounded-lg flex gap-1"
+        >
           <Card
             v-for="card in player2Technology"
             :key="card.id"
@@ -116,10 +131,23 @@
           />
         </div>
         <div
-          class="fixed bottom-[260px] bg-red-300/25 p-1 rounded-lg flex gap-1"
+          v-if="player3Technology?.length"
+          class="fixed top-1 bg-green-300/25 p-1 rounded-lg flex gap-1"
         >
           <Card
-            v-for="card in player1Technology"
+            v-for="card in player3Technology"
+            :key="card.id"
+            :card="card"
+            class="xs"
+            loc="tech"
+          />
+        </div>
+        <div
+          v-if="player4Technology?.length"
+          class="fixed bottom-[260px] right-1 bg-yellow-300/25 p-1 rounded-lg flex gap-1"
+        >
+          <Card
+            v-for="card in player4Technology"
             :key="card.id"
             :card="card"
             class="xs"
@@ -150,9 +178,11 @@
         </button>
         <div class="active-player-stats flex items-center gap-4">
           <button
-            class="flex-1 bg-red-400 p-1 rounded-lg duration-200 whitespace-nowrap text-left"
+            class="flex-1 p-1 rounded-lg duration-200 whitespace-nowrap text-left border border-transparent"
             :class="
-              activePlayer === 'player1' ? 'bg-red-400 shadow-lg' : 'bg-red-900'
+              activePlayer === 'player1'
+                ? 'bg-red-400 shadow-lg border-white'
+                : 'bg-red-900'
             "
             @click="activePlayerHand = 'player1'"
           >
@@ -162,10 +192,10 @@
             Developments: {{ getPlayerDevelopmentCount("player1") }}
           </button>
           <button
-            class="flex-1 bg-blue-400 p-1 rounded-lg duration-200 whitespace-nowrap text-left"
+            class="flex-1 p-1 rounded-lg duration-200 whitespace-nowrap text-left border border-transparent"
             :class="
               activePlayer === 'player2'
-                ? 'bg-blue-400 shadow-lg'
+                ? 'bg-blue-400 shadow-lg border-white'
                 : 'bg-blue-900'
             "
             @click="activePlayerHand = 'player2'"
@@ -174,6 +204,36 @@
             <hr />
             Credits: {{ players.player2.credits }}<br />
             Developments: {{ getPlayerDevelopmentCount("player2") }}
+          </button>
+          <button
+            v-if="players.player3"
+            class="flex-1 p-1 rounded-lg duration-200 whitespace-nowrap text-left border border-transparent"
+            :class="
+              activePlayer === 'player3'
+                ? 'bg-green-600 shadow-lg border-white'
+                : 'bg-green-900'
+            "
+            @click="activePlayerHand = 'player3'"
+          >
+            <em>Player 3</em><br />
+            <hr />
+            Credits: {{ players.player3.credits }}<br />
+            Developments: {{ getPlayerDevelopmentCount("player3") }}
+          </button>
+          <button
+            v-if="players.player4"
+            class="flex-1 p-1 rounded-lg duration-200 whitespace-nowrap text-left border border-transparent"
+            :class="
+              activePlayer === 'player4'
+                ? 'bg-yellow-600 shadow-lg border-white'
+                : 'bg-yellow-900'
+            "
+            @click="activePlayerHand = 'player4'"
+          >
+            <em>Player 4</em><br />
+            <hr />
+            Credits: {{ players.player4.credits }}<br />
+            Developments: {{ getPlayerDevelopmentCount("player4") }}
           </button>
           <div
             v-if="multiplayerSeat"
@@ -330,13 +390,37 @@ export default {
   },
   computed: {
     nextPlayer() {
-      const currentPlayerNumber = +this.activePlayer?.replace("player", "");
-      const potentialNextPlayer = "player" + (currentPlayerNumber + 1);
+      switch (this.playerCount) {
+        case 2:
+          return this.activePlayer === "player1" ? "player2" : "player1";
+        case 3:
+          switch (this.activePlayer) {
+            case "player1":
+              return "player3";
+            case "player3":
+              return "player2";
+            case "player2":
+              return "player1";
+          }
+        case 4:
+          switch (this.activePlayer) {
+            case "player1":
+              return "player3";
+            case "player3":
+              return "player2";
+            case "player2":
+              return "player4";
+            case "player4":
+              return "player1";
+          }
+        // const currentPlayerNumber = +this.activePlayer?.replace("player", "");
+        // const potentialNextPlayer = "player" + (currentPlayerNumber + 1);
 
-      if (!this.players[potentialNextPlayer]) {
-        return "player1";
-      } else {
-        return potentialNextPlayer;
+        // if (!this.players[potentialNextPlayer]) {
+        //   return "player1";
+        // } else {
+        //   return potentialNextPlayer;
+        // }
       }
     },
     shouldBoardDisplay() {
@@ -360,10 +444,16 @@ export default {
       },
     },
     player1Technology() {
-      return this.players.player1.technology;
+      return this.players.player1?.technology;
     },
     player2Technology() {
-      return this.players.player2.technology;
+      return this.players.player2?.technology;
+    },
+    player3Technology() {
+      return this.players.player3?.technology;
+    },
+    player4Technology() {
+      return this.players.player4?.technology;
     },
     nonActivePlayer() {
       return this.activePlayer === "player1" ? "player2" : "player1";
@@ -535,11 +625,7 @@ export default {
       ];
 
       this.systems.forEach((system) => {
-        system[this.activePlayer] = system[this.activePlayer].filter(
-          (card) => card.id !== destroyedCard.id
-        );
-
-        system[this.nonActivePlayer] = system[this.nonActivePlayer].filter(
+        system.vessels = system.vessels.filter(
           (card) => card.id !== destroyedCard.id
         );
       });
@@ -934,8 +1020,8 @@ export default {
       this.players[this.activePlayer].completedFirstTurn = true;
 
       // Next player
-      this.activePlayer = this.nextPlayer;
       this.activePlayerHand = this.nextPlayer;
+      this.activePlayer = this.nextPlayer;
 
       // Validate the now-active player didn't lose last turn.
       const systemCount = this.systems.filter(
@@ -1108,22 +1194,7 @@ export default {
       };
     },
     initGame() {
-      this.players = {
-        player1: {
-          credits: 3,
-          technology: [],
-          hand: [],
-          technology: [],
-          completedFirstTurn: false,
-        },
-        // player2: {
-        //   credits: 3,
-        //   technology: [],
-        //   hand: [],
-        //   technology: [],
-        //   completedFirstTurn: false,
-        // },
-      };
+      this.players = {};
 
       for (let i = 1; i <= this.playerCount; i++) {
         this.players["player" + i] = {
@@ -1162,7 +1233,7 @@ export default {
                   ...HOMEWORLD,
                   loc: i,
                   controlledBy: i === 0 ? "player2" : "player1",
-                  explored: false,
+                  explored: true,
                 }
               : { ...this.decks.system.draw(), loc: i, controlledBy: null },
           vessels: [],
@@ -1175,14 +1246,68 @@ export default {
         effects: [],
         controlledBy: "player2",
       });
-      systems[0].card.explored = true;
       systems[boardSize - 1].vessels.push({
         ...SCOUT,
         id: this.getNextId(),
         effects: [],
         controlledBy: "player1",
       });
-      systems[boardSize - 1].card.explored = true;
+
+      // Player 3 starts on the left
+      if (this.playerCount >= 3) {
+        let system;
+        let loc;
+        if (this.gameSize === 3) {
+          loc = 3;
+        } else if (this.gameSize === 4) {
+          loc = 6;
+        } else if (this.gameSize === 5) {
+          loc = 10;
+        }
+        system = systems[loc];
+
+        system.card = {
+          ...HOMEWORLD,
+          loc,
+          controlledBy: "player3",
+          explored: true,
+        };
+
+        system.vessels.push({
+          ...SCOUT,
+          id: this.getNextId(),
+          effects: [],
+          controlledBy: "player3",
+        });
+      }
+
+      // Player 4 starts on the right
+      if (this.playerCount === 4) {
+        let system;
+        let loc;
+        if (this.gameSize === 3) {
+          loc = 5;
+        } else if (this.gameSize === 4) {
+          loc = 9;
+        } else if (this.gameSize === 5) {
+          loc = 14;
+        }
+        system = systems[loc];
+
+        system.card = {
+          ...HOMEWORLD,
+          loc,
+          controlledBy: "player4",
+          explored: true,
+        };
+
+        system.vessels.push({
+          ...SCOUT,
+          id: this.getNextId(),
+          effects: [],
+          controlledBy: "player4",
+        });
+      }
 
       this.systems = systems;
       this.showBoard = true;
@@ -1275,6 +1400,12 @@ export default {
   }
   &.player2 {
     @apply bg-blue-900;
+  }
+  &.player3 {
+    @apply bg-green-900;
+  }
+  &.player4 {
+    @apply bg-yellow-900;
   }
 }
 

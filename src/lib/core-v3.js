@@ -81,8 +81,13 @@ const SYSTEM_CONTEXT_MENU = [
     label: "Begin Combat",
     condition: ({ card, system, activePlayer, players, inCombat }) =>
       !inCombat &&
-      player1Ships(system).length > 0 &&
-      player2Ships(system).length > 0,
+      system.vessels.reduce(
+        (players, v) =>
+          players.includes(v.controlledBy)
+            ? players
+            : [...players, v.controlledBy],
+        []
+      ).length >= 2,
   },
 ];
 
@@ -899,9 +904,9 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
-    onResolve: ({ nextPlayer, activePlayer }) => {
-      nextPlayer = activePlayer;
-    },
+    // onResolve: ({ nextPlayer, activePlayer }) => {
+    //   nextPlayer = activePlayer;
+    // },
   },
   {
     id: 19,
