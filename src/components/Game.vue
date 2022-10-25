@@ -3,6 +3,7 @@
     v-model="showInitGameModal"
     v-model:gameSize="gameSize"
     v-model:playerCount="playerCount"
+    :multiplayerSeat="multiplayerSeat"
     @startGame="initGame"
   />
   <div class="flex">
@@ -191,6 +192,7 @@
                 ? 'bg-red-400 shadow-lg border-white'
                 : 'bg-red-900'
             "
+            :disabled="this.multiplayerSeat"
             @click="activePlayerHand = 'player1'"
           >
             <!-- <em>Player 1</em><br /> -->
@@ -206,6 +208,7 @@
                 ? 'bg-green-600 shadow-lg border-white'
                 : 'bg-green-900'
             "
+            :disabled="this.multiplayerSeat"
             @click="activePlayerHand = 'player3'"
           >
             <!-- <em>Player 3</em><br /> -->
@@ -220,6 +223,7 @@
                 ? 'bg-blue-400 shadow-lg border-white'
                 : 'bg-blue-900'
             "
+            :disabled="this.multiplayerSeat"
             @click="activePlayerHand = 'player2'"
           >
             <!-- <em>Player 2</em><br /> -->
@@ -235,6 +239,7 @@
                 ? 'bg-yellow-600 shadow-lg border-white'
                 : 'bg-yellow-900'
             "
+            :disabled="this.multiplayerSeat"
             @click="activePlayerHand = 'player4'"
           >
             <!-- <em>Player 4</em><br /> -->
@@ -242,15 +247,32 @@
             Credits: {{ players.player4.credits }}<br />
             Developments: {{ getPlayerDevelopmentCount("player4") }}
           </button>
-          <div
-            v-if="multiplayerSeat"
-            class="font-megrim text-2xl bold"
-            :class="
-              multiplayerSeat === 'player1' ? 'text-red-600' : 'text-blue-600'
-            "
-          >
-            {{ multiplayerSeat === "player1" ? "Player 1" : "Player 2" }}
-          </div>
+          <template v-if="multiplayerSeat">
+            <div
+              v-if="multiplayerSeat === 'player1'"
+              class="font-megrim text-2xl bold text-red-600"
+            >
+              Player 1
+            </div>
+            <div
+              v-if="multiplayerSeat === 'player2'"
+              class="font-megrim text-2xl bold text-blue-600"
+            >
+              Player 2
+            </div>
+            <div
+              v-if="multiplayerSeat === 'player3'"
+              class="font-megrim text-2xl bold text-green-600"
+            >
+              Player 3
+            </div>
+            <div
+              v-if="multiplayerSeat === 'player4'"
+              class="font-megrim text-2xl bold text-yellow-600"
+            >
+              Player 4
+            </div>
+          </template>
         </div>
       </div>
       <div class="hand" :class="activePlayerHand" v-if="shouldBoardDisplay">
@@ -437,7 +459,7 @@ export default {
     hand: {
       get() {
         if (this.multiplayerSeat) {
-          return this.players[this.multiplayerSeat].hand;
+          return this.players[this.multiplayerSeat]?.hand;
         } else {
           return this.players[this.activePlayerHand].hand;
         }
@@ -538,6 +560,9 @@ export default {
         getNextId: this.getNextId,
         nextId: this.nextId,
         showCombat: this.showCombat,
+        showBoard: this.showBoard,
+        gameSize: this.gameSize,
+        playerCount: this.playerCount,
         combatSystemLoc: this.combatSystemLoc,
         contextLoc: this.contextLoc,
         decks: this.decks,
@@ -951,6 +976,12 @@ export default {
       });
     },
     nextTurn() {
+      // If multiplayer, only the active player should click this
+
+      if (this.multiplayerSeat && this.multiplayerSeat !== this.activePlayer) {
+        return;
+      }
+
       // Clean up destroyed ship
       this.cleanUpDestroyedShips();
 
@@ -1046,6 +1077,11 @@ export default {
         this.activePlayerHand = this.nextPlayer;
         this.activePlayer = this.nextPlayer;
       }
+
+      if (this.multiplayerSeat) {
+        this.activePlayerHand = this.multiplayerSeat;
+      }
+
       this.nextPlayerOverride.player = null;
 
       // Gain credits
@@ -1163,9 +1199,12 @@ export default {
         stack,
         nextId,
         showCombat,
+        showBoard,
         combatSystemLoc,
         contextLoc,
         decks,
+        gameSize,
+        playerCount,
       } = JSON.parse(payload);
 
       const performUpdate = () => {
@@ -1178,28 +1217,32 @@ export default {
         });
         this.activePlayer = activePlayer;
         if (
-          this.players.player1.hand.length > players.player1.hand.length ||
-          this.players.player2.hand.length > players.player2.hand.length ||
+          this.players.player1?.hand.length > players.player1?.hand.length ||
+          this.players.player2?.hand.length > players.player2?.hand.length ||
           this.players.player3?.hand.length > players.player3?.hand.length ||
           this.players.player4?.hand.length > players.player4?.hand.length
         ) {
           audio.src = drawCardMp3;
           audio.play();
         }
-        this.players.player1 = {
-          ...players.player1,
-          technology: players.player1.technology.map((card) =>
-            this.hydrateCard(card)
-          ),
-          hand: players.player1.hand.map((card) => this.hydrateCard(card)),
-        };
-        this.players.player2 = {
-          ...players.player2,
-          technology: players.player2.technology.map((card) =>
-            this.hydrateCard(card)
-          ),
-          hand: players.player2.hand.map((card) => this.hydrateCard(card)),
-        };
+        if (players.player1) {
+          this.players.player1 = {
+            ...players.player1,
+            technology: players.player1.technology.map((card) =>
+              this.hydrateCard(card)
+            ),
+            hand: players.player1.hand.map((card) => this.hydrateCard(card)),
+          };
+        }
+        if (players.player2) {
+          this.players.player2 = {
+            ...players.player2,
+            technology: players.player2.technology.map((card) =>
+              this.hydrateCard(card)
+            ),
+            hand: players.player2.hand.map((card) => this.hydrateCard(card)),
+          };
+        }
         if (players.player3) {
           this.players.player3 = {
             ...players.player3,
@@ -1221,7 +1264,10 @@ export default {
         this.discard = discard.map((card) => this.hydrateCard(card));
         this.stack = stack.map((card) => this.hydrateCard(card));
         this.nextId = parseInt(nextId, 10);
+        this.showBoard = showBoard;
         this.showCombat = showCombat;
+        this.gameSize = gameSize;
+        this.playerCount = playerCount;
         this.combatSystemLoc = combatSystemLoc;
         this.contextLoc = contextLoc;
         this.decks = {
@@ -1234,8 +1280,8 @@ export default {
 
       // Audio effects
       const cardDrawn =
-        this.players.player1.hand.length > players.player1.hand.length ||
-        this.players.player2.hand.length > players.player2.hand.length ||
+        this.players.player1?.hand.length > players.player1?.hand.length ||
+        this.players.player2?.hand.length > players.player2?.hand.length ||
         this.players.player3?.hand.length > players.player3?.hand.length ||
         this.players.player4?.hand.length > players.player4?.hand.length;
 
@@ -1284,6 +1330,9 @@ export default {
 
       this.activePlayer = "player" + firstPlayer;
       this.activePlayerHand = "player" + firstPlayer;
+      if (this.multiplayerSeat) {
+        this.activePlayerHand = this.multiplayerSeat;
+      }
 
       this.decks = {
         politics: new Deck(DECK_STATECRAFT),
@@ -1350,6 +1399,8 @@ export default {
       this.systems = systems;
       this.showBoard = true;
       this.gameOver = false;
+
+      this.socket?.emit("state", JSON.stringify(this.fnContext));
     },
   },
   mounted() {
@@ -1375,6 +1426,12 @@ export default {
         case 2:
           this.multiplayerSeat = "player2";
           break;
+        case 3:
+          this.multiplayerSeat = "player3";
+          break;
+        case 4:
+          this.multiplayerSeat = "player4";
+          break;
         default:
           this.multiplayerSeat = null;
           break;
@@ -1387,6 +1444,24 @@ export default {
       playItem();
       this.socket?.emit("state", JSON.stringify(this.fnContext));
     });
+  },
+  watch: {
+    activePlayerHand() {
+      if (this.multiplayerSeat) {
+        this.activePlayerHand = this.multiplayerSeat;
+      }
+    },
+    showBoard() {
+      if (this.showBoard && this.showInitGameModal) {
+        this.showInitGameModal = false;
+      }
+    },
+    gameSize() {
+      this.socket?.emit("state", JSON.stringify(this.fnContext));
+    },
+    playerCount() {
+      this.socket?.emit("state", JSON.stringify(this.fnContext));
+    },
   },
   components: {
     DropZone,

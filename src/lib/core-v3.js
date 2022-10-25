@@ -790,7 +790,7 @@ export const CARD_LIST = [
     type: COMMAND,
     domain: STATECRAFT,
     deck: STATECRAFT,
-    count: 2000,
+    count: 2,
     cost: 0,
     hp: null,
     attack: null,

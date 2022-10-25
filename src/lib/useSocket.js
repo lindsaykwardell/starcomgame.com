@@ -7,6 +7,7 @@ export default () => {
   if (!gameId) {
     console.log("Single player mode");
   } else {
+    console.log("Multiplayer mode");
     socket = io(import.meta.env.VITE_GAME_SERVER);
   }
 

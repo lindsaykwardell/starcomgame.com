@@ -1,12 +1,15 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import Dialog from "./Dialog/Dialog.vue";
 
 const props = defineProps({
   modelValue: Boolean,
   gameSize: Number,
   playerCount: Number,
+  multiplayerSeat: String,
 });
+
+const onlineGameId = ref("");
 
 const emit = defineEmits([
   "update:modelValue",
@@ -46,6 +49,11 @@ function startGame() {
   open.value = false;
   emit("startGame");
 }
+
+function connectToOnlineGame() {
+  location.href = window.location.hash = onlineGameId.value;
+  location.reload();
+}
 </script>
 
 <template>
@@ -56,17 +64,68 @@ function startGame() {
 
     <fieldset>
       <legend>Game Size</legend>
-      <label class="px-2"> <input type="radio" v-model="gameSize" :value="3" /> 3x3 </label>
-      <label class="px-2"> <input type="radio" v-model="gameSize" :value="4" /> 4x4 </label>
-      <label class="px-2"> <input type="radio" v-model="gameSize" :value="5" /> 5x5 </label>
+      <label class="px-2">
+        <input type="radio" v-model="gameSize" :value="3" /> 3x3
+      </label>
+      <label class="px-2">
+        <input type="radio" v-model="gameSize" :value="4" /> 4x4
+      </label>
+      <label class="px-2">
+        <input type="radio" v-model="gameSize" :value="5" /> 5x5
+      </label>
     </fieldset>
 
     <fieldset>
       <legend>Player Count</legend>
-      <label class="px-2"> <input type="radio" v-model="playerCount" :value="2" /> 2 </label>
-      <label class="px-2"> <input type="radio" v-model="playerCount" :value="3" /> 3 </label>
-      <label class="px-2"> <input type="radio" v-model="playerCount" :value="4" /> 4 </label>
+      <label class="px-2">
+        <input type="radio" v-model="playerCount" :value="2" /> 2
+      </label>
+      <label class="px-2">
+        <input type="radio" v-model="playerCount" :value="3" /> 3
+      </label>
+      <label class="px-2">
+        <input type="radio" v-model="playerCount" :value="4" /> 4
+      </label>
     </fieldset>
+
+    <form v-if="!multiplayerSeat" @submit="connectToOnlineGame">
+      <label class="flex flex-col pb-6">
+        Connect to Online Game
+        <input class="text-black" v-model="onlineGameId" />
+        <button
+          class="block rounded-lg bg-gradient-to-b from-blue-900 hover:from-blue-800 via-gray-900 hover:via-gray-800 to-black hover:to-gray-900 px-6 py-3 shadow hover:shadow-md"
+        >
+          Connect!
+        </button>
+      </label>
+    </form>
+
+    <template v-else>
+      <div
+        v-if="multiplayerSeat === 'player1'"
+        class="font-megrim text-2xl bold text-red-600 py-6"
+      >
+        Player 1
+      </div>
+      <div
+        v-if="multiplayerSeat === 'player2'"
+        class="font-megrim text-2xl bold text-blue-600 py-6"
+      >
+        Player 2
+      </div>
+      <div
+        v-if="multiplayerSeat === 'player3'"
+        class="font-megrim text-2xl bold text-green-600 py-6"
+      >
+        Player 3
+      </div>
+      <div
+        v-if="multiplayerSeat === 'player4'"
+        class="font-megrim text-2xl bold text-yellow-600 py-6"
+      >
+        Player 4
+      </div>
+    </template>
 
     <button
       @click="startGame"
