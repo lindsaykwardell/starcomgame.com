@@ -1357,27 +1357,27 @@ export default {
       if (loc !== "hover") this.toggleContextMenu(card, loc, event);
     });
 
-    // this.socket = useSocket();
+    this.socket = useSocket();
 
-    // this.socket?.on("state", (payload) => {
-    //   this.parseAndUpdateState(payload);
-    // });
+    this.socket?.on("state", (payload) => {
+      this.parseAndUpdateState(payload);
+    });
 
-    // this.socket?.on("joined", (payload) => {
-    //   switch (payload.playerCount) {
-    //     case 1:
-    //       this.multiplayerSeat = "player1";
-    //       break;
-    //     case 2:
-    //       this.multiplayerSeat = "player2";
-    //       break;
-    //     default:
-    //       this.multiplayerSeat = null;
-    //       break;
-    //   }
-    // });
+    this.socket?.on("joined", (payload) => {
+      switch (payload.playerCount) {
+        case 1:
+          this.multiplayerSeat = "player1";
+          break;
+        case 2:
+          this.multiplayerSeat = "player2";
+          break;
+        default:
+          this.multiplayerSeat = null;
+          break;
+      }
+    });
 
-    // this.socket?.emit("join", location.hash);
+    this.socket?.emit("join", location.hash);
 
     EventBus.$on("dropzone-dropped", () => {
       playItem();
