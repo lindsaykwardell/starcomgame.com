@@ -790,7 +790,7 @@ export const CARD_LIST = [
     type: COMMAND,
     domain: STATECRAFT,
     deck: STATECRAFT,
-    count: 2,
+    count: 2000,
     cost: 0,
     hp: null,
     attack: null,
@@ -803,7 +803,10 @@ export const CARD_LIST = [
           label: `Cancel the effect of ${card.img}`,
           action: `step:${index}`,
           stepAction: () => {
-            stack = stack.filter((c) => c.id !== card.id);
+            const index = stack.findIndex((c) => c.id === card.id);
+            if (index > -1) {
+              stack.splice(index, 1);
+            }
           },
         })),
     ],
@@ -1591,7 +1594,7 @@ export const CARD_LIST = [
     id: 48,
     img: "Asteroid_Field",
     type: SYSTEM,
-    domain: INDUSTRY,
+    domain: STATECRAFT,
     deck: SYSTEM,
     count: 2,
     developmentLevel: 0,
@@ -1607,7 +1610,7 @@ export const CARD_LIST = [
     id: 49,
     img: "Pulsar_System",
     type: SYSTEM,
-    domain: STATECRAFT,
+    domain: INDUSTRY,
     deck: SYSTEM,
     count: 2,
     developmentLevel: 0,
