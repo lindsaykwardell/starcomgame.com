@@ -485,19 +485,19 @@ export const CARD_LIST = [
                       ...corvette,
                       id: getNextId(),
                       effects: [],
-                      controlledBy: activePlayer,
+                      controlledBy: card.controlledBy,
                     },
                     {
                       ...corvette,
                       id: getNextId(),
                       effects: [],
-                      controlledBy: activePlayer,
+                      controlledBy: card.controlledBy,
                     },
                     {
                       ...corvette,
                       id: getNextId(),
                       effects: [],
-                      controlledBy: activePlayer,
+                      controlledBy: card.controlledBy,
                     },
                   ];
                 }
