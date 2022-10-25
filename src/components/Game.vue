@@ -1123,13 +1123,17 @@ export default {
       }
 
       // Show the draw a card dialog.
+      // For now, only show it in singleplayer.
       if (
-        this.activePlayerControlsIndustry ||
-        this.activePlayerControlsScience ||
-        this.activePlayerControlsStatecraft
+        !this.multiplayerSeat &&
+        (this.activePlayerControlsIndustry ||
+          this.activePlayerControlsScience ||
+          this.activePlayerControlsStatecraft)
       ) {
         this.showDrawCardModal = true;
       }
+
+      this.socket?.emit("state", JSON.stringify(this.fnContext));
     },
     checkGameEndConditions() {
       // Do players still control their homeworlds?
