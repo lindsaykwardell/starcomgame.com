@@ -75,7 +75,7 @@ const SYSTEM_CONTEXT_MENU = [
   {
     action: "combat",
     label: "Begin Combat",
-    condition: ({ card, system, activePlayer, players, inCombat }) =>
+    condition: ({ card, system, players, inCombat }) =>
       !inCombat &&
       system.vessels.reduce(
         (players, v) =>
@@ -103,17 +103,7 @@ export const DAMAGE_CONTEXT_MENU = [
   {
     action: "repair:1",
     label: "Remove 1 damage",
-    condition: ({ card, inCombat, players, activePlayer }) =>
-      card.damage > 0 && inCombat === false,
-    repairAction: ({ card, players, activePlayer }) => {
-      card.damage -= 1;
-    },
-  },
-  {
-    action: "repair:0",
-    label: "Remove 1 damage",
-    condition: ({ card, inCombat, players, activePlayer }) =>
-      card.damage > 0 && inCombat === true,
+    condition: ({ card, players }) => card.damage > 0,
     repairAction: ({ card }) => {
       card.damage -= 1;
     },
@@ -187,55 +177,6 @@ const generateBuildShipContextMenu = ({
     };
   });
 
-const SMALL_SHIP_CONTEXT_MENU = [
-  // {
-  //   action: "build:33",
-  //   label: "Build Patrol Ship",
-  //   condition: ({ card, system, activePlayer, players }) =>
-  //     card.controlledBy === activePlayer && players[activePlayer].credits >= 5,
-  // },
-  {
-    action: "build:34",
-    label: "Build Corvette",
-    condition: ({ card, system, activePlayer, players }) =>
-      card.controlledBy === activePlayer && players[activePlayer].credits >= 8,
-  },
-  {
-    action: "build:35",
-    label: "Build Frigate",
-    condition: ({ card, system, activePlayer, players }) =>
-      card.controlledBy === activePlayer && players[activePlayer].credits >= 8,
-  },
-];
-
-const SHIP_CONTEXT_MENU = [
-  ...SMALL_SHIP_CONTEXT_MENU,
-  {
-    action: "build:36",
-    label: "Build Destroyer",
-    condition: ({ card, system, activePlayer, players }) =>
-      card.controlledBy === activePlayer && players[activePlayer].credits >= 13,
-  },
-  {
-    action: "build:37",
-    label: "Build Cruiser",
-    condition: ({ card, system, activePlayer, players }) =>
-      card.controlledBy === activePlayer && players[activePlayer].credits >= 13,
-  },
-  {
-    action: "build:38",
-    label: "Build Battleship",
-    condition: ({ card, system, activePlayer, players }) =>
-      card.controlledBy === activePlayer && players[activePlayer].credits >= 21,
-  },
-  {
-    action: "build:39",
-    label: "Build Carrier",
-    condition: ({ card, system, activePlayer, players }) =>
-      card.controlledBy === activePlayer && players[activePlayer].credits >= 21,
-  },
-];
-
 const STATION_CONTEXT_MENU = [
   {
     action: "build:40",
@@ -245,17 +186,6 @@ const STATION_CONTEXT_MENU = [
       players[activePlayer].credits >= 3 &&
       shipsControlledBy(system, activePlayer).filter((c) => c.type === STATION)
         .length < system.card.developmentLevel,
-  },
-];
-
-export const BUILD_FIGHTER_CONTEXT_MENU = [
-  {
-    action: "build:32",
-    label: "Build Strike Fighter",
-    condition: ({ card, system, systems, activePlayer, players }) =>
-      card.controlledBy === activePlayer &&
-      players[activePlayer].credits >= 1 &&
-      shipCountBelowDevelopmentLevel(systems, activePlayer),
   },
 ];
 
@@ -281,14 +211,14 @@ export const generateCombatContextMenu = ({ card, system, players }) => {
   menu.unshift({
     action: "assign-damage:0",
     label: "Mark as Assigned",
-    condition: ({ card, system, activePlayer, players }) =>
+    condition: ({ card, system, players }) =>
       card.totalAttack() > 0 && !card.damageAssignedTo,
   });
   shipsNotControlledBy(system, card.controlledBy).forEach((c) => {
     menu.unshift({
       action: `assign-damage:${c.id}`,
       label: `Attack ${c.img} (${c.totalHp() - c.damage}/${c.totalHp()})`,
-      condition: ({ card, system, activePlayer, players }) =>
+      condition: ({ card, system, players }) =>
         card.totalAttack() > 0 && !card.damageAssignedTo,
     });
   });
@@ -340,7 +270,7 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, activePlayer, players }) => {
+      ({ systems, card, players }) => {
         let menu = [];
 
         systems.forEach((system) => {
@@ -349,7 +279,8 @@ export const CARD_LIST = [
               label: `Gain ${system.card.developmentLevel} (${system.card.img})}`,
               action: `step:0`,
               stepAction: () => {
-                players[activePlayer].credits += system.card.developmentLevel;
+                players[card.controlledBy].credits +=
+                  system.card.developmentLevel;
               },
             });
           }
@@ -373,11 +304,11 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, activePlayer }) => {
+      ({ systems, card }) => {
         let menu = [];
         systems.forEach((system) => {
-          if (system.card.controlledBy !== activePlayer) {
-            shipsControlledBy(system, activePlayer).forEach((card) => {
+          if (system.card.controlledBy !== card.controlledBy) {
+            shipsControlledBy(system, card.controlledBy).forEach((card) => {
               if (card.totalAttack() > 0) {
                 menu.push({
                   label: `Choose ${card.img} (ATK: ${card.totalAttack()}) in ${
@@ -427,18 +358,18 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, activePlayer }) => {
+      ({ systems, card }) => {
         let menu = [];
         systems.forEach((system) => {
-          shipsControlledBy(system, activePlayer).forEach((card) => {
-            if (card.totalAttack() > 0) {
+          shipsControlledBy(system, card.controlledBy).forEach((c) => {
+            if (c.totalAttack() > 0) {
               menu.push({
-                label: `Choose ${card.img} (ATK: ${card.totalAttack()}) in ${
+                label: `Choose ${c.img} (ATK: ${c.totalAttack()}) in ${
                   system.card.img
                 }`,
                 action: `step:${menu.length}`,
                 stepAction: () => {
-                  return { chosenCard: card, chosenSystem: system };
+                  return { chosenCard: c, chosenSystem: system };
                 },
               });
             }
@@ -447,16 +378,18 @@ export const CARD_LIST = [
         return menu;
       },
       (ctx) => {
-        const { chosenCard, chosenSystem, activePlayer } = ctx;
-        return shipsNotControlledBy(chosenSystem, activePlayer).map((ship) => ({
-          label: `Deal ${chosenCard.totalAttack()} to ${ship.img} (${
-            ship.totalHp() - ship.damage
-          }/${ship.totalHp()})`,
-          action: "step:0",
-          stepAction: () => {
-            ship.damage += chosenCard.totalAttack();
-          },
-        }));
+        const { chosenCard, chosenSystem, card } = ctx;
+        return shipsNotControlledBy(chosenSystem, card.controlledBy).map(
+          (ship) => ({
+            label: `Deal ${chosenCard.totalAttack()} to ${ship.img} (${
+              ship.totalHp() - ship.damage
+            }/${ship.totalHp()})`,
+            action: "step:0",
+            stepAction: () => {
+              ship.damage += chosenCard.totalAttack();
+            },
+          })
+        );
       },
     ],
   },
@@ -474,31 +407,31 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, activePlayer }) => {
+      ({ systems, card }) => {
         // Select a ship the active player controls, and add it to step context
         let menu = [];
         systems.forEach((system) => {
-          shipsControlledBy(system, activePlayer).forEach((card, index) => {
+          shipsControlledBy(system, card.controlledBy).forEach((c, index) => {
             menu.push({
-              label: `Choose ${card.img} (HP: ${card.totalHp()}) in ${
+              label: `Choose ${c.img} (HP: ${c.totalHp()}) in ${
                 system.card.img
               }`,
               action: `step:${index}`,
-              stepAction: () => ({ chosenCard: card, chosenSystem: system }),
+              stepAction: () => ({ chosenCard: c, chosenSystem: system }),
             });
           });
         });
         return menu;
       },
-      ({ chosenCard, chosenSystem, activePlayer }) => {
+      ({ chosenCard, chosenSystem, card }) => {
         // Select a ship the non active player controls, and add it to step context
         let menu = [];
-        shipsNotControlledBy(chosenSystem, activePlayer).forEach(
-          (card, index) => {
+        shipsNotControlledBy(chosenSystem, card.controlledBy).forEach(
+          (c, index) => {
             menu.push({
-              label: `Target ${card.img} (HP: ${card.totalHp() - card.damage})`,
+              label: `Target ${c.img} (HP: ${c.totalHp() - c.damage})`,
               action: `step:${index}`,
-              stepAction: () => ({ targetCard: card }),
+              stepAction: () => ({ targetCard: c }),
             });
           }
         );
@@ -533,33 +466,35 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, activePlayer, getNextId }) => {
+      ({ systems, card, getNextId }) => {
         let menu = [];
 
         systems.forEach((system, index) => {
-          if (system.card.controlledBy == activePlayer) {
+          if (system.card.controlledBy == card.controlledBy) {
             menu.push({
               label: `Choose ${system.card.img}`,
               action: `step:${index}`,
               stepAction: () => {
-                const card = { ...CARD_LIST.find((c) => c.img == "Corvette") };
-                if (card) {
+                const corvette = {
+                  ...CARD_LIST.find((c) => c.img == "Corvette"),
+                };
+                if (corvette) {
                   system.vessels = [
                     ...system.vessels,
                     {
-                      ...card,
+                      ...corvette,
                       id: getNextId(),
                       effects: [],
                       controlledBy: activePlayer,
                     },
                     {
-                      ...card,
+                      ...corvette,
                       id: getNextId(),
                       effects: [],
                       controlledBy: activePlayer,
                     },
                     {
-                      ...card,
+                      ...corvette,
                       id: getNextId(),
                       effects: [],
                       controlledBy: activePlayer,
@@ -589,19 +524,19 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, activePlayer }) => {
+      ({ systems, card }) => {
         let menu = [];
 
         systems.forEach((system) => {
-          shipsControlledBy(system, activePlayer).forEach((card, index) => {
+          shipsControlledBy(system, card.controlledBy).forEach((c, index) => {
             menu.push({
-              label: `Choose ${card.img} (Attack: ${card.totalAttack()}) in ${
+              label: `Choose ${c.img} (Attack: ${c.totalAttack()}) in ${
                 system.card.img
               }`,
               action: `step:${index}`,
               stepAction: () => {
-                card.bonusAttack += 2;
-                card.effects.push("Maximum_Firepower");
+                c.bonusAttack += 2;
+                c.effects.push("Maximum_Firepower");
               },
             });
           });
@@ -648,22 +583,25 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, activePlayer, players }) => {
+      ({ systems, card, players }) => {
         let menu = [];
 
-        if (players[activePlayer].credits <= 0) {
+        if (players[card.controlledBy].credits <= 0) {
           return menu;
         }
 
         systems.forEach((system) => {
-          shipsControlledBy(system, activePlayer).forEach((card, index) => {
+          shipsControlledBy(system, card.controlledBy).forEach((c, index) => {
             menu.push({
-              label: `Choose ${card.img} (Attack: ${card.totalAttack()}) in ${
+              label: `Choose ${c.img} (Attack: ${c.totalAttack()}) in ${
                 system.card.img
               }`,
               action: `step:${index}`,
+              condition: () => {
+                players[card.controlledBy].credits >= c.totalAttack() * 2;
+              },
               stepAction: () => {
-                return { chosenCard: card };
+                return { chosenCard: c };
               },
             });
           });
@@ -671,31 +609,24 @@ export const CARD_LIST = [
 
         return menu;
       },
-      ({ players, activePlayer }) => {
-        let menu = [];
-
-        for (let i = 1; i <= players[activePlayer].credits; i++) {
-          menu.push({
-            label: `Pay ${i} credits`,
-            action: `step:${i}`,
-            stepAction: () => {
-              return { cost: i };
-            },
-          });
-        }
-
-        return menu;
-      },
-      ({ chosenCard, cost, players, activePlayer }) => {
+      ({ chosenCard, card, players }) => {
+        const cost = chosenCard.totalAttack();
         return [
           {
-            label: `${chosenCard.img} gets +${cost} attack until end of turn`,
+            label: `Pay ${cost}: ${chosenCard.img} gets +${
+              cost * 2
+            } attack until end of turn`,
             action: "step:0",
             stepAction: () => {
-              chosenCard.bonusAttack += cost;
-              players[activePlayer].credits -= cost;
+              chosenCard.bonusAttack += cost * 2;
+              players[card.controlledBy].credits -= cost;
               chosenCard.effects.push("Railgun_Turrets");
             },
+          },
+          {
+            label: "Cancel",
+            action: "step:0",
+            stepAction: () => null,
           },
         ];
       },
@@ -805,7 +736,8 @@ export const CARD_LIST = [
       return this.attack + this.bonusAttack;
     },
     effects: [],
-    contextMenu: [...SHIP_CONTEXT_MENU, ...DAMAGE_CONTEXT_MENU],
+    contextMenu: [...DAMAGE_CONTEXT_MENU],
+    buildShipContextMenu: generateBuildShipContextMenu,
   },
   {
     id: 14,
@@ -857,18 +789,18 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, activePlayer }) => {
+      ({ systems, card }) => {
         let menu = [];
 
         systems.forEach((system) => {
-          if (shipsControlledBy(system, activePlayer).length) {
-            shipsNotControlledBy(system, activePlayer).forEach(
-              (card, index) => {
+          if (shipsControlledBy(system, card.controlledBy).length) {
+            shipsNotControlledBy(system, card.controlledBy).forEach(
+              (c, index) => {
                 menu.push({
-                  label: `Destroy ${card.img} in ${system.card.img}`,
+                  label: `Destroy ${c.img} in ${system.card.img}`,
                   action: `step:${index}`,
                   stepAction: () => {
-                    card.damage = 1000;
+                    c.damage = 1000;
                   },
                 });
               }
@@ -940,44 +872,44 @@ export const CARD_LIST = [
     contextMenu: [],
     step: 0,
     stepContextMenu: [
-      ({ systems, activePlayer, getNextId, players }) => {
+      ({ systems, card, getNextId, players }) => {
         return systems.map((system) => {
           return {
             action: "step:0",
             label: `Build Strike Fighter in ${system.card.img}`,
-            condition: ({ card, systems, activePlayer, players }) => {
+            condition: ({ card, systems, players }) => {
               return (
-                system.card.controlledBy === activePlayer &&
-                players[activePlayer].credits >= 1 &&
-                shipCountBelowDevelopmentLevel(systems, activePlayer) &&
-                shipsControlledBy(system, activePlayer).find(
+                system.card.controlledBy === card.controlledBy &&
+                players[card.controlledBy].credits >= 1 &&
+                shipCountBelowDevelopmentLevel(systems, card.controlledBy) &&
+                shipsControlledBy(system, card.controlledBy).find(
                   (c) => c.type === STATION
                 )
               );
             },
             stepAction: () => {
-              const card = { ...CARD_LIST.find((c) => c.id === 32) };
-              if (card) {
+              const fighter = { ...CARD_LIST.find((c) => c.id === 32) };
+              if (fighter) {
                 system.vessels = [
                   ...system.vessels,
                   {
-                    ...card,
+                    ...fighter,
                     id: getNextId(),
                     effects: [],
-                    controlledBy: activePlayer,
+                    controlledBy: card.controlledBy,
                   },
                 ];
 
-                players[activePlayer].credits -= 1;
+                players[card.controlledBy].credits -= 1;
               }
             },
           };
         });
       },
     ],
-    onResolve: ({ systems, activePlayer }) => {
+    onResolve: ({ systems, card }) => {
       systems.forEach((system) => {
-        shipsControlledBy(system, activePlayer).forEach((card) => {
+        shipsControlledBy(system, this.activePlayer).forEach((card) => {
           if (card.type === FIGHTER) {
             card.bonusHp += 1;
             card.effects.push("Fighter_Bays");
@@ -1050,12 +982,12 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, activePlayer }) => {
+      ({ systems, card }) => {
         let menu = [];
 
         systems.forEach((system, index) => {
-          const ships = shipsControlledBy(system, activePlayer).filter(
-            (card) => card.type !== STATION
+          const ships = shipsControlledBy(system, card.controlledBy).filter(
+            (c) => c.type !== STATION
           );
           const shipCount = ships.length;
           if (shipCount > 0) {
@@ -1125,11 +1057,11 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
-    onResolve: ({ systems, activePlayer }) => {
+    onResolve: ({ systems, card }) => {
       systems.forEach((system) => {
-        shipsControlledBy(system, activePlayer).forEach((card) => {
-          card.bonusHp += 2;
-          card.effects.push("Raise_Shields");
+        shipsControlledBy(system, card.controlledBy).forEach((c) => {
+          c.bonusHp += 2;
+          c.effects.push("Raise_Shields");
         });
       });
     },
@@ -1148,12 +1080,12 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, activePlayer }) => {
+      ({ systems, card }) => {
         let menu = [];
 
         systems.forEach((system, index) => {
-          const ships = shipsControlledBy(system, activePlayer).filter(
-            (card) => card.type !== STATION
+          const ships = shipsControlledBy(system, card.controlledBy).filter(
+            (c) => c.type !== STATION
           );
           ships.forEach((ship) => {
             menu.push({
@@ -1184,16 +1116,16 @@ export const CARD_LIST = [
     step: 0,
     stepContext: {},
     stepContextMenu: [
-      ({ systems, activePlayer }) => {
+      ({ systems, card }) => {
         let menu = [];
 
         systems.forEach((system) => {
-          shipsControlledBy(system, activePlayer).forEach((card) => {
+          shipsControlledBy(system, card.controlledBy).forEach((c) => {
             menu.push({
-              label: `Target ${card.img} (in ${system.card.img})`,
-              action: `step:${card.id}`,
+              label: `Target ${c.img} (in ${system.card.img})`,
+              action: `step:${c.id}`,
               stepAction: () => {
-                card.effects.push("Experimental_Shields");
+                c.effects.push("Experimental_Shields");
                 alert("Discard a card!");
               },
             });
@@ -1300,29 +1232,6 @@ export const CARD_LIST = [
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
-  // {
-  //   id: 33,
-  //   img: "Patrol_Ship",
-  //   type: SHIP,
-  //   subtype: SMALL,
-  //   domain: null,
-  //   deck: null,
-  //   damage: 0,
-  //   cost: 5,
-  //   hp: 5,
-  //   bonusHp: 0,
-  //   totalHp() {
-  //     return this.hp + this.bonusHp;
-  //   },
-  //   attack: 2,
-  //   bonusAttack: 0,
-  //   totalAttack() {
-  //     return this.attack + this.bonusAttack;
-  //   },
-  //   effects: [],
-  //   contextMenu: [...DAMAGE_CONTEXT_MENU],
-  //   combatContextMenu: generateCombatContextMenu,
-  // },
   {
     id: 34,
     img: "Corvette",
@@ -1484,29 +1393,6 @@ export const CARD_LIST = [
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     combatContextMenu: generateCombatContextMenu,
   },
-  // {
-  //   id: 41,
-  //   img: "Orbital_Hangar",
-  //   type: STATION,
-  //   // subtype: SMALL,
-  //   domain: null,
-  //   deck: null,
-  //   damage: 0,
-  //   cost: 6,
-  //   hp: 7,
-  //   bonusHp: 0,
-  //   totalHp() {
-  //     return this.hp + this.bonusHp;
-  //   },
-  //   attack: 0,
-  //   bonusAttack: 0,
-  //   totalAttack() {
-  //     return this.attack + this.bonusAttack;
-  //   },
-  //   effects: [],
-  //   contextMenu: [...BUILD_FIGHTER_CONTEXT_MENU, ...DAMAGE_CONTEXT_MENU],
-  //   combatContextMenu: generateCombatContextMenu,
-  // },
   {
     id: 42,
     img: "Research_World",
@@ -1557,7 +1443,7 @@ export const CARD_LIST = [
     perTurnAction: ({ card, systems, activePlayer }) => {
       let menu = [];
 
-      if (card.controlledBy != activePlayer || card.performedPerTurnAction) {
+      if (card.controlledBy !== activePlayer || card.performedPerTurnAction) {
         return menu;
       }
 

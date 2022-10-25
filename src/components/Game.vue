@@ -591,6 +591,7 @@ export default {
           {
             ...nextCard,
             id: this.getNextId(),
+            controlledBy: this.activePlayer,
             contextMenu: [
               //...nextCard.contextMenu,
               ...HAND_CONTEXT_MENU,
@@ -669,10 +670,6 @@ export default {
               effects: [],
               controlledBy: this.activePlayer,
             };
-            // this.systems[this.contextLoc][this.activePlayer] = [
-            //   ...this.systems[this.contextLoc][this.activePlayer],
-            //   newcard,
-            // ];
             this.systems[this.contextLoc].vessels = [
               ...this.systems[this.contextLoc].vessels,
               newcard,
@@ -760,9 +757,10 @@ export default {
           switch (keys[1]) {
             case "play":
               if (
-                this.players[this.activePlayer].credits >= this.contextCard.cost
+                this.players[this.contextCard.controlledBy].credits >=
+                this.contextCard.cost
               ) {
-                this.players[this.activePlayer].credits -=
+                this.players[this.contextCard.controlledBy].credits -=
                   this.contextCard.cost;
 
                 this.stack = [
@@ -773,8 +771,8 @@ export default {
                   ...this.stack,
                 ];
 
-                this.players[this.activePlayer].hand = this.players[
-                  this.activePlayer
+                this.players[this.contextCard.controlledBy].hand = this.players[
+                  this.contextCard.controlledBy
                 ].hand.filter((card) => card.id !== this.contextCard.id);
 
                 playItem();
@@ -789,19 +787,19 @@ export default {
                 ...this.discard,
               ];
 
-              this.players[this.activePlayer].hand = this.players[
+              this.players[this.contextCard.controlledBy].hand = this.players[
                 this.activePlayer
               ].hand.filter((card) => card.id !== this.contextCard.id);
 
               playItem();
               break;
             case "return":
-              this.players[this.activePlayer].hand = [
-                ...this.players[this.activePlayer].hand,
+              this.players[this.contextCard.controlledBy].hand = [
+                ...this.players[this.contextCard.controlledBy].hand,
                 { ...this.contextCard, contextMenu: [...HAND_CONTEXT_MENU] },
               ];
 
-              this.players[this.activePlayer].credits += this.contextCard.cost;
+              this.players[this.contextCard.controlledBy].credits += this.contextCard.cost;
 
               this.discard = this.discard.filter(
                 (card) => card.id !== this.contextCard.id
@@ -891,8 +889,8 @@ export default {
       }
 
       if (this.contextCard.type === TECHNOLOGY) {
-        this.players[this.activePlayer].technology = [
-          ...this.players[this.activePlayer].technology,
+        this.players[this.contextCard.controlledBy].technology = [
+          ...this.players[this.contextCard.controlledBy].technology,
           this.contextCard,
         ];
       } else {
@@ -1388,6 +1386,10 @@ export default {
 </script>
 
 <style lang="pcss">
+body {
+  user-select: none;
+}
+
 .board {
   padding: 1rem 3rem;
   background: url("/board.jpg");

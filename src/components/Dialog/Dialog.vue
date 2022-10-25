@@ -60,52 +60,8 @@ watchEffect(() => {
   </dialog>
 </template>
 
-<!-- <style lang="pcss">
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
+<style>
+dialog {
+  user-select: none;
 }
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.slide-up-enter-active,
-.slide-up-leave-active {
-  transform: translateY(0);
-  transition: opacity 0.5s, transform 0.5s;
-}
-
-.slide-up-enter,
-.slide-up-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.my-dialog {
-  position: relative;
-}
-
-.my-dialog .vts-dialog {
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 1000;
-}
-
-.my-dialog .vts-dialog__content {
-  @apply rounded-md bg-gray-900;
-  overflow: hidden;
-  transition: transform 0.3s;
-  max-width: 95vw;
-
-  & .body {
-    max-height: 80vh;
-    overflow: auto;
-  }
-}
-
-.my-dialog .fade-enter .vts-dialog__content,
-.my-dialog .fade-leave-active .vts-dialog__content {
-  transform: translateY(20px);
-}
-</style> -->
+</style>
