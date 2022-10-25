@@ -373,6 +373,9 @@ export default {
       showContextMenu: false,
       players: {},
       activePlayer: "player1",
+      nextPlayerOverride: {
+        player: null,
+      },
       activePlayerHand: "player1",
       multiplayerSeat: null,
       contextCard: null,
@@ -528,6 +531,7 @@ export default {
         activePlayer: this.activePlayer,
         nonActivePlayers: this.nonActivePlayers,
         nextPlayer: this.nextPlayer,
+        nextPlayerOverride: this.nextPlayerOverride,
         players: this.players,
         discard: this.discard,
         stack: this.stack,
@@ -799,7 +803,8 @@ export default {
                 { ...this.contextCard, contextMenu: [...HAND_CONTEXT_MENU] },
               ];
 
-              this.players[this.contextCard.controlledBy].credits += this.contextCard.cost;
+              this.players[this.contextCard.controlledBy].credits +=
+                this.contextCard.cost;
 
               this.discard = this.discard.filter(
                 (card) => card.id !== this.contextCard.id
@@ -1033,8 +1038,15 @@ export default {
       this.players[this.activePlayer].completedFirstTurn = true;
 
       // Next player
-      this.activePlayerHand = this.nextPlayer;
-      this.activePlayer = this.nextPlayer;
+      console.log(this.nextPlayerOverride.player);
+      if (this.nextPlayerOverride.player) {
+        this.activePlayerHand = this.nextPlayerOverride.player;
+        this.activePlayer = this.nextPlayerOverride.player;
+      } else {
+        this.activePlayerHand = this.nextPlayer;
+        this.activePlayer = this.nextPlayer;
+      }
+      this.nextPlayerOverride.player = null;
 
       // Gain credits
       // if (this.players[this.activePlayer].completedFirstTurn) {

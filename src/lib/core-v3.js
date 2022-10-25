@@ -868,9 +868,9 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
-    // onResolve: ({ nextPlayer, activePlayer }) => {
-    //   nextPlayer = activePlayer;
-    // },
+    onResolve: ({ nextPlayerOverride, card }) => {
+      nextPlayerOverride.player = card.controlledBy;
+    },
   },
   {
     id: 19,
