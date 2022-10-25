@@ -1419,6 +1419,7 @@ export default {
     });
 
     this.socket?.on("joined", (payload) => {
+      this.playerCount = payload.playerCount
       switch (payload.playerCount) {
         case 1:
           this.multiplayerSeat = "player1";
@@ -1437,6 +1438,10 @@ export default {
           break;
       }
     });
+
+    this.socket?.on("playerCount", playerCount => {
+      this.playerCount = playerCount
+    })
 
     this.socket?.emit("join", location.hash);
 
@@ -1459,9 +1464,9 @@ export default {
     gameSize() {
       this.socket?.emit("state", JSON.stringify(this.fnContext));
     },
-    playerCount() {
-      this.socket?.emit("state", JSON.stringify(this.fnContext));
-    },
+    // playerCount() {
+    //   this.socket?.emit("state", JSON.stringify(this.fnContext));
+    // },
   },
   components: {
     DropZone,

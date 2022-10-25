@@ -47,16 +47,18 @@ io.on("connection", (socket) => {
       games[id] = { playerCount: 1, state: null };
     } else {
       games[id].playerCount++;
+
+      if (games[id]?.state) {
+        socket.emit("state", games[id].state);
+      }
+
+      socket.to(gameId).emit("playerCount", games[gameId].playerCount);
     }
 
     socket.emit("joined", {
       id,
       playerCount: games[id].playerCount,
     });
-
-    if (games[id]?.state) {
-      socket.emit("state", games[id].state);
-    }
   });
 
   socket.on("state", (val) => {
@@ -71,6 +73,8 @@ io.on("connection", (socket) => {
       games[gameId].playerCount--;
       if (games[gameId].playerCount === 0) {
         delete games[gameId];
+      } else {
+        socket.to(gameId).emit("playerCount", games[gameId].playerCount);
       }
     }
   });

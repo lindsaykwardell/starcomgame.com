@@ -75,7 +75,7 @@ function connectToOnlineGame() {
       </label>
     </fieldset>
 
-    <fieldset>
+    <fieldset v-if="!multiplayerSeat">
       <legend>Player Count</legend>
       <label class="px-2">
         <input type="radio" v-model="playerCount" :value="2" /> 2
@@ -87,6 +87,9 @@ function connectToOnlineGame() {
         <input type="radio" v-model="playerCount" :value="4" /> 4
       </label>
     </fieldset>
+    <div v-else>
+      Player Count: {{ playerCount }}
+    </div>
 
     <form v-if="!multiplayerSeat" @submit="connectToOnlineGame">
       <label class="flex flex-col pb-6">
