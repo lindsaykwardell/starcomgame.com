@@ -995,6 +995,17 @@ export default {
         ) {
           system.card.controlledBy = this.activePlayer;
           system.card.developmentLevel = 1;
+          // Active player gains control of all stations with 0 attack.
+
+          system.vessels.forEach((vessel) => {
+            if (
+              vessel.controlledBy !== this.activePlayer &&
+              vessel.totalAttack() <= 0 &&
+              vessel.type === STATION
+            ) {
+              vessel.controlledBy = this.activePlayer;
+            }
+          });
         }
       });
 
