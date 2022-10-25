@@ -1003,6 +1003,24 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ systems, card }) =>
+        systems
+          .filter((system) =>
+            system.vessels.find((v) => v.controlledBy === card.controlledBy)
+          )
+          .map((system, index) => ({
+            label: `Choose ${system.card.img} (${system.vessels.length} vessels)`,
+            action: `step:${index}`,
+            stepAction: () => {
+              system.vessels.forEach((v) => {
+                v.damage = 1000;
+              });
+            },
+          })),
+    ],
   },
   {
     id: 23,
