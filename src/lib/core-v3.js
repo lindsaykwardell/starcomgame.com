@@ -750,6 +750,39 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    step: 0,
+    stepContext: {},
+    stepContextMenu: [
+      ({ players, card }) => {
+        return Object.keys(players)
+          .filter(
+            (player) =>
+              player !== card.controlledBy && players[player].hand.length > 0
+          )
+          .map((player, i) => ({
+            label: `View ${player}'s hand (${players[player].hand.length} cards)`,
+            action: `step:${i}`,
+            stepAction: () => {
+              return { chosenPlayer: player };
+            },
+          }));
+      },
+      ({ players, chosenPlayer, card }) => {
+        return players[chosenPlayer].hand.map((c, i) => ({
+          label: `Choose ${c.img}`,
+          action: "step:0",
+          stepAction: () => {
+            players[chosenPlayer].hand = players[chosenPlayer].hand.filter(
+              (h) => h.id !== c.id
+            );
+            players[card.controlledBy].hand = [
+              ...players[card.controlledBy].hand,
+              { ...c, controlledBy: card.controlledBy },
+            ];
+          },
+        }));
+      },
+    ],
   },
   {
     id: 15,
