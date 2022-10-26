@@ -275,7 +275,7 @@
           </template>
         </div>
       </div>
-      <div class="hand" :class="activePlayerHand" v-if="shouldBoardDisplay">
+      <div class="hand" :class="handClass" v-if="shouldBoardDisplay">
         <DropZone
           :list.sync="hand"
           group="hand"
@@ -468,6 +468,9 @@ export default {
         this.players[this.activePlayerHand].hand = val;
       },
     },
+    handClass() {
+      return this.multiplayerSeat || this.activePlayerHand
+    },
     player1Technology() {
       return this.players.player1?.technology;
     },
@@ -569,23 +572,26 @@ export default {
       };
     },
     activePlayerControlsIndustry() {
+      const playerToCheck = this.multiplayerSeat ? this.multiplayerSeat : this.activePlayer
       return !!this.systems.find(
         (system) =>
-          system.card.controlledBy === this.activePlayer &&
+          system.card.controlledBy === playerToCheck &&
           system.card.domain === INDUSTRY
       );
     },
     activePlayerControlsStatecraft() {
+      const playerToCheck = this.multiplayerSeat ? this.multiplayerSeat : this.activePlayer
       return !!this.systems.find(
         (system) =>
-          system.card.controlledBy === this.activePlayer &&
+          system.card.controlledBy === playerToCheck &&
           system.card.domain === STATECRAFT
       );
     },
     activePlayerControlsScience() {
+      const playerToCheck = this.multiplayerSeat ? this.multiplayerSeat : this.activePlayer
       return !!this.systems.find(
         (system) =>
-          system.card.controlledBy === this.activePlayer &&
+          system.card.controlledBy === playerToCheck &&
           system.card.domain === SCIENCE
       );
     },

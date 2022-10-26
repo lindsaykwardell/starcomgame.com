@@ -78,10 +78,10 @@ const SYSTEM_CONTEXT_MENU = [
     condition: ({ card, system, players, inCombat }) =>
       !inCombat &&
       system.vessels.reduce(
-        (players, v) =>
-          players.includes(v.controlledBy)
-            ? players
-            : [...players, v.controlledBy],
+        (presentPlayers, v) =>
+          presentPlayers.includes(v.controlledBy)
+            ? presentPlayers
+            : [...presentPlayers, v.controlledBy],
         []
       ).length >= 2,
   },
