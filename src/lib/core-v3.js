@@ -945,10 +945,10 @@ export const CARD_LIST = [
     ],
     onResolve: ({ systems, card }) => {
       systems.forEach((system) => {
-        shipsControlledBy(system, this.activePlayer).forEach((card) => {
-          if (card.type === FIGHTER) {
-            card.bonusHp += 1;
-            card.effects.push("Fighter_Bays");
+        shipsControlledBy(system, card.controlledBy).forEach((c) => {
+          if (c.type === FIGHTER) {
+            c.bonusHp += 1;
+            c.effects.push("Fighter_Bays");
           }
         });
       });
