@@ -643,6 +643,13 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onResolve: ({ systems, card }) => {
+      systems.forEach((system) => {
+        shipsControlledBy(system, card.controlledBy).forEach((c) => {
+          card.effects.push("Targeting_Systems");
+        });
+      });
+    },
     onEachTurnStart: ({ card, systems, player }) => {
       systems.forEach((system) =>
         shipsControlledBy(system, player).forEach((c) => {
@@ -672,6 +679,16 @@ export const CARD_LIST = [
     },
     effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
+    onResolve: ({ systems, card }) => {
+      systems.forEach((system) => {
+        shipsControlledBy(system, card.controlledBy).forEach((c) => {
+          if (c.id !== card.id && c.type === STATION) {
+            c.bonusAttack += 1;
+            c.effects.push("Missile_Platform");
+          }
+        });
+      });
+    },
     onEachTurnStart: ({ card, system, player }) => {
       shipsControlledBy(system, player).forEach((c) => {
         if (c.id !== card.id && c.type === STATION) {
@@ -886,6 +903,14 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onResolve: ({ systems, card }) => {
+      systems.forEach((system) => {
+        shipsControlledBy(system, card.controlledBy).forEach((c) => {
+          card.bonusAttack += 1;
+          card.effects.push("Advanced_Shields");
+        });
+      });
+    },
     onEachTurnStart: ({ systems, player }) => {
       systems.forEach((system) => {
         shipsControlledBy(system, player).forEach((card) => {
@@ -954,6 +979,7 @@ export const CARD_LIST = [
       });
     },
     onBuildOther: ({ card, systems, player }) => {
+      console.log("onBuildOther")
       if (card.type === FIGHTER) {
         card.bonusHp += 1;
         card.effects.push("Fighter_Bays");
@@ -1199,6 +1225,13 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onResolve: ({ systems, card }) => {
+      systems.forEach((system) => {
+        shipsControlledBy(system, card.controlledBy).forEach((c) => {
+          card.effects.push("Enhanced_Jump_Drive");
+        });
+      });
+    },
     onEachTurnStart: ({ systems, player }) => {
       systems.forEach((system) => {
         shipsControlledBy(system, player).forEach((card) => {
@@ -1218,6 +1251,14 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
+    onResolve: ({ systems, card }) => {
+      systems.forEach((system) => {
+        shipsControlledBy(system, card.controlledBy).forEach((c) => {
+          card.bonusHp += 1;
+          card.effects.push("Advanced_Shields");
+        });
+      });
+    },
     onEachTurnStart: ({ systems, player }) => {
       systems.forEach((system) => {
         shipsControlledBy(system, player).forEach((card) => {
