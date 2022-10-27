@@ -18,6 +18,7 @@
             :loc="loc"
             :combat="combat"
             :showEffects="showEffects"
+            :showBack="showBack"
           />
           <DamageDice
             v-if="item?.element.damage"
@@ -51,7 +52,7 @@ export default {
     },
     player: {
       type: String,
-      required: false
+      required: false,
     },
     cardClass: {
       type: String,
@@ -69,6 +70,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    showBack: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     _list: {
@@ -83,7 +88,7 @@ export default {
   methods: {
     dropped() {
       EventBus.$emit("dropzone-dropped", this.group);
-    }
+    },
   },
   components: {
     draggable,

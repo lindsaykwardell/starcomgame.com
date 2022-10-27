@@ -196,13 +196,13 @@
                 ? 'bg-red-400 shadow-lg border-white'
                 : 'bg-red-900'
             "
-            :disabled="this.multiplayerSeat"
             @click="activePlayerHand = 'player1'"
           >
             <!-- <em>Player 1</em><br /> -->
             <!-- <hr /> -->
             Credits: {{ players.player1.credits }}<br />
-            Developments: {{ getPlayerDevelopmentCount("player1") }}
+            Developments: {{ getPlayerDevelopmentCount("player1") }}<br />
+            Hand: {{ players.player1.hand.length }}
           </button>
           <button
             v-if="players.player3"
@@ -212,13 +212,13 @@
                 ? 'bg-green-600 shadow-lg border-white'
                 : 'bg-green-900'
             "
-            :disabled="this.multiplayerSeat"
             @click="activePlayerHand = 'player3'"
           >
             <!-- <em>Player 3</em><br /> -->
             <!-- <hr /> -->
             Credits: {{ players.player3.credits }}<br />
-            Developments: {{ getPlayerDevelopmentCount("player3") }}
+            Developments: {{ getPlayerDevelopmentCount("player3") }}<br />
+            Hand: {{ players.player3.hand.length }}
           </button>
           <button
             class="flex-1 p-1 rounded-lg duration-200 whitespace-nowrap text-left border border-transparent"
@@ -227,13 +227,13 @@
                 ? 'bg-blue-400 shadow-lg border-white'
                 : 'bg-blue-900'
             "
-            :disabled="this.multiplayerSeat"
             @click="activePlayerHand = 'player2'"
           >
             <!-- <em>Player 2</em><br /> -->
             <!-- <hr /> -->
             Credits: {{ players.player2.credits }}<br />
-            Developments: {{ getPlayerDevelopmentCount("player2") }}
+            Developments: {{ getPlayerDevelopmentCount("player2") }}<br />
+            Hand: {{ players.player2.hand.length }}
           </button>
           <button
             v-if="players.player4"
@@ -243,13 +243,13 @@
                 ? 'bg-yellow-600 shadow-lg border-white'
                 : 'bg-yellow-900'
             "
-            :disabled="this.multiplayerSeat"
             @click="activePlayerHand = 'player4'"
           >
             <!-- <em>Player 4</em><br /> -->
             <!-- <hr /> -->
             Credits: {{ players.player4.credits }}<br />
-            Developments: {{ getPlayerDevelopmentCount("player4") }}
+            Developments: {{ getPlayerDevelopmentCount("player4") }}<br />
+            Hand: {{ players.player4.hand.length }}
           </button>
           <template v-if="multiplayerSeat">
             <div
@@ -283,7 +283,8 @@
         <DropZone
           :list.sync="hand"
           group="hand"
-          :loc="showTechnology ? 'tech' : 'hand'"
+          loc="hand"
+          :showBack="multiplayerSeat && multiplayerSeat !== activePlayerHand"
         />
       </div>
     </div>
@@ -460,20 +461,11 @@ export default {
         .filter((system) => system.card.controlledBy === this.activePlayer)
         .reduce((total, system) => system.card.developmentLevel + total, 0);
     },
-    hand: {
-      get() {
-        if (this.multiplayerSeat) {
-          return this.players[this.multiplayerSeat]?.hand;
-        } else {
-          return this.players[this.activePlayerHand].hand;
-        }
-      },
-      set(val) {
-        this.players[this.activePlayerHand].hand = val;
-      },
+    hand() {
+      return this.players[this.activePlayerHand].hand;
     },
     handClass() {
-      return this.multiplayerSeat || this.activePlayerHand;
+      return this.activePlayerHand;
     },
     player1Technology() {
       return this.players.player1?.technology;
@@ -1085,17 +1077,16 @@ export default {
       this.players[this.activePlayer].completedFirstTurn = true;
 
       // Next player
-      console.log(this.nextPlayerOverride.player);
       if (this.nextPlayerOverride.player) {
-        this.activePlayerHand = this.nextPlayerOverride.player;
+        this.activePlayerHand = this.multiplayerSeat
+          ? this.activePlayerHand
+          : this.nextPlayerOverride.player;
         this.activePlayer = this.nextPlayerOverride.player;
       } else {
-        this.activePlayerHand = this.nextPlayer;
+        this.activePlayerHand = this.multiplayerSeat
+          ? this.activePlayerHand
+          : this.nextPlayer;
         this.activePlayer = this.nextPlayer;
-      }
-
-      if (this.multiplayerSeat) {
-        this.activePlayerHand = this.multiplayerSeat;
       }
 
       this.nextPlayerOverride.player = null;
@@ -1467,11 +1458,6 @@ export default {
     });
   },
   watch: {
-    activePlayerHand() {
-      if (this.multiplayerSeat) {
-        this.activePlayerHand = this.multiplayerSeat;
-      }
-    },
     showBoard() {
       if (this.showBoard && this.showInitGameModal) {
         this.showInitGameModal = false;

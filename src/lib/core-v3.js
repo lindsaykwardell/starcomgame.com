@@ -103,7 +103,7 @@ export const DAMAGE_CONTEXT_MENU = [
   {
     action: "repair:1",
     label: "Remove 1 damage",
-    condition: ({ card, players }) => card.damage > 0,
+    condition: ({ card }) => card.damage > 0,
     repairAction: ({ card }) => {
       card.damage -= 1;
     },

@@ -3,7 +3,6 @@
     <img
       :class="hasAssignedDamage"
       :src="getImgUrl(card.img)"
-      :alt="card.img"
       @mouseover="hoverCard"
       @contextmenu.prevent="openContextMenu($event)"
       :data-damage="card.damage"
@@ -24,7 +23,14 @@
 
 <script>
 import EventBus from "@/util/EventBus";
-import { DAMAGEABLE, SYSTEM, CAPITAL_SYSTEM } from "@/lib/core-v3";
+import {
+  DAMAGEABLE,
+  SYSTEM,
+  CAPITAL_SYSTEM,
+  INDUSTRY,
+  STATECRAFT,
+  SCIENCE,
+} from "@/lib/core-v3";
 
 export default {
   props: {
@@ -49,31 +55,9 @@ export default {
       type: Boolean,
       default: false,
     },
-  },
-  methods: {
-    getImgUrl(cardName) {
-      if (
-        [SYSTEM, CAPITAL_SYSTEM].includes(this.card.type) &&
-        !this.card.explored
-      ) {
-        return this.card.backImg;
-      }
-
-      if (cardName) {
-        return "/cards/" + cardName + ".webp";
-      } else {
-        return this.card.backImg || "/back.jpg";
-      }
-    },
-    hoverCard() {
-      EventBus.$emit("card:hover", this.card);
-    },
-    openContextMenu(event) {
-      EventBus.$emit("card:context", {
-        card: this.card,
-        loc: this.card.loc || this.loc,
-        event,
-      });
+    showBack: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -84,10 +68,63 @@ export default {
     },
     title() {
       if (DAMAGEABLE.includes(this.card.type)) {
-        return `(${this.card.id}) Damage: ${this.card.damage}`;
+        return `${this.card.img} | HP: ${
+          this.card.totalHp() - this.card.damage
+        }/${this.card.totalHp()}, ATK: ${this.card.totalAttack()}`;
       }
 
-      return "";
+      if (this.card.explored === false) {
+        return "Unexplored System";
+      }
+
+      return this.card.img;
+    },
+    cardBack() {
+      switch (this.card.domain) {
+        case INDUSTRY:
+          return "/industry.png";
+        case STATECRAFT:
+          return "/statecraft.png";
+        case SCIENCE:
+          return "/science.png";
+      }
+    },
+  },
+  methods: {
+    getImgUrl(cardName) {
+      if (
+        [SYSTEM, CAPITAL_SYSTEM].includes(this.card.type) &&
+        !this.card.explored
+      ) {
+        return this.card.backImg;
+      }
+
+      if (this.showBack) {
+        return this.cardBack;
+      }
+
+      if (cardName) {
+        return "/cards/" + cardName + ".webp";
+      } else {
+        return this.card.backImg || "/back.jpg";
+      }
+    },
+    hoverCard() {
+      if (this.showBack) {
+        EventBus.$emit("card:hover", {
+          backImg: this.cardBack,
+          explored: false,
+        });
+      } else {
+        EventBus.$emit("card:hover", this.card);
+      }
+    },
+    openContextMenu(event) {
+      EventBus.$emit("card:context", {
+        card: this.card,
+        loc: this.card.loc || this.loc,
+        event,
+      });
     },
   },
 };
