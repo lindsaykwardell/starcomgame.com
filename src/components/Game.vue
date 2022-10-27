@@ -4,6 +4,7 @@
     v-model:gameSize="gameSize"
     v-model:playerCount="playerCount"
     :multiplayerSeat="multiplayerSeat"
+    :serverStatus="serverStatus"
     @startGame="initGame"
   />
   <div class="flex">
@@ -405,6 +406,7 @@ export default {
       },
       activePlayerHand: "player1",
       multiplayerSeat: null,
+      serverStatus: null,
       contextCard: null,
       contextLoc: 0,
       contextCoordinates: {
@@ -1420,6 +1422,16 @@ export default {
     });
 
     this.socket = useSocket();
+
+    this.socket?.on("connect", () => {
+      console.log("connected");
+      this.serverStatus = "connected";
+    });
+
+    this.socket?.on("connect_error", (err) => {
+      console.error("connect error", err);
+      this.serverStatus = "error";
+    });
 
     this.socket?.on("state", (payload) => {
       this.parseAndUpdateState(payload);

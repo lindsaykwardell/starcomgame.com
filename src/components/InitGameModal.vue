@@ -7,6 +7,7 @@ const props = defineProps({
   gameSize: Number,
   playerCount: Number,
   multiplayerSeat: String,
+  serverStatus: String,
 });
 
 const onlineGameId = ref("");
@@ -87,9 +88,7 @@ function connectToOnlineGame() {
         <input type="radio" v-model="playerCount" :value="4" /> 4
       </label>
     </fieldset>
-    <div v-else>
-      Player Count: {{ playerCount }}
-    </div>
+    <div v-else>Player Count: {{ playerCount }}</div>
 
     <form v-if="!multiplayerSeat" @submit="connectToOnlineGame">
       <label class="flex flex-col pb-6">
@@ -102,6 +101,13 @@ function connectToOnlineGame() {
         </button>
       </label>
     </form>
+
+    <div
+      v-else-if="serverStatus === 'error'"
+      class="font-megrim text-2xl bold py-6"
+    >
+      Connecting...
+    </div>
 
     <template v-else>
       <div
