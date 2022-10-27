@@ -1423,6 +1423,10 @@ export default {
 
     this.socket = useSocket();
 
+    if (this.socket) {
+      this.serverStatus = "init";
+    }
+
     this.socket?.on("connect", () => {
       console.log("connected");
       this.serverStatus = "connected";
