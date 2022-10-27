@@ -646,7 +646,7 @@ export const CARD_LIST = [
     onResolve: ({ systems, card }) => {
       systems.forEach((system) => {
         shipsControlledBy(system, card.controlledBy).forEach((c) => {
-          card.effects.push("Targeting_Systems");
+          c.effects.push("Targeting_Systems");
         });
       });
     },
@@ -906,8 +906,8 @@ export const CARD_LIST = [
     onResolve: ({ systems, card }) => {
       systems.forEach((system) => {
         shipsControlledBy(system, card.controlledBy).forEach((c) => {
-          card.bonusAttack += 1;
-          card.effects.push("Advanced_Shields");
+          c.bonusAttack += 1;
+          c.effects.push("Advanced_Weapons");
         });
       });
     },
@@ -1228,7 +1228,7 @@ export const CARD_LIST = [
     onResolve: ({ systems, card }) => {
       systems.forEach((system) => {
         shipsControlledBy(system, card.controlledBy).forEach((c) => {
-          card.effects.push("Enhanced_Jump_Drive");
+          c.effects.push("Enhanced_Jump_Drive");
         });
       });
     },
@@ -1254,8 +1254,8 @@ export const CARD_LIST = [
     onResolve: ({ systems, card }) => {
       systems.forEach((system) => {
         shipsControlledBy(system, card.controlledBy).forEach((c) => {
-          card.bonusHp += 1;
-          card.effects.push("Advanced_Shields");
+          c.bonusHp += 1;
+          c.effects.push("Advanced_Shields");
         });
       });
     },
