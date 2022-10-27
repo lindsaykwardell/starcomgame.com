@@ -83,7 +83,11 @@
         </div>
         <a
           class="flex-shrink relative"
-          :href="`https://starcomgame.com/card-database?selectedCard=${hoveredCard.img}`"
+          :href="`https://starcomgame.com/card-database${
+            hoveredCard.explored === false || !hoveredCard.img
+              ? ''
+              : `?selectedCard=${hoveredCard.img}`
+          }`"
           target="_blank"
         >
           <Card
@@ -469,7 +473,7 @@ export default {
       },
     },
     handClass() {
-      return this.multiplayerSeat || this.activePlayerHand
+      return this.multiplayerSeat || this.activePlayerHand;
     },
     player1Technology() {
       return this.players.player1?.technology;
@@ -572,7 +576,9 @@ export default {
       };
     },
     activePlayerControlsIndustry() {
-      const playerToCheck = this.multiplayerSeat ? this.multiplayerSeat : this.activePlayer
+      const playerToCheck = this.multiplayerSeat
+        ? this.multiplayerSeat
+        : this.activePlayer;
       return !!this.systems.find(
         (system) =>
           system.card.controlledBy === playerToCheck &&
@@ -580,7 +586,9 @@ export default {
       );
     },
     activePlayerControlsStatecraft() {
-      const playerToCheck = this.multiplayerSeat ? this.multiplayerSeat : this.activePlayer
+      const playerToCheck = this.multiplayerSeat
+        ? this.multiplayerSeat
+        : this.activePlayer;
       return !!this.systems.find(
         (system) =>
           system.card.controlledBy === playerToCheck &&
@@ -588,7 +596,9 @@ export default {
       );
     },
     activePlayerControlsScience() {
-      const playerToCheck = this.multiplayerSeat ? this.multiplayerSeat : this.activePlayer
+      const playerToCheck = this.multiplayerSeat
+        ? this.multiplayerSeat
+        : this.activePlayer;
       return !!this.systems.find(
         (system) =>
           system.card.controlledBy === playerToCheck &&
@@ -1425,7 +1435,7 @@ export default {
     });
 
     this.socket?.on("joined", (payload) => {
-      this.playerCount = payload.playerCount
+      this.playerCount = payload.playerCount;
       switch (payload.playerCount) {
         case 1:
           this.multiplayerSeat = "player1";
@@ -1445,9 +1455,9 @@ export default {
       }
     });
 
-    this.socket?.on("playerCount", playerCount => {
-      this.playerCount = playerCount
-    })
+    this.socket?.on("playerCount", (playerCount) => {
+      this.playerCount = playerCount;
+    });
 
     this.socket?.emit("join", location.hash);
 
