@@ -4,6 +4,7 @@
       :class="hasAssignedDamage"
       :src="getImgUrl(card.img)"
       @mouseover="hoverCard"
+      :alt="title"
       @contextmenu.prevent="openContextMenu($event)"
       :data-damage="card.damage"
       :title="title"
@@ -67,14 +68,25 @@ export default {
         : "";
     },
     title() {
+      if (this.card.explored === false) {
+        return "Unexplored System";
+      }
+
+      if (this.showBack) {
+        switch (this.card.domain) {
+          case INDUSTRY:
+            return "Industry Card";
+          case STATECRAFT:
+            return "Statecraft Card";
+          case SCIENCE:
+            return "Science Card";
+        }
+      }
+
       if (DAMAGEABLE.includes(this.card.type)) {
         return `${this.card.img} | HP: ${
           this.card.totalHp() - this.card.damage
         }/${this.card.totalHp()}, ATK: ${this.card.totalAttack()}`;
-      }
-
-      if (this.card.explored === false) {
-        return "Unexplored System";
       }
 
       return this.card.img;
