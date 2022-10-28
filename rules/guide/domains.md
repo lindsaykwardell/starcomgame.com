@@ -4,13 +4,13 @@ There are three domains - Industry, Statecraft, and Science. There is one deck f
 
 ## Industry
 
-<img class="card" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Railgun_Turrets-thumb.webp" alt="Railgun_Turrets" />
+<img class="card" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Battlecruiser-thumb.webp" alt="Battlecruiser" />
 
 Industry is primarily focused on getting the most out of your resources. If you focus on the industry domain, you will be earning more credits, building the largest ships, and dealing the most damage. Industry wants to build out large, powerful fleets and overwhelm their opponents.
 
 ## Statecraft 
 
-<img class="card" style="float: right; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Missile_Platform-thumb.webp" alt="Missile_Platform" />
+<img class="card" style="float: right; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Orbital_Habitat-thumb.webp" alt="Orbital_Habitat" />
 
 Statecraft focuses on defensive play, building up their systems efficiently and building a strong support network to defend them. Statecraft relies on building defensive stations and smaller ships, while manipulating events in ways not related to combat.
 

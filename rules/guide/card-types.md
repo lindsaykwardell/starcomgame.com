@@ -4,7 +4,7 @@ There are five card types in the game. Throughout play, you will be interacting 
 
 ## Ship
 
-<img class="card" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Frigate-thumb.webp" alt="Frigate" />
+<img class="card" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Destroyer-thumb.webp" alt="Destroyer" />
 
 There are four ship types - Fighter, Small, Medium, and Large. Each has a cost, attack, hit points, and speed. Some ships have other abilities written on them. Ships are the only cards that can move between systems.
 
@@ -16,7 +16,7 @@ You can only control a number of ships equal to the total number of developments
 
 ## Station
 
-<img class="card" style="float: right; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Refinery-thumb.webp" alt="Refinery" />
+<img class="card" style="float: right; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Shipyard-thumb.webp" alt="Shipyard" />
 
 Stations act just like ships, but cannot move between systems. Stations can be built in any system you control. You may only build a number of stations equal to the number of developments in that system.
 
@@ -32,7 +32,7 @@ Systems are the backbone of your empire. They provide resources to build ships a
 
 ## Technology
 
-<img class="card" style="float: right; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Enhanced_Jump_Drive-thumb.webp" alt="Enhanced_Jump_Drive" />
+<img class="card" style="float: right; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Advanced_Systems-thumb.webp" alt="Advanced Systems" />
 
 Technology cards allow for additional, long-lasting abilities. Technology cards are placed in the Technology row closest to the player. 
 
@@ -40,7 +40,7 @@ Some technologies provide static abilities, like increasing ship stats or drawin
 
 ## Command
 
-<img class="card" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Spy_Network-thumb.webp" alt="Spy_Network" />
+<img class="card" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Barrage-thumb.webp" alt="Barrage" />
 
 Commands are cards that affect gameplay, then go to the discard pile. You play them from your hand onto the board, then move them to the discard pile. Commands can be played on any player's turn, but if it is not your turn they can only be played as a response (see [Responses](/etc/additional-rules.html#responses)).
 
