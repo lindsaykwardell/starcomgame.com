@@ -266,6 +266,7 @@ export const CARD_LIST = [
     onTurnStart: ({ card, system, activePlayer, players }) => {
       players[activePlayer].credits += 2;
     },
+    combatContextMenu: generateCombatContextMenu,
   },
   {
     id: 2,
@@ -724,6 +725,7 @@ export const CARD_LIST = [
         }
       });
     },
+    combatContextMenu: generateCombatContextMenu,
   },
   {
     id: 12,
@@ -759,6 +761,7 @@ export const CARD_LIST = [
         system.card.developmentLevel++;
       }
     },
+    combatContextMenu: generateCombatContextMenu,
   },
   {
     id: 13,
@@ -782,6 +785,7 @@ export const CARD_LIST = [
     effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
     buildShipContextMenu: generateBuildShipContextMenu,
+    combatContextMenu: generateCombatContextMenu,
   },
   {
     id: 14,
@@ -1052,6 +1056,7 @@ export const CARD_LIST = [
     },
     effects: [],
     contextMenu: [...DAMAGE_CONTEXT_MENU],
+    combatContextMenu: generateCombatContextMenu,
   },
   {
     id: 22,
@@ -1332,7 +1337,7 @@ export const CARD_LIST = [
     totalHp() {
       return this.hp + this.bonusHp;
     },
-    attack: 0,
+    attack: 1,
     bonusAttack: 0,
     totalAttack() {
       return this.attack + this.bonusAttack;
@@ -1568,7 +1573,7 @@ export const CARD_LIST = [
         );
       });
 
-      if (validTargets > 0) {
+      if (validTargets.length > 0) {
         alert("Core World: Choose a system to develop.");
       }
     },
