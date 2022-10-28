@@ -508,7 +508,10 @@ export default {
         });
       }
 
-      if (this.contextCard.type === SYSTEM) {
+      if (
+        this.contextCard.type === SYSTEM ||
+        (DAMAGEABLE.includes(this.contextCard.type) && !isNaN(+this.contextLoc))
+      ) {
         let menu = [...this.contextCard.contextMenu];
 
         // Per turn actions
@@ -713,11 +716,22 @@ export default {
               ...this.systems[this.contextLoc].vessels,
               newcard,
             ];
+
+            // Calculate cost
+            let cost;
             if (option.cost) {
-              this.players[this.activePlayer].credits -= option.cost;
+              cost = option.cost;
             } else {
-              this.players[this.activePlayer].credits -= card.cost;
+              cost = card.cost;
             }
+
+            this.players[this.activePlayer].technology.forEach((technology) => {
+              if (technology.buildCostModifier) {
+                cost = technology.buildCostModifier({ card, cost });
+              }
+            });
+
+            this.players[this.activePlayer].credits -= cost;
 
             this.players[this.activePlayer].technology.forEach((technology) => {
               if (technology.onBuildOther) {
@@ -795,12 +809,21 @@ export default {
         case "hand":
           switch (keys[1]) {
             case "play":
-              if (
-                this.players[this.contextCard.controlledBy].credits >=
-                this.contextCard.cost
-              ) {
-                this.players[this.contextCard.controlledBy].credits -=
-                  this.contextCard.cost;
+              // Calculate cost
+              let cost = this.contextCard.cost;
+
+              this.players[this.contextCard.controlledBy].technology.forEach(
+                (technology) => {
+                  if (technology.buildCostModifier) {
+                    cost = technology.buildCostModifier({
+                      card: this.contextCard,
+                      cost,
+                    });
+                  }
+                }
+              );
+              if (this.players[this.contextCard.controlledBy].credits >= cost) {
+                this.players[this.contextCard.controlledBy].credits -= cost;
 
                 this.stack = [
                   {
@@ -1554,7 +1577,7 @@ body {
   @apply bg-gray-900 text-white rounded overflow-auto;
   position: absolute;
   width: 200px;
-  max-height: 350px;
+  max-height: 300px;
 }
 
 .next-turn-button {

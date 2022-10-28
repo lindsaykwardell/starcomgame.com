@@ -180,12 +180,23 @@ const generateBuildShipContextMenu = ({
 const STATION_CONTEXT_MENU = [
   {
     action: "build:40",
-    label: "Build Defense Station (3 credits)",
-    condition: ({ card, system, activePlayer, players }) =>
-      card.controlledBy === activePlayer &&
-      players[activePlayer].credits >= 3 &&
-      shipsControlledBy(system, activePlayer).filter((c) => c.type === STATION)
-        .length < system.card.developmentLevel,
+    label: "Build Defense Station",
+    condition: ({ card, system, activePlayer, players }) => {
+      const defenseStation = CARD_LIST.find((c) => c.img === "Defense_Station");
+      let cost = 3;
+      players[activePlayer].technology.forEach((tech) => {
+        if (tech.buildCostModifier) {
+          cost = tech.buildCostModifier({ card: defenseStation, cost });
+        }
+      });
+      return (
+        card.controlledBy === activePlayer &&
+        players[activePlayer].credits >= cost &&
+        shipsControlledBy(system, activePlayer).filter(
+          (c) => c.type === STATION
+        ).length < system.card.developmentLevel
+      );
+    },
   },
 ];
 
@@ -634,28 +645,44 @@ export const CARD_LIST = [
   },
   {
     id: 10,
-    img: "Targeting_Systems",
-    type: TECHNOLOGY,
+    img: "Battlecruiser",
+    type: SHIP,
     domain: INDUSTRY,
     deck: INDUSTRY,
     count: 2,
-    cost: 0,
-    hp: null,
-    attack: null,
-    contextMenu: [],
-    onResolve: ({ systems, card }) => {
-      systems.forEach((system) => {
-        shipsControlledBy(system, card.controlledBy).forEach((c) => {
-          c.effects.push("Targeting_Systems");
-        });
-      });
+    cost: 10,
+    damage: 0,
+    hp: 8,
+    bonusHp: 0,
+    totalHp() {
+      return this.hp + this.bonusHp;
     },
-    onEachTurnStart: ({ card, systems, player }) => {
-      systems.forEach((system) =>
-        shipsControlledBy(system, player).forEach((c) => {
-          c.effects.push("Targeting_Systems");
-        })
-      );
+    attack: 6,
+    bonusAttack: 0,
+    totalAttack() {
+      return this.attack + this.bonusAttack;
+    },
+    effects: [],
+    contextMenu: [...DAMAGE_CONTEXT_MENU],
+    combatContextMenu: generateCombatContextMenu,
+    abilityMenu: ({ card, players }) => {
+      let menu = [];
+
+      for (let i = 1; i <= players[card.controlledBy].credits; i++) {
+        menu.push({
+          label: `Pay ${i}: Get +${i} attack until end of turn.`,
+          action: `perform`,
+          performAction: () => {
+            card.bonusAttack += i;
+            players[card.controlledBy].credits -= i;
+            if (!card.effects.includes("Battlecruiser")) {
+              card.effects.push("Battlecruiser");
+            }
+          },
+        });
+      }
+
+      return menu;
     },
   },
   {
@@ -894,7 +921,7 @@ export const CARD_LIST = [
   },
   {
     id: 19,
-    img: "Advanced_Weapons",
+    img: "Efficient_Construction",
     type: TECHNOLOGY,
     domain: STATECRAFT,
     deck: STATECRAFT,
@@ -903,22 +930,30 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
-    onResolve: ({ systems, card }) => {
-      systems.forEach((system) => {
-        shipsControlledBy(system, card.controlledBy).forEach((c) => {
-          c.bonusAttack += 1;
-          c.effects.push("Advanced_Weapons");
-        });
-      });
+    buildCostModifier: ({ card, cost }) => {
+      if (card.type === STATION) {
+        const updatedCost = cost - 1;
+        return updatedCost >= 1 ? updatedCost : 1;
+      } else {
+        return cost;
+      }
     },
-    onEachTurnStart: ({ systems, player }) => {
-      systems.forEach((system) => {
-        shipsControlledBy(system, player).forEach((card) => {
-          card.bonusAttack += 1;
-          card.effects.push("Advanced_Weapons");
-        });
-      });
-    },
+    // onResolve: ({ systems, card }) => {
+    //   systems.forEach((system) => {
+    //     shipsControlledBy(system, card.controlledBy).forEach((c) => {
+    //       c.bonusAttack += 1;
+    //       c.effects.push("Advanced_Weapons");
+    //     });
+    //   });
+    // },
+    // onEachTurnStart: ({ systems, player }) => {
+    //   systems.forEach((system) => {
+    //     shipsControlledBy(system, player).forEach((card) => {
+    //       card.bonusAttack += 1;
+    //       card.effects.push("Advanced_Weapons");
+    //     });
+    //   });
+    // },
   },
   {
     id: 20,
@@ -979,7 +1014,7 @@ export const CARD_LIST = [
       });
     },
     onBuildOther: ({ card, systems, player }) => {
-      console.log("onBuildOther")
+      console.log("onBuildOther");
       if (card.type === FIGHTER) {
         card.bonusHp += 1;
         card.effects.push("Fighter_Bays");
@@ -1242,7 +1277,7 @@ export const CARD_LIST = [
   },
   {
     id: 29,
-    img: "Advanced_Shields",
+    img: "Advanced_Systems",
     type: TECHNOLOGY,
     domain: SCIENCE,
     deck: SCIENCE,
@@ -1255,7 +1290,8 @@ export const CARD_LIST = [
       systems.forEach((system) => {
         shipsControlledBy(system, card.controlledBy).forEach((c) => {
           c.bonusHp += 1;
-          c.effects.push("Advanced_Shields");
+          c.bonusAttack += 1;
+          c.effects.push("Advanced_Systems");
         });
       });
     },
@@ -1263,7 +1299,8 @@ export const CARD_LIST = [
       systems.forEach((system) => {
         shipsControlledBy(system, player).forEach((card) => {
           card.bonusHp += 1;
-          card.effects.push("Advanced_Shields");
+          card.bonusAttack += 1;
+          card.effects.push("Advanced_Systems");
         });
       });
     },
