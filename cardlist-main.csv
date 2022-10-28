@@ -1,40 +1,39 @@
 Name,Domain,Card Types,Cost,Attack,HP,Speed,Rules,Template,Card #,Count
-Refinery,Industry,Station,2,0,2,-,"At the start of your turn, gain 2 credits.",IndustryStats,40,4
+Refinery,Industry,Station,2,0,2,-,"At the start of your turn, gain 2 credits.",IndustryStats,38,4
 Orbital Bombardment,Industry,Command,,,,,"Choose a ship you control. Remove developments in that system equal to the ship's attack. If all would be removed, leave 1.",Industry,1,3
 Trade Envoy,Industry,Command,,,,,Gain credits equal to target system's development level.,Industry,2,4
 Barrage,Industry,Command,,,,,Choose a vessel you control. It deals damage equal to its attack to target vessel an opponent controls in that system.,Industry,3,4
 Ram,Industry,Command,,,,,Destroy target ship you control. It deals damage equal to its hit points to target vessel in that system.,Industry,4,3
-Mass Production,Industry,Command,,,,,Build 3 Corvettes in a system you control.,Industry,5,2
-Maximum Firepower,Industry,Command,,,,,"Target vessel gets +2 attack until end of turn, and can divide its damage between an additional target this combat.",Industry,6,3
+Mass Production,Industry,Command,,,,,Build 2 Corvettes in a system you control.,Industry,5,2
+Maximum Firepower,Industry,Command,,,,,Vessels you control in target system get +2 attack until end of turn.,Industry,6,3
 Trade Routes,Industry,Technology,,,,,"At the start of your turn, gain 1 credit for each station you control.",Industry,7,2
 Railgun Turrets,Industry,Technology,,,,,"Choose a vessel you control. Pay X, where X is its attack, to double its attack.",Industry,8,3
-Targeting Systems,Industry,Technology,,,,,"When assigning combat damage, vessels you control may select any number of additional targets.",Industry,9,2
-Missile Platform,Statecraft,Station,5,3,5,-,Other stations you control in this system get +1 attack.,StatecraftStats,41,4
-Orbital Habitat,Statecraft,Station,4,0,2,-,"At the start of your turn, place a development in this system if valid. You may build an additional two developments in this system.",StatecraftStats,42,3
-Shipyard,Statecraft,Station,5,0,3,-,You may build ships in this system.,StatecraftStats,43,2
-Spy Network,Statecraft,Command,,,,,Target player reveals their hand. Take a card from their hand and put it in yours.,Statecraft,10,4
-Intercept Orders,Statecraft,Command,,,,,Target command has no effect.,Statecraft,11,2
-Sabotage,Statecraft,Command,,,,,Choose a system with a vessel you control. Destroy target vessel in that system.,Statecraft,12,4
-Bribery,Statecraft,Command,,,,,Move target ship you do not control to an adjacent system.,Statecraft,13,3
-Filibuster,Statecraft,Command,,,,,Take another turn after this one.,Statecraft,14,2
-Advanced Weapons,Statecraft,Technology,,,,,Vessels you control have +1 attack.,Statecraft,15,3
-Fighter Bays,Statecraft,Technology,,,,,Fighters you control get +1 hit point. You may build fighters in any system you control with a station.,Statecraft,16,3
-Jump Nexus,Science,Station,4,0,2,-,Ships you control in this system have +1 speed until end of turn.,ScienceStats,44,4
-Jump Drive Detonation,Science,Command,,,,,Destroy target ship you control. Destroy all vessels in that system.,Science,17,2
-Jump Stabilization,Science,Command,,,,,Choose a system. Ships in that system may jump directly to any system within two jumps of it.,Science,18,3
-Interdiction,Science,Command,,,,,Ships in target system cannot jump until your next ready phase.,Science,19,3
-Raise Shields,Science,Command,,,,,"Target vessel gets +2 hit points until end of turn, and you may redirect combat damage from one target to this vessel.",Science,20,3
-Evasion,Science,Command,,,,,Prevent all damage that would be dealt to target ship this turn.,Science,21,4
-Experimental Shields,Science,Technology,,,,,"Discard a card: Prevent all damage to target vessel this turn, and it cannot be the target of commands or abilities until end of turn.",Science,22,2
-Enhanced Jump Drive,Science,Technology,,,,,Ships you control have +1 speed.,Science,23,3
-Advanced Shields,Science,Technology,,,,,Vessels you control have +1 hit point.,Science,24,4
-Thrill of Discovery,Science,Technology,,,,,"At the start of your turn, draw a card.",Science,25,2
-Scout,Neutral,Ship - Small,,0,2,1,,Neutral,45,4
-Strike Fighter,Neutral,Ship - Fighter,1,1,1,0,,Neutral,46,20
-Corvette,Neutral,Ship - Small,3,2,2,1,This ship can select an additional target during combat.,Neutral,47,17
-Frigate,Neutral,Ship - Small,5,3,3,1,This ship may jump the turn it is built.,Neutral,48,14
-Destroyer,Neutral,Ship - Medium,7,4,5,1,You may redirect combat damage from one target to this ship.,Neutral,49,10
-Cruiser,Neutral,Ship - Medium,9,5,7,1,"During conquest, you may remove a development from this system even if it is not under siege.",Neutral,50,10
-Battleship,Neutral,Ship - Large,12,6,10,1,This ship can select an additional target during combat.,Neutral,51,6
-Carrier,Neutral,Ship - Large,10,2,8,1,"When this ship jumps, up to five fighters may also jump to that system.",Neutral,52,6
-Defense Station,Neutral,Station,3,1,4,-,You may redirect combat damage from one target to this station.,Neutral,53,20
+Battlecruiser,Industry,Ship - Medium,10,6,8,2,Pay X: This ship gets +X attack until end of turn,IndustryStats,39,2
+Missile Platform,Statecraft,Station,5,3,5,-,Other stations you control in this system get +1 attack.,StatecraftStats,40,4
+Orbital Habitat,Statecraft,Station,4,0,2,-,"At the start of your turn, place a development in this system if valid. You may build an additional two developments in this system.",StatecraftStats,41,3
+Shipyard,Statecraft,Station,5,0,3,-,You may build ships in this system.,StatecraftStats,42,2
+Spy Network,Statecraft,Command,,,,,Target player reveals their hand. Take a card from their hand and put it in yours.,Statecraft,9,4
+Intercept Orders,Statecraft,Command,,,,,Target command has no effect.,Statecraft,10,2
+Sabotage,Statecraft,Command,,,,,Choose a system with a vessel you control. Destroy target vessel in that system.,Statecraft,11,4
+Bribery,Statecraft,Command,,,,,Move target ship you do not control to an adjacent system.,Statecraft,12,3
+Filibuster,Statecraft,Command,,,,,Take another turn after this one.,Statecraft,13,2
+Efficient Construction,Statecraft,Technology,,,,,Stations you build cost 1 less to build. Their cost cannot be less than 1.,Statecraft,14,3
+Fighter Bays,Statecraft,Technology,,,,,Fighters you control get +1 hit point. You may build fighters in any system you control with a station.,Statecraft,15,3
+Jump Nexus,Science,Station,4,0,2,-,Ships you control in this system have +1 speed until end of turn.,ScienceStats,43,4
+Jump Drive Detonation,Science,Command,,,,,Choose a system with a ship you control. Destroy all vessels in that system.,Science,16,2
+Jump Stabilization,Science,Command,,,,,Choose a system. Ships in that system may jump directly to any system within two jumps of it.,Science,17,3
+Interdiction,Science,Command,,,,,Ships in target system cannot jump until your next ready phase.,Science,18,3
+Raise Shields,Science,Command,,,,,Vessels you control in target system get +2 hit points until end of turn.,Science,19,3
+Evasion,Science,Command,,,,,Prevent all damage that would be dealt to target ship this turn.,Science,20,4
+Experimental Shields,Science,Technology,,,,,"Discard a card: Prevent all damage to target vessel this turn, and it cannot be the target of commands or abilities until end of turn.",Science,21,2
+Enhanced Jump Drive,Science,Technology,,,,,Ships you control have +1 speed.,Science,22,3
+Advanced Systems,Science,Technology,,,,,Vessels you control have +1 hit point and +1 attack.,Science,23,4
+Thrill of Discovery,Science,Technology,,,,,"At the start of your turn, draw a card.",Science,24,2
+Scout,Neutral,Ship - Small,,1,2,1,,Neutral,44,4
+Strike Fighter,Neutral,Ship - Fighter,1,1,1,0,,Neutral,45,20
+Corvette,Neutral,Ship - Small,3,2,2,1,This ship can select an additional target during combat.,Neutral,46,18
+Frigate,Neutral,Ship - Small,5,3,3,1,"During combat, this ship must be assigned lethal damage before other vessels you control.",Neutral,47,14
+Destroyer,Neutral,Ship - Medium,7,4,5,1,This ship may jump the turn it was built.,Neutral,48,12
+Cruiser,Neutral,Ship - Medium,9,5,7,1,"During conquest, you may remove a development from this system even if it is not under siege.",Neutral,49,10
+Battleship,Neutral,Ship - Large,12,6,10,1,This ship can select an additional target during combat.,Neutral,50,8
+Defense Station,Neutral,Station,3,1,4,-,"During combat, this station must be assigned lethal damage before other vessels you control.",Neutral,51,20

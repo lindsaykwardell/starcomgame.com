@@ -1,15 +1,14 @@
 Name,Domain,Card Types,,MaxDev,,,Rules,Template,Card #,Count
-Research World,Science,System,,4,,,"At the start of your turn, draw a card.",,26,2
-Core World,Statecraft,System,,4,,,"At the start of your turn, place a development on a valid system you control.",,27,2
-Trade World,Industry,System,,4,,,"At the start of your turn, gain 2 credits.",,28,2
-Military Base,Industry,System,,3,,,"When this system is first developed, build a Defense Stations.",,29,3
-Alien System,Science,System,,3,,,"When this system is first developed, draw two cards.",,30,3
-New Colony,Statecraft,System,,3,,,"When this system is first developed, place another development on it.",,31,3
-Asteroid Field,Statecraft,System,,2,,,Only small ships and Fighters can enter this system.,,32,1
-Pulsar System,Industry,System,,2,,,Ships in this system cannot be targeted by Commands.,,33,1
-Black Hole,Science,System,,2,,,Ships that enter this system cannot attack until next turn.,,34,1
-Silis Major,Statecraft,Capital System,,5,,,Fighters you control have +1 speed,,35,1
-Forsei,Industry,Capital System,,5,,,You may build ships during any phase of your turn.,,36,1
-Drummond,Science,Capital System,,5,,,Discard a card: Target ship can jump to any system.,,37,1
-Empty System,Empty,System,,1,,,,,38,4
-Homeworld,Empty,Starting System,,6,,,,,39,4
+Research World,Science,System,,4,,,"At the start of your turn, draw a card.",,25,2
+Core World,Statecraft,System,,4,,,"At the start of your turn, place a development on a valid system you control.",,26,2
+Trade World,Industry,System,,4,,,"At the start of your turn, gain 2 credits.",,27,2
+Military Base,Industry,System,,3,,,"When this system is first developed, build a Defense Stations.",,28,3
+Alien System,Science,System,,3,,,"When this system is first developed, draw two cards.",,29,3
+New Colony,Statecraft,System,,3,,,"When this system is first developed, place another development on it.",,30,3
+Asteroid Field,Statecraft,System,,2,,,Only small ships and Fighters can enter this system.,,31,2
+Pulsar System,Industry,System,,2,,,Ships in this system cannot be targeted by Commands.,,32,2
+Black Hole,Science,System,,2,,,Ships that enter this system cannot attack until next turn.,,33,2
+Silis Major,Statecraft,Capital System,,5,,,Fighters you control have +1 speed,,34,1
+Forsei,Industry,Capital System,,5,,,You may build ships during any phase of your turn.,,35,1
+Drummond,Science,Capital System,,5,,,Discard a card: Target ship can jump to any system.,,36,1
+Homeworld,Empty,Starting System,,6,,,,,37,4
