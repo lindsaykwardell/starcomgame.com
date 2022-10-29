@@ -26,4 +26,8 @@ img.card {
   aspect-ratio: 2/3;
   object-fit: cover;
 }
+
+img.card.horizontal {
+  aspect-ratio: 3/2;
+}
 </style>

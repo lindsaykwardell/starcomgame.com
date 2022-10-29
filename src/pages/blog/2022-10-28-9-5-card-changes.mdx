@@ -1,0 +1,120 @@
+---
+title: Card Changes for 0.9.5
+date: 2022-10-28
+author: Lindsay Wardell
+snippet: After reviewing the flow of the game, five cards have been cut and three cards have been added.
+image: "/blog/interdiction.webp"
+---
+
+<h1 class="font-megrim text-5xl text-center pb-6">Card Changes for 0.9.5</h1>
+
+<Prose class="lg:prose-lg text-justify text-white w-11/12">
+
+I've been getting a lot of work done on the digital version of Star Commander ([check it out if you're interested!](https://play.starcomgame.com)), and in playing against myself and reflecting on recent playtests I realized that there were some cards that were either working against the fun of the game, or were just not doing much of anything at all. I decided yesterday to take out these cards, and replace them with some new cards that should help push the theme and the fun of the game.
+
+First, let's look at the removed cards.
+
+## Carrier
+
+<Img class="card w-[250px] m-auto" src="/blog/Carrier.webp" alt="Carrier" />
+
+In an earlier version of the game, a player could perform a fighter rush against their opponent. A player using this strategy could reach an opponent's homeworld in a couple turns, and there was very little that could stop it. A number of changes to the game have since been implemented, including the addition of Defense Stations and restricting Fighter movement. However, I didn't want to remove fighters entirely, because I wanted to invoke the idea of the Rebel Alliance fleet of X-Wings attacking capital ships.
+
+Carriers were part of the solution. They provided a way to deploy fighters against an opponent, without them being an early game option. A player would build a carrier and fighters, and move them together, with the carrier holding back and not getting destroyed. For a time this worked, but with 0.9.3 and the removal of persistent damage, the game sped up too much for this strategy to work. Add in the fact that there are a number of ways fighters can gain movement, and a player who is utilizing fighters will probably never want to spend money on a carrier.
+
+## Targeting Systems
+
+<Img
+  class="card w-[250px] m-auto"
+  src="/blog/Targeting_Systems.webp"
+  alt="Targeting Systems"
+/>
+
+Targeting Systems was intended as Industry's solution to Statecraft, which was obviously using the Carrier and fighter strategy. By allowing an Industry player to divide damage between any number of targets, a Battleship could take on a fleet of Fighters and be able to destroy them all.
+
+This was, again, designed with persistent damage in mind. In a world where combat between ships could take multiple turns, a Battleship was not going to fare well against fighters. However, now that damage is not persistent, a Battleship would need to be attacked by ten fighters to make any headway. Honestly, that seems okay.
+
+Also, in testing, dividing damage isn't something that comes up very often for the two ships that have it (Corvette and Battleship) anyway, so having it on everything felt like a dead card.
+
+## Empty System
+
+<Img
+  class="card horizontal w-[350px] m-auto"
+  src="/blog/Empty_System.webp"
+  alt="Empty System"
+/>
+
+I really wanted to have geography in the game, systems that were more valuable for their abilities (like Trade World) and systems that provided some sort of defense (like Asteroid Field, Black Hole, and Pulsar System). Empty System was the latter. Originally, it could not have any developments built in it; it was a hole in the grid. This provided a weakness to any player, because it was somewhere that could not have defenses built.
+
+The problem with it is that hitting an Empty System on turn 1 is a huge setback. Even with a development level of 1, it has no domain, so the player is down a card draw compared to everyone else. Rather than set someone back, it was easier to just take the card out.
+
+## Advanced Shields and Advanced Weapons
+
+<div class="flex justify-around">
+  <Img
+    class="card w-[250px] m-auto"
+    src="/blog/Advanced_Shields.webp"
+    alt="Advanced Shields"
+  />
+  <Img
+    class="card w-[250px] m-auto"
+    src="/blog/Advanced_Weapons.webp"
+    alt="Advanced Weapons"
+  />
+</div>
+
+Advanced Shields has been a card in one form or another for years at this point, at least back to 0.5. Advanced Weapons was originally introduced in 0.8, as a Science card. Each of these technologies had an extra ability to discard a card and get an effect (which has since continued to exist as Experimental Shields).
+
+Advanced Weapons was moved out of Science because it was an aggresive card, and Science was intended for speed and defense. Originally it was placed in Industry, as the predominantly aggresive domain. However, it was later moved to Statecraft because Industry is heavily focused on building big ships, and Statecraft was more geared towards smaller ships (like fighters).
+
+Flavor-wise, however, this doesn't hold up. Statecraft is not about combat as a domain, so why does it have advanced weapons? Also, why does Science _not_ have a way to increase its attack power? That seems very on flavor to me.
+
+---
+
+Now that we've explored the cards being removed, let's look at the new ones.
+
+## Battlecruiser
+
+<Img
+  class="card w-[250px] m-auto"
+  src="/blog/Battlecruiser.webp"
+  alt="Battlecruiser"
+/>
+
+Since Industry is focused on building large ships, it made sense to provide an aggressively costed ship in the deck. It has always been my plan, should the game succeed, to add ships into the three domains as part of an expansion, but it just made sense to add one now.
+
+The Battlecruiser as it stands today absolutely will need to be tested. It was pushed to be very strong, but has a weakness of a lower hit point total. It is the first ship with a base speed of 2, providing Industry with a way to deploy something farther into the board (which Science does best with Enhanced Jump Drive and Jump Nexus, and Statecraft can do with Filibuster). It also has an ability to increase its firepower, so it can take down a Cruiser or Battleship if needed.
+
+Ironically, the Battlecruiser would benefit immensely from Targeting Systems, but I think this is a better fit for the game overall.
+
+## Efficient Construction
+
+<Img
+  class="card w-[250px] m-auto"
+  src="/blog/Efficient_Construction.webp"
+  alt="Efficient Construction"
+/>
+
+Statecraft is the domain most focused on building stations, either for defense or some other purpose, but there wasn't any real support for them except for Missile Platform. Efficient Construction provides a support to this strategy by reducing the cost of all stations a player builds by 1.
+
+One of the core concepts I've tried to add into the game is that there are three resources: credits, cards, and developments. Industry is the best at making credits, and Science is the best at drawing cards. Statecraft excels at getting developments, holding them, and taking advantage of them. Using cards like Orbital Habitat and Core World to get free developments, the player can spend what credits they have elsewhere. Efficient Construction feeds into this by reducing the cost of stations, making limited credits go further.
+
+## Advanced Systems
+
+<Img
+  class="card w-[250px] m-auto"
+  src="/blog/Advanced_Systems.webp"
+  alt="Advanced Systems"
+/>
+
+To make room for Efficient Construction in Statecraft, Advanced Weapons and Advanced Shields were merged into one card. Science as a domain is all about improving their ships, and it makes sense that they would be able to make better weapons too. Rather than have two technologies that are so similar, they were combined into one. This also makes the math a bit easier during combat, since players will have one fewer card that increases stats to worry about tracking.
+
+---
+
+Those are the latest card changes. There were some other, smaller changes to existing cards as well, so check out the Card Database to see what all has changed. There were also some card art changes made, which I am so excited about. The game is looking really good from my perspective, and I'm planning on ordering a new prototype in the near future after testing some of these changes.
+
+Until next time!
+
+![](/blog/interdiction.webp)
+
+</Prose>
