@@ -2,7 +2,7 @@
 import "../assets/index.css";
 
 useHead({
-  link: [{ rel: "icon", href: "favicon.png" }],
+  link: [{ rel: "icon", href: "/favicon.png" }],
   script: [
     {
       "data-goatcounter": "https://starcomgame.goatcounter.com/count",
