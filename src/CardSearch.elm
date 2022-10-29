@@ -93,21 +93,9 @@ cardTypeToString card =
         Ship size _ ->
             "Ship - "
                 ++ sizeToString size
-                ++ (if card.domain /= Neutral then
-                        " | "
-
-                    else
-                        ""
-                   )
 
         Station _ ->
             "Station"
-                ++ (if card.domain /= Neutral then
-                        " | "
-
-                    else
-                        ""
-                   )
 
         Command ->
             "Command"
@@ -117,12 +105,6 @@ cardTypeToString card =
 
         System _ ->
             "System"
-                ++ (if card.domain /= Neutral then
-                        " | "
-
-                    else
-                        ""
-                   )
 
 
 type Size
@@ -312,14 +294,6 @@ decodeMainCsv =
                                 "Technology" ->
                                     Decode.succeed Technology
 
-                                -- "System" ->
-                                --     Decode.field "MaxDev"
-                                --         (Decode.int
-                                --             |> Decode.andThen
-                                --                 (\maxDev ->
-                                --                     Decode.succeed (System maxDev)
-                                --                 )
-                                --         )
                                 _ ->
                                     Decode.fail <| "Unknown card type, received " ++ cardType
                         )
@@ -602,6 +576,13 @@ displaySelectedCard card =
                 ]
             , div [ class "text-2xl" ]
                 [ cardTypeToString card |> text
+                , text
+                    (if card.domain /= Neutral then
+                        " | "
+
+                     else
+                        ""
+                    )
                 , span [ class <| "text-lg " ++ domainToClass card.domain ] [ text <| domainToString card.domain ]
                 ]
             , div [ class "p-4 m-auto text-base lg:text-lg" ]
