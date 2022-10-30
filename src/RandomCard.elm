@@ -78,7 +78,7 @@ update msg model =
                 randomCardId =
                     today
                         |> Time.startOfDay Time.utc
-                        |> Time.toMillis Time.utc
+                        |> Time.posixToMillis
                         |> Random.initialSeed
                         |> Random.step (Random.int 1 51)
                         |> Tuple.first
