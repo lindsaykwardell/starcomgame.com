@@ -533,30 +533,14 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
-    step: 0,
-    stepContext: {},
-    stepContextMenu: [
-      ({ systems, card }) => {
-        let menu = [];
-
-        systems.forEach((system) => {
-          shipsControlledBy(system, card.controlledBy).forEach((c, index) => {
-            menu.push({
-              label: `Choose ${c.img} (Attack: ${c.totalAttack()}) in ${
-                system.card.img
-              }`,
-              action: `step:${index}`,
-              stepAction: () => {
-                c.bonusAttack += 2;
-                c.effects.push("Maximum_Firepower");
-              },
-            });
-          });
+    onResolve: ({ systems, card }) => {
+      systems.forEach((system) => {
+        shipsControlledBy(system, card.controlledBy).forEach((c) => {
+          c.bonusAttack += 2;
+          c.effects.push("Maximum_Firepower");
         });
-
-        return menu;
-      },
-    ],
+      });
+    },
   },
   {
     id: 8,
