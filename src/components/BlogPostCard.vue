@@ -18,7 +18,7 @@ defineProps({
       <h2 class="text-3xl flex-grow">{{ post.title }}</h2>
       <div class="whitespace-nowrap">{{ dayjs(post.date).format("MMM DD YYYY") }}</div>
     </div>
-    <Img :src="post.image" v-if="post.image" />
+    <Img :src="post.image" v-if="post.image" class="m-auto" />
     <p class="p-5">{{ post.snippet }}</p>
   </a>
 </template>

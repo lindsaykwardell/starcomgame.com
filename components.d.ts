@@ -21,6 +21,7 @@ declare module '@vue/runtime-core' {
     Island: typeof import('./node_modules/iles/dist/client/app/components/Island.vue')['default']
     LatestPost: typeof import('./src/components/LatestPost.vue')['default']
     Prose: typeof import('./src/components/Prose.vue')['default']
+    RandomCard: typeof import('./src/components/RandomCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     System: typeof import('./src/components/System/System.vue')['default']
