@@ -15,7 +15,7 @@ useHead({
 
 <template>
   <header
-    class="flex flex-col gap-8 pt-4 pb-6 md:pb-16 justify-center w-2/3 md:w-[750px] m-auto"
+    class="flex flex-col gap-8 pt-4 pb-6 md:pb-16 justify-center m-auto bg-gradient-to-b from-[#000716] to-gray-800"
   >
     <div
       class="flex flex-col md:flex-row items-center gap-8 pt-4 md:pb-16 justify-center"
@@ -56,7 +56,7 @@ useHead({
     <slot />
   </main>
   <footer
-    class="w-5/6 md:w-[450px] m-auto flex flex-col justify-center items-center gap-4 my-12"
+    class="m-auto flex flex-col justify-center items-center gap-4 py-12 bg-gradient-to-b from-gray-800 to-[#001656]"
   >
     <a href="/">
       <img
