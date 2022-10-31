@@ -9,3 +9,12 @@ For any system under siege (see [Siege](/etc/additional-rules.html#siege)), remo
 ## Cleanup
 
 End of turn effects end. If any player’s [Homeworld](https://www.starcomgame.com/card-database?selectedCard=Homeworld) has been captured, they lose. Remove all ships and counters they control from the board.
+
+## Game End
+
+The game ends when either:
+
+- A player's Homeworld has been conquered.
+- The last card of a Domain deck has been drawn.
+  
+When one of the above conditions happens, the game immediately ends. Each player counts their total developments. The player with the most developments wins!

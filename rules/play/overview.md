@@ -1,14 +1,6 @@
-# How to Play
+# Game Overview
 
-## Starting the Game
-
-- Shuffle the domain decks and the system deck. 
-- Place system cards face down on the board into a grid. Place a [Homeworld](https://www.starcomgame.com/card-database?selectedCard=Homeworld) System in the starting system for each player, with a development counter on it for that player.
-- Each player is given 3 credits.
-- Put a [Scout](https://www.starcomgame.com/card-database?selectedCard=Scout) into play in each player’s starting system under their control.
-- Choose who goes first, by some random method.
-
-## Game Phases
+First, determine who goes first by some random method. Then, going clockwise, each player takes a turn that proceeds with the following phases:
 
 - Ready Phase (skip on first turn)
   - [Gain credits](/play/ready.html#gain-credits)

@@ -24,14 +24,17 @@ async function createServer() {
       const welcome = fs.readFileSync(
         path.join(__dirname, "../rules/guide/welcome.md")
       );
-      const playArea = fs.readFileSync(
-        path.join(__dirname, "../rules/guide/play-area.md")
+      const setup = fs.readFileSync(
+        path.join(__dirname, "../rules/play/setup.md")
       );
       const cardTypes = fs.readFileSync(
         path.join(__dirname, "../rules/guide/card-types.md")
       );
       const domains = fs.readFileSync(
         path.join(__dirname, "../rules/guide/domains.md")
+      );
+      const objective = fs.readFileSync(
+        path.join(__dirname, "../rules/play/objective.md")
       );
       const overview = fs.readFileSync(
         path.join(__dirname, "../rules/play/overview.md")
@@ -57,13 +60,14 @@ async function createServer() {
           welcome,
           cardTypes,
           domains,
-          playArea,
+          setup,
+          objective,
           overview,
           ready,
           command,
           combat,
           end,
-          gameOver,
+          // gameOver,
           additionalRules,
         ].join("\n")
       );

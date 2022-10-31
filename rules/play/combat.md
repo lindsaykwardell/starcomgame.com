@@ -4,7 +4,7 @@
 
 ## Initiate Combat
 
-For each system where two or more players control vessels, each player, starting with the active player, decides whether to initiate combat. If each player declines, then combat is concluded in that system for the turn. If there are multiple systems where combat is possible, the active player chooses the order to resolve combat.
+For each system where the active player and at least one other player control vessels, each player in that system, starting with the active player, decides whether to initiate combat. If all players decline, then combat is concluded in that system for the turn. If there are multiple systems where combat is possible, the active player chooses the order to resolve combat.
 
 ## Assign Damage
 

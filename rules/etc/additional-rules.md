@@ -10,7 +10,7 @@ Fighters are small, single-occupant ships that are unable to jump or support the
 
 ## Hand Limit
 
-You may only have up to five cards in your hand at a time. If you attempt to draw a card with five cards already in your hand, you must either discard one first or skip your draw. At no time should you have more than five cards in hand.
+You may only have up to five cards in your hand at a time. If you attempt to draw a card with five cards already in your hand, you must skip your draw. At no time should you have more than five cards in hand.
 
 ## Responses
 

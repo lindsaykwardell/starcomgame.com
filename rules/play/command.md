@@ -18,7 +18,7 @@ You may build any ships or stations that you can afford. Stations can be built i
 
 - You can only build a number of stations in a system equal to the number of development counters in that system. If a system only has one development counter, it can only have one station.
 - You can only build a number of ships equal to the total number of developments you control.
-- You cannot build a ship or station in a system that is under siege (see [Siege](/etc/additional-rules.html#siege)). The exception is your starting system, which can always build ships (but not stations).
+- You cannot build a ship or station in a system that is under siege (see [Siege](/etc/additional-rules.html#siege)) or in a system where combat has taken place since your last turn, and opposing ships are still in the system. The exception is your starting system, where you can always build ships (but not stations).
 
 ## Develop Systems
 
@@ -37,7 +37,7 @@ You may play Commands by revealing the card and performing the action on the car
 
 You may do any of the following:
 
-- Pay 3 credits to draw a card. If you already have five cards in hand, you must discard one before drawing.
+- Pay 3 credits to draw a card. If you already have five cards in hand, you may not take this action.
 - Discard two cards, then gain three credits.
 
 You may also trade with players. These trades may include credits, cards in your hand or in play, and systems or vessels you control. If you trade a system to a player, remove all of your development counters and replace them with an equal number of that player’s development counters.
