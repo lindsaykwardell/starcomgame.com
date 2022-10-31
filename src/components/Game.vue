@@ -850,7 +850,7 @@ export default {
               ];
 
               this.players[this.contextCard.controlledBy].hand = this.players[
-                this.activePlayer
+                this.contextCard.controlledBy
               ].hand.filter((card) => card.id !== this.contextCard.id);
 
               playItem();
