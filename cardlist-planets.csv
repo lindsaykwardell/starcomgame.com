@@ -8,7 +8,7 @@ New Colony,Statecraft,System,,3,,,"When this system is first developed, place an
 Asteroid Field,Statecraft,System,,2,,,Only small ships and Fighters can enter this system.,,31,2
 Pulsar System,Industry,System,,2,,,Ships in this system cannot be targeted by Commands.,,32,2
 Black Hole,Science,System,,2,,,Ships that enter this system cannot attack until next turn.,,33,2
-Silis Major,Statecraft,Capital System,,5,,,Fighters you control have +1 speed,,34,1
+Silis Major,Statecraft,Capital System,,5,,,Fighters you control have +1 speed.,,34,1
 Forsei,Industry,Capital System,,5,,,You may build ships during any phase of your turn.,,35,1
-Drummond,Science,Capital System,,5,,,Discard a card: Target ship can jump to any system.,,36,1
+Drummond,Science,Capital System,,5,,,Discard a card: Move target ship you control to an adjacent system.,,36,1
 Homeworld,Empty,Starting System,,6,,,,,37,4

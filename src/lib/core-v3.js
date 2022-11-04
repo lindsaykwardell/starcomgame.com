@@ -1238,9 +1238,35 @@ export const CARD_LIST = [
       },
     ],
   },
+  // {
+  //   id: 28,
+  //   img: "Enhanced_Jump_Drive",
+  //   type: TECHNOLOGY,
+  //   domain: SCIENCE,
+  //   deck: SCIENCE,
+  //   count: 0,//3,
+  //   cost: 0,
+  //   hp: null,
+  //   attack: null,
+  //   contextMenu: [],
+  //   onResolve: ({ systems, card }) => {
+  //     systems.forEach((system) => {
+  //       shipsControlledBy(system, card.controlledBy).forEach((c) => {
+  //         c.effects.push("Enhanced_Jump_Drive");
+  //       });
+  //     });
+  //   },
+  //   onEachTurnStart: ({ systems, player }) => {
+  //     systems.forEach((system) => {
+  //       shipsControlledBy(system, player).forEach((card) => {
+  //         card.effects.push("Enhanced_Jump_Drive");
+  //       });
+  //     });
+  //   },
+  // },
   {
     id: 28,
-    img: "Enhanced_Jump_Drive",
+    img: "Research_Initiative",
     type: TECHNOLOGY,
     domain: SCIENCE,
     deck: SCIENCE,
@@ -1249,20 +1275,20 @@ export const CARD_LIST = [
     hp: null,
     attack: null,
     contextMenu: [],
-    onResolve: ({ systems, card }) => {
-      systems.forEach((system) => {
-        shipsControlledBy(system, card.controlledBy).forEach((c) => {
-          c.effects.push("Enhanced_Jump_Drive");
-        });
-      });
-    },
-    onEachTurnStart: ({ systems, player }) => {
-      systems.forEach((system) => {
-        shipsControlledBy(system, player).forEach((card) => {
-          card.effects.push("Enhanced_Jump_Drive");
-        });
-      });
-    },
+    // onResolve: ({ systems, card }) => {
+    //   systems.forEach((system) => {
+    //     shipsControlledBy(system, card.controlledBy).forEach((c) => {
+    //       c.effects.push("Enhanced_Jump_Drive");
+    //     });
+    //   });
+    // },
+    // onEachTurnStart: ({ systems, player }) => {
+    //   systems.forEach((system) => {
+    //     shipsControlledBy(system, player).forEach((card) => {
+    //       card.effects.push("Enhanced_Jump_Drive");
+    //     });
+    //   });
+    // },
   },
   {
     id: 29,
