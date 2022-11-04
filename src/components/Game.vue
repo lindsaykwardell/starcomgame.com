@@ -1174,6 +1174,14 @@ export default {
               system: system,
             });
           }
+          if (card.onEachTurnStart) {
+            card.onEachTurnStart({
+              ...this.fnContext,
+              card: card,
+              player: card.controlledBy,
+              system: system,
+            });
+          }
         });
       });
 
