@@ -1,6 +1,6 @@
 # Welcome to Star Commander
 
-Star Commander is a card game of exploration, colonization, commerce, and conflict. In a single game, you are racing against other would-be empires vying for control of star systems, in order to grow your own influence across the galaxy.
+Star Commander is a card game of exploration, commerce, and conflict. In a single game, you are racing against other would-be empires vying for control of star systems, in order to grow your own influence across the galaxy.
 
 ## Game Components
 
@@ -8,7 +8,7 @@ This game includes:
 
 - Three 30-card Domain decks (Industry, Statecraft, and Science)
 - One 28-card Systems deck
-- 107 Ship cards (4 Scouts, 20 Strike Fighters, 18 Corvettes, 14 Frigates, 12 Destroyers, 10 Cruisers, 8 Battleships, and 20 Defense Stations)
+- 106 Ship cards (4 Scouts, 20 Strike Fighters, 18 Corvettes, 14 Frigates, 12 Destroyers, 10 Cruisers, 8 Battleships, and 20 Defense Stations)
 - Four sets of 25 colored cubes (Red, Blue, Yellow, and Green)
 - 20 1-credit tokens, and 20 5-credit tokens
 - This rulebook

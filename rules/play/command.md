@@ -6,11 +6,15 @@
 
 Ships that you have controlled since the start of your turn are able to move (or jump) to another adjacent system. Ships may only jump according to their speed. For example, a [Corvette](https://www.starcomgame.com/card-database?selectedCard=Corvette) has a speed of 1, and so can only jump once per turn. A [Fighter](https://www.starcomgame.com/card-database?selectedCard=Strike_Fighter) has a speed of 0, and so cannot jump.
 
-Some cards (like [Enhanced Jump Drive](/card-database?selectedCard=Enhanced_Jump_Drive)) can increase a ship's speed, which allows for additional movement actions. The only time a Fighter can jump while having a speed of 0 is if a [Carrier](https://www.starcomgame.com/card-database?selectedCard=Carrier) is in the same system as the Fighter and it jumps to another system.
+Some cards (like [Jump Nexus](https://www.starcomgame.com/card-database?selectedCard=Jump_Nexus)) can increase a ship's speed, which allows for additional movement actions. The only time a Fighter can jump while having a speed of 0 is if a [Carrier](https://www.starcomgame.com/card-database?selectedCard=Carrier) is in the same system as the Fighter and it jumps to another system.
+
+You cannot move a ship from an opponent's system to another system an opponent controls.
 
 ## Explore
 
-Whenever a ship enters a system with a face down System card, you must immediately flip it over. This is called Exploring. Some systems may have effects when they are explored, which are to be done before play continues and cannot be responded to.
+Whenever a ship enters a system with a face down System card, you must immediately flip it over. This is called Exploring. Some systems may have effects when they are explored, which are to be resolved before play continues and cannot be responded to.
+
+<div class="page-break"></div>
 
 ## Build Ships/Stations
 
@@ -26,12 +30,11 @@ You may build developments on systems. If you control a ship in an uncontrolled 
 
 Systems can only have a number of developments on them equal to their maximum development value in the top right corner of the card.
 
+<div class="page-break"></div>
 
 ## Play Commands
 
 You may play Commands by revealing the card and performing the action on the card. Other players may respond with their own abilities or Commands (see [Responses](/etc/additional-rules.html#responses)). Discard the card afterward.
-
-<div class="page-break"></div>
 
 ## Trade
 

@@ -59,7 +59,7 @@ done
 cp public/frontcover.png tgc/rules/0.png
 cp public/backcover.png tgc/rules/z.png
 # cp public/blankpage.png tgc/rules/00.png
-# cp public/blankpage.png tgc/rules/y.png
+cp public/blankpage.png tgc/rules/y.png
 
 sips --resampleHeightWidth 2475 1575 tgc/rules/*.png
 

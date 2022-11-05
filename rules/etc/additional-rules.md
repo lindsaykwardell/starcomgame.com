@@ -2,11 +2,15 @@
 
 ## Drawing Cards
 
-Whenever a card or an action directs you to draw a card, you may only draw from a deck that matches a domain you control. For example, if you play [Explore the Unknown](https://www.starcomgame.com/card-database?selectedCard=Explore_the_Unknown), and you only control systems with a Science domain, then you must draw from the Science deck.
+Whenever a card or an action directs you to draw a card, you may only draw from a deck that matches a domain you control.
 
 ## Fighters
 
-Fighters are small, single-occupant ships that are unable to jump or support themselves. Fighters are unable to participate in a siege (see [Siege](/etc/additional-rules.html#siege)). If a fighter is abandoned (only fighters remain in a system you do not control) at the start of your turn, and remains abandoned at the end of your turn, it is destroyed.
+Fighters are small, single-occupant ships, so there are some rule restrictions on what they can do.
+
+- Fighters are unable to participate in a siege (see [Siege](/etc/additional-rules.html#siege)).
+- Fighters cannot be used to build the first development in a system.
+- Fighters start with a base speed of 0.
 
 ## Hand Limit
 
@@ -14,7 +18,7 @@ You may only have up to five cards in your hand at a time. If you attempt to dra
 
 ## Responses
 
-Whenever, during either the Command or Combat Phases, a player plays a card or uses an ability, it can be responded to. In each case, the active player chooses whether to use another card or ability, then each other player may choose, going clockwise from the active player. When all players pass, the sequence of cards and abilities is resolved. These actions are resolved in “last on, first off” order. 
+Whenever, during either the Command or Combat Phases, a player plays a card, uses an ability, or takes an action, it can be responded to. In each case, the active player chooses whether to use another card or ability, then each other player may choose, going clockwise from the active player. When all players pass, the sequence of cards and abilities is resolved. These actions are resolved in “last on, first off” order. 
 
 ## Siege
 
@@ -25,10 +29,6 @@ Note that for the purposes of drawing cards, a player may still choose the domai
 ## Turn Order
 
 If there are more than two players in a game, players will take turns in a clockwise order. The same applies for performing any actions, such as playing Commands, taking turn actions, or activating abilities (see [Responses](/etc/additional-rules.html#responses)).
-
-## Targeting
-
-Ships and stations can only target in their current system. If an ability on a card says that a ship or station you control does something to another ship, this same rule applies. Any card that refers to “target ship or station” (or similar) may perform its action in any system.
 
 ## Vessels
 
