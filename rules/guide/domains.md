@@ -1,6 +1,6 @@
 # Domains
 
-There are three domains - Industry, Statecraft, and Science. There is one deck for each domain. These domains reflect the focus of your nation, and will provide you will different technologies, space stations, and commands that reflect that focus.
+There are three domains - Industry, Statecraft, and Science. There is one deck for each domain. These domains reflect the focus of your nation, and will provide you with different cards that reflect that focus.
 
 ## Industry
 
@@ -12,7 +12,7 @@ Industry is primarily focused on getting the most out of your resources. If you 
 
 <img class="card" style="float: right; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Orbital_Habitat-thumb.webp" alt="Orbital_Habitat" />
 
-Statecraft focuses on defensive play, building up their systems efficiently and building a strong support network to defend them. Statecraft relies on building defensive stations and smaller ships, while manipulating events in ways not related to combat.
+Statecraft focuses on defensive play, building up their systems efficiently and constructing a strong support network to defend them. Statecraft relies on building defensive stations and smaller ships, while manipulating events in ways not related to combat.
 
 <div class="page-break"></div>
 
@@ -20,7 +20,7 @@ Statecraft focuses on defensive play, building up their systems efficiently and 
 
 <img class="card" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Thrill_of_Discovery-thumb.webp" alt="Thrill_of_Discovery" />
 
-Science is all about finding new ways to bend the rules, and get an advantage over your opponents. Science cards help you draw more cards, move your ships around faster, and prevent your opponent from destroying your ships. Building up an advantage is what science does best.
+Science is all about finding new ways to get an advantage over your opponents. Science cards help you draw more cards, move your ships around faster, and prevent your opponent from destroying your ships. Getting an edge over everyone else is what science does best.
 
 ## Systems and Domains
 

@@ -16,6 +16,8 @@ Fighters are small, single-occupant ships, so there are some rule restrictions o
 
 You may only have up to five cards in your hand at a time. If you attempt to draw a card with five cards already in your hand, you must skip your draw. At no time should you have more than five cards in hand.
 
+<div class="page-break"></div>
+
 ## Responses
 
 Whenever, during either the Command or Combat Phases, a player plays a card, uses an ability, or takes an action, it can be responded to. In each case, the active player chooses whether to use another card or ability, then each other player may choose, going clockwise from the active player. When all players pass, the sequence of cards and abilities is resolved. These actions are resolved in “last on, first off” order. 
@@ -32,4 +34,4 @@ If there are more than two players in a game, players will take turns in a clock
 
 ## Vessels
 
-Some cards refer to vessels. A vessel is either a ship or station.
+Some cards refer to vessels. A vessel is either a ship or station. A card referring to a vessel refers to both.

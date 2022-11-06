@@ -8,7 +8,7 @@ Ships that you have controlled since the start of your turn are able to move (or
 
 Some cards (like [Jump Nexus](https://www.starcomgame.com/card-database?selectedCard=Jump_Nexus)) can increase a ship's speed, which allows for additional movement actions. The only time a Fighter can jump while having a speed of 0 is if a [Carrier](https://www.starcomgame.com/card-database?selectedCard=Carrier) is in the same system as the Fighter and it jumps to another system.
 
-You cannot move a ship from an opponent's system to another system an opponent controls.
+You cannot move a ship from an opponent's system to another system that player controls.
 
 ## Explore
 
@@ -16,7 +16,7 @@ Whenever a ship enters a system with a face down System card, you must immediate
 
 <div class="page-break"></div>
 
-## Build Ships/Stations
+## Build Ships and Stations
 
 You may build any ships or stations that you can afford. Stations can be built in any system you control, while ships can only be constructed in starting systems and capital systems. There are some restrictions on when you can build ships or stations:
 
@@ -26,9 +26,9 @@ You may build any ships or stations that you can afford. Stations can be built i
 
 ## Develop Systems
 
-You may build developments on systems. If you control a ship in an uncontrolled system, you may pay 1 credit to build a development. This gives you control of the system. You may build additional developments by paying the number of developments on the system plus 1. (In order to go from 1 development to 2, you must pay 2 credits).
+You may build developments in systems not controlled by other players. If you control a non-Fighter ship in an uncontrolled system, you may pay 1 credit to build a development. This gives you control of the system. You may build additional developments by paying the number of developments on the system plus 1. (In order to go from 1 development to 2, you must pay 2 credits).
 
-Systems can only have a number of developments on them equal to their maximum development value in the top right corner of the card.
+Systems can only have a number of developments on them equal to their maximum development value, located in the top right corner of the card.
 
 <div class="page-break"></div>
 
@@ -43,4 +43,6 @@ You may do any of the following:
 - Pay 3 credits to draw a card. If you already have five cards in hand, you may not take this action.
 - Discard two cards, then gain three credits.
 
-You may also trade with players. These trades may include credits, cards in your hand or in play, and systems or vessels you control. If you trade a system to a player, remove all of your development counters and replace them with an equal number of that player’s development counters.
+You may also trade with players. These trades may include credits, cards in your hand or in play, and systems or vessels you control. 
+
+If you trade a system to a player, remove all of your development counters and replace them with an equal number of that player’s development counters. All stations in the system also change control to the new controller of the system.

@@ -8,7 +8,7 @@ There are five card types in the game. Throughout play, you will be interacting 
 
 There are four ship types - Fighter, Small, Medium, and Large. Each has a cost, attack, hit points, and speed. Some ships have other abilities written on them. Ships are the only cards that can move between systems.
 
-Ships are built at your [Homeworld](https://www.starcomgame.com/card-database?selectedCard=Homeworld) or in [Capital Systems](https://www.starcomgame.com/card-database?selectedCard=Drummond), and are placed on the side of the system card closest to you. Ships are placed on the board with their text facing their controller. Ships can move (jump) between systems equal to their speed; a ship with a speed of 1 can jump to another system once per turn.
+Ships are built in your [Homeworld](https://www.starcomgame.com/card-database?selectedCard=Homeworld) or in [Capital Systems](https://www.starcomgame.com/card-database?selectedCard=Drummond), and are placed on the side of the system card closest to you. Ships are placed on the board with their text facing their controller. Ships can move (jump) between systems equal to their speed; a ship with a speed of 1 can jump to another system once per turn.
 
 You can only control a number of ships equal to the total number of developments you control. If your number of developments is equal to or less than the number of ships you control, you cannot build more ships.
 
@@ -42,7 +42,7 @@ Some technologies provide static abilities, like increasing ship stats or drawin
 
 <img class="card" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Barrage-thumb.webp" alt="Barrage" />
 
-Commands are cards that affect gameplay, then go to the discard pile. You play them from your hand onto the board, then move them to the discard pile. Commands can be played on any player's turn, but if it is not your turn they can only be played as a response (see [Responses](/etc/additional-rules.html#responses)).
+Commands are cards that allow you to perform a one-time action. You reveal them from your hand, perform the action on the card, then put them in the discard pile. Commands can be played on any player's turn, but if it is not your turn they can only be played as a response (see [Responses](/etc/additional-rules.html#responses)).
 
 <style>
   h2, footer {

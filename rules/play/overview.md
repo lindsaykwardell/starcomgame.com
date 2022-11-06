@@ -9,7 +9,7 @@ First, determine who goes first by some random method. Then, going clockwise, ea
 - Command Phase
   - [Move Ships](/play/command.html#move-ships)
   - [Explore](/play/command.html#explore)
-  - [Build Ships/Stations](/play/command.html#build-ships-stations)
+  - [Build Ships and Stations](/play/command.html#build-ships-and-stations)
   - [Develop Systems](/play/command.html#develop-systems)
   - [Trade](/play/command.html#trade)
 - Combat Phase
