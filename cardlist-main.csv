@@ -7,7 +7,7 @@ Ram,Industry,Command,,,,,Destroy target ship you control. It deals damage equal 
 Mass Production,Industry,Command,,,,,Build 2 Corvettes in a system you control.,Industry,5,2
 Maximum Firepower,Industry,Command,,,,,Vessels you control in target system get +2 attack until end of turn.,Industry,6,3
 Trade Routes,Industry,Technology,,,,,"At the start of your turn, gain 1 credit for each station you control.",Industry,7,2
-Railgun Turrets,Industry,Technology,,,,,"Choose a vessel you control. Pay X, where X is its attack, to double its attack.",Industry,8,3
+Railgun Turrets,Industry,Technology,,,,,Pay X: Target ship with attack X gets +X attack until end of turn.,Industry,8,3
 Battlecruiser,Industry,Ship - Medium,10,6,8,2,Pay X: This ship gets +X attack until end of turn.,IndustryStats,39,2
 Missile Platform,Statecraft,Station,5,3,5,-,Other stations you control in this system get +1 attack.,StatecraftStats,40,4
 Orbital Habitat,Statecraft,Station,4,0,2,-,"At the start of your turn, place a development in this system if valid. You may build an additional two developments in this system.",StatecraftStats,41,3
@@ -15,14 +15,14 @@ Shipyard,Statecraft,Station,5,0,3,-,You may build ships in this system.,Statecra
 Spy Network,Statecraft,Command,,,,,Look at target player's hand. Take a card from their hand and add it to yours.,Statecraft,9,4
 Intercept Orders,Statecraft,Command,,,,,Target command has no effect.,Statecraft,10,2
 Sabotage,Statecraft,Command,,,,,Choose a system with a vessel you control. Destroy target vessel in that system.,Statecraft,11,4
-Bribery,Statecraft,Command,,,,,Target ship you do not control jumps to an adjacent system of your choice.,Statecraft,12,3
+Bribery,Statecraft,Command,,,,,Move target ship you do not control to an adjacent system of your choice.,Statecraft,12,3
 Filibuster,Statecraft,Command,,,,,You take an additional turn after this one.,Statecraft,13,2
 Efficient Construction,Statecraft,Technology,,,,,Stations you build cost 1 less to build. Their cost cannot be less than 1.,Statecraft,14,3
 Fighter Bays,Statecraft,Technology,,,,,Fighters you control have +1 hit point. You may build fighters in any system you control with a station.,Statecraft,15,3
 Jump Nexus,Science,Station,4,0,2,-,Ships you control in this system get +1 speed until end of turn.,ScienceStats,43,4
 Jump Drive Detonation,Science,Command,,,,,Choose a system with a ship you control. Destroy all vessels in that system.,Science,16,2
 Jump Stabilization,Science,Command,,,,,Choose a system. Ships in that system may jump directly to any system within two jumps of it.,Science,17,3
-Interdiction,Science,Command,,,,,Ships in target system cannot jump until your next ready phase.,Science,18,3
+Interdiction,Science,Command,,,,,Ships in target system cannot move until your next ready phase (jumps count as movement).,Science,18,3
 Raise Shields,Science,Command,,,,,Vessels you control in target system get +2 hit points until end of turn.,Science,19,3
 Evasion,Science,Command,,,,,Prevent all damage that would be dealt to target ship this turn.,Science,20,4
 Experimental Shields,Science,Technology,,,,,Discard a card: Prevent all damage to target vessel this turn.,Science,21,2
