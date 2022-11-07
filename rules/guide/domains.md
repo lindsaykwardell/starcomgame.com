@@ -12,7 +12,7 @@ Industry is primarily focused on getting the most out of your resources. If you 
 
 <img class="card" style="float: right; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Orbital_Habitat-thumb.webp" alt="Orbital_Habitat" />
 
-Statecraft focuses on defensive play, building up their systems efficiently and constructing a strong support network to defend them. Statecraft relies on building defensive stations and smaller ships, while manipulating events in ways not related to combat.
+Statecraft focuses on defensive play. Statecraft cards provide ways to protect the systems you control, and build up your developments in an efficient way. It also provides cards that can influence the game outside of combat, by either destroying their ships or giving you an extra turn.
 
 <div class="page-break"></div>
 

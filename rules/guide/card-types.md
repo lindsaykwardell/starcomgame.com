@@ -32,15 +32,15 @@ Systems are the backbone of your empire. They provide resources to build ships a
 
 ## Technology
 
-<img class="card" style="float: right; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Advanced_Systems-thumb.webp" alt="Advanced Systems" />
+<img class="card" style="float: right; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Railgun_Turrets-thumb.webp" alt="Railgun Turrets" />
 
 Technology cards allow for additional, long-lasting abilities. Technology cards are placed in the Technology row closest to the player. 
 
-Some technologies provide static abilities, like increasing ship stats or drawing additional cards each turn, while others have abilities that can be activated when needed.
+Some technologies provide static abilities, like increasing ship stats or drawing additional cards each turn, while others have abilities that can be activated when needed by paying a cost.
 
 ## Command
 
-<img class="card" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Barrage-thumb.webp" alt="Barrage" />
+<img class="card" style="float: left; border-radius: 5px; margin: 10px; overflow: hidden;" src="https://www.starcomgame.com/cards/Interdiction-thumb.webp" alt="Interdiction" />
 
 Commands are cards that allow you to perform a one-time action. You reveal them from your hand, perform the action on the card, then put them in the discard pile. Commands can be played on any player's turn, but if it is not your turn they can only be played as a response (see [Responses](/etc/additional-rules.html#responses)).
 
