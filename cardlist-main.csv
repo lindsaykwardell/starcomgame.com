@@ -21,7 +21,7 @@ Efficient Construction,Statecraft,Technology,,,,,Stations you build cost 1 less 
 Fighter Bays,Statecraft,Technology,,,,,Fighters you control have +1 hit point. You may build fighters in any system you control with a station.,Statecraft,15,3
 Jump Nexus,Science,Station,4,0,2,-,Ships you control in this system get +1 speed until end of turn.,ScienceStats,43,4
 Jump Drive Detonation,Science,Command,,,,,Choose a system with a ship you control. Destroy all vessels in that system.,Science,16,2
-Jump Stabilization,Science,Command,,,,,Choose a system. Ships in that system may jump directly to any system within two jumps of it.,Science,17,3
+Jump Stabilization,Science,Command,,,,,Ships in target system may jump directly to any system within two jumps of it.,Science,17,3
 Interdiction,Science,Command,,,,,Ships in target system cannot move until your next ready phase (jumps count as movement).,Science,18,3
 Raise Shields,Science,Command,,,,,Vessels you control in target system get +2 hit points until end of turn.,Science,19,3
 Evasion,Science,Command,,,,,Prevent all damage that would be dealt to target ship this turn.,Science,20,4
