@@ -52,7 +52,7 @@ sips --resampleHeightWidth 2475 1575 tgc/rules/*.png
 for f in ./tgc/rules/*.png; 
 do 
   echo "Processing $f file..."; 
-  magick convert $f ./public/border.png ./public/numbered/page"$PAGE".png -flatten $f
+  magick convert $f ./public/numbered/page"$PAGE".png -flatten $f
   PAGE=$((PAGE+1))
 done
 
